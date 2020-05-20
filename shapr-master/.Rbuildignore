@@ -1,0 +1,13 @@
+^README\.Rmd$
+^.*\.Rproj$
+^\.Rproj\.user$
+^Rprof\.out$
+^\.circleci$
+^\.lintr$
+^\.covrignore$
+^LICENSE\.md$
+inst/compare_lundberg\.xgb\.obj
+^\.github$
+^CODE_OF_CONDUCT\.md$
+^cran-comments\.md$
+^docs$
