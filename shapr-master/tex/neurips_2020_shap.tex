@@ -1,0 +1,627 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2020
+
+% ready for submission
+% \usepackage{neurips_2020}
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2020}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2020}
+
+% to avoid loading the natbib package, add option nonatbib:
+
+\usepackage[nonatbib]{neurips_2020}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage{tikz}
+\usetikzlibrary{bayesnet}
+\usetikzlibrary{arrows}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usetikzlibrary{backgrounds}
+\usepackage{multirow}
+
+\newcommand{\een}{\mathbb{1}}
+\newcommand{\vX}{\mathbf{X}}
+\newcommand{\vx}{\mathbf{x}}
+\newcommand{\vq}{\mathbf{q}}
+\newcommand{\vf}{\mathbf{f}}
+\newcommand{\ve}{\bm{\epsilon}}
+\newcommand{\expectation}{\mathbb{E}}
+\newcommand{\contribution}{{\phi}}
+\newcommand{\val}{{v}}
+\newcommand{\dodo}{\mathit{do}}
+\newcommand{\ldo}[1]{\dodo(X_{#1} = x_{#1})}
+\newcommand{\lvdo}[1]{\dodo(\vX_{#1} = \vx_{#1})}
+\newcommand{\sdo}[1]{\hat{x}_{#1}}
+\newcommand{\svdo}[1]{\hat{\vx}_{#1}}
+\newcommand{\pa}{\mathop{\textit{pa}}}
+\newcommand{\spa}{\mathop{\textit{\scriptsize pa}}}
+\newcommand{\perm}{\pi}
+\newcommand{\actcont}{\contribution^{\mbox{\scriptsize active}}}
+\newcommand{\passcont}{\contribution^{\mbox{\scriptsize passive}}}
+\newcommand{\operator}{\mathit{op}}
+\newcommand{\sop}[1]{\operator(x_{#1})}
+\newcommand{\svop}[1]{\operator(\vx_{#1})}
+\newcommand{\lop}[1]{\operator(X_{#1} = x_{#1})}
+\newcommand{\lvop}[1]{\operator(\vX_{#1} = \vx_{#1})}
+\newcommand{\allfeatures}{{N}}
+\newcommand{\bx}{\bar{x}}
+\newcommand{\tx}{\tilde{x}}
+\newcommand{\hx}{\hat{x}}
+\newcommand{\allmeans}{{\cal X}}
+\newcommand{\diagbeta}{{\cal B}}
+\newcommand{\mapmat}{{\cal M}}
+\newcommand{\contmat}{{\cal C}}
+\newcommand{\onder}[2]{{#1}_{\mbox{\scriptsize #2}}}
+\newcommand{\boven}[2]{#1^{\mbox{\scriptsize #2}}}
+\newcommand{\isequal}{\hspace*{-2.5mm} & = & \hspace*{-2.5mm}}
+
+\newcommand{\comment}[1]{{\color{red} #1}}
+
+
+
+
+\title{Causal Shapley values}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+\author{%
+  Pietje Puk\\
+  Radboud University
+  Institute for Computing and Information Sciences\\
+  Nijmegen, The Netherlands \\
+  \texttt{pietje.puk@ru.nl} \\
+  % examples of more authors
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \AND
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Explainability. Causal interpretation of Shapley values.
+\end{abstract}
+
+
+
+%Papers may only be up to eight pages long, including figures. Additional pages \emph{containing only a section on the broader impact, acknowledgments and/or cited references} are allowed. Papers that exceed eight pages of content will not be reviewed, or in any other way considered for presentation at the conference.
+
+
+%The \LaTeX{} style file contains three optional arguments: \verb+final+, which creates a camera-ready copy, \verb+preprint+, which creates a preprint for submission to, e.g., arXiv, and \verb+nonatbib+, which will not load the \verb+natbib+ package for you in case of package clash.
+
+%If you wish to post a preprint of your work online, e.g., on arXiv, using the NeurIPS style, please use the \verb+preprint+ option. This will create a nonanonymized version of your work with the text ``Preprint. Work in progress.'' in the footer. This version may be distributed as you see fit. Please \textbf{do not} use the \verb+final+ option, which should \textbf{only} be used for papers accepted to NeurIPS.
+
+%At submission time, please omit the \verb+final+ and \verb+preprint+options. This will anonymize your submission and add line numbers to aid review. Please do \emph{not} refer to these line numbers in your paper as they will be removed during generation of camera-ready copies.
+
+
+%There is also a \verb+\paragraph+ command available, which sets the heading in bold, flush left, and inline with the text, with the heading followed by 1\,em of space.
+
+%The \verb+natbib+ package will be loaded for you by default.  Citations may be author/year or numeric, as long as you maintain internal consistency.  As to the format of the references themselves, any style is acceptable as long as it is used consistently.
+
+%Of note is the command \verb+\citet+, which produces citations appropriate for use in inline text.  For example,
+%\begin{verbatim}
+%   \citet{hasselmo} investigated\dots
+%\end{verbatim}
+%produces
+%\begin{quote}
+%  Hasselmo, et al.\ (1995) investigated\dots
+%\end{quote}
+
+%If you wish to load the \verb+natbib+ package with options, you may add the following before loading the \verb+neurips_2020+ package:
+%\begin{verbatim}
+%   \PassOptionsToPackage{options}{natbib}
+%\end{verbatim}
+
+%If \verb+natbib+ clashes with another package you load, you can add the optional
+%argument \verb+nonatbib+ when loading the style file:
+%\begin{verbatim}
+%   \usepackage[nonatbib]{neurips_2020}
+%\end{verbatim}
+
+%Footnotes should be used sparingly.  If you do require a footnote, indicate footnotes with a number\footnote{Sample of the first footnote.} in the text. Place the footnotes at the bottom of the page on which they appear. Precede the footnote with a horizontal rule of 2~inches (12~picas).
+%
+%Note that footnotes are properly typeset \emph{after} punctuation
+%marks.\footnote{As in this example.}
+
+
+%Note that publication-quality tables \emph{do not contain vertical rules.} We strongly suggest the use of the \verb+booktabs+ package, which allows for typesetting high-quality, professional tables:
+%\begin{center}
+%  \url{https://www.ctan.org/pkg/booktabs}
+%\end{center}
+%This package was used to typeset Table~\ref{sample-table}.
+%
+%\begin{table}
+%  \caption{Sample table title}
+%  \label{sample-table}
+%  \centering
+%  \begin{tabular}{lll}
+%    \toprule
+%    \multicolumn{2}{c}{Part}                   \\
+%    \cmidrule(r){1-2}
+%    Name     & Description     & Size ($\mu$m) \\
+%    \midrule
+%    Dendrite & Input terminal  & $\sim$100     \\
+%    Axon     & Output terminal & $\sim$10      \\
+%    Soma     & Cell body       & up to $10^6$  \\
+%    \bottomrule
+%  \end{tabular}
+%\end{table}
+
+%Please prepare submission files with paper size ``US Letter,'' and not, for example, ``A4.''
+
+%\begin{itemize}
+%
+%\item You should directly generate PDF files using \verb+pdflatex+.
+%
+%\item You can check which fonts a PDF files uses.  In Acrobat Reader, select the
+%  menu Files$>$Document Properties$>$Fonts and select Show All Fonts. You can
+%  also use the program \verb+pdffonts+ which comes with \verb+xpdf+ and is
+%  available out-of-the-box on most Linux machines.
+%
+%\item The IEEE has recommendations for generating PDF files whose fonts are also
+%  acceptable for NeurIPS. Please see
+%  \url{http://www.emfield.org/icuwb2010/downloads/IEEE-PDF-SpecV32.pdf}
+%
+%\item \verb+xfig+ "patterned" shapes are implemented with bitmap fonts.  Use
+%  "solid" shapes instead.
+%
+%\item The \verb+\bbold+ package almost always uses bitmap fonts.  You should use the equivalent AMS Fonts:
+%\begin{verbatim}
+%   \usepackage{amsfonts}
+%\end{verbatim}
+%followed by, e.g., \verb+\mathbb{R}+, \verb+\mathbb{N}+, or \verb+\mathbb{C}+
+%for $\mathbb{R}$, $\mathbb{N}$ or $\mathbb{C}$.  You can also use the following
+%workaround for reals, natural and complex:
+%\begin{verbatim}
+%   \newcommand{\RR}{I\!\!R} %real numbers
+%   \newcommand{\Nat}{I\!\!N} %natural numbers
+%   \newcommand{\CC}{I\!\!\!\!C} %complex numbers
+%\end{verbatim}
+%Note that \verb+amsfonts+ is automatically loaded by the \verb+amssymb+ package.
+%
+%\end{itemize}
+
+%Most of the margin problems come from figures positioned by hand using \verb+\special+ or other commands. We suggest using the command
+%\verb+\includegraphics+ from the \verb+graphicx+ package. Always specify the figure width as a multiple of the line width as in the example below:
+%\begin{verbatim}
+%   \usepackage[pdftex]{graphicx} ...
+%   \includegraphics[width=0.8\linewidth]{myfile.pdf}
+%\end{verbatim}
+%See Section 4.4 in the graphics bundle documentation
+%(\url{http://mirrors.ctan.org/macros/latex/required/graphics/grfguide.pdf})
+%
+%A number of width problems arise when \LaTeX{} cannot properly hyphenate a
+%line. Please give LaTeX hyphenation hints using the \verb+\-+ command when
+%necessary.
+
+
+
+
+
+%Do {\bf not} include this section in the anonymized submission, only in the final paper. You can use the \texttt{ack} environment provided in the style file to autmoatically hide this section in the anonymized submission.
+%\end{ack}
+
+%\section*{References}
+%
+%References follow the acknowledgments. Use unnumbered first-level heading for the references. Any choice of citation style is acceptable as long as you are consistent. It is permissible to reduce the font size to \verb+small+ (9 point)
+%when listing the references.
+%{\bf Note that the Reference section does not count towards the eight pages of content that are allowed.}
+%\medskip
+
+%\small
+
+\section{Introduction}
+
+Explainability. Attribution. Shapley. Conditioning or no conditioning.
+
+\section{A causal interpretation of Shapley values}
+
+\comment{Need more smooth talk.}
+
+We assume that we are given a set of features $\vx$ with corresponding model output $f(\vx)$. We compare this output with the average output
+\[
+f_0 = \expectation f(\vX) = \int d\vX \: P(\vX) f(\vX) \: ,
+\]
+with expectation taken over some (for now assumed to be known) probability distribution $P(\vX)$. We would like to attribute the difference between $f(\vx)$ and $f_0$ in a sensible way to the different features $i \in \allfeatures$ with $\allfeatures = \{1,\ldots,n\}$ and $n$ the number of features. That is, we would like to write
+\begin{equation}
+f(\vx) = f_0 + \sum_{i=1}^n \contribution_i \: ,
+\label{eq:efficiency}
+\end{equation}
+where we will refer to $\contribution_i$ as the contribution of feature $i$ to the output $f(\vx)$. Equation~(\ref{eq:efficiency}) is referred to as the efficiency property, which appears to be a sensible desideratum for any attribution method and we here take as our starting point.
+
+We can think of (at least) two different interpretations that, as we will see, will lead to two different approaches for computing the contributions.
+\begin{description}
+	\item[Passive.] We interpret the feature vector $\vx$ as a passive observation. Feature values come in one after the other and the contribution of feature $i$ should reflect the difference in expected value of $f(\vX)$ after and before {\em observing} its feature value $x_i$.
+	\item[Active.] We interpret the feature vector $\vx$ as the result of an action. Feature values are imposed one after the other and the contribution of feature $i$ relates to the difference in expected value of $f(\vX)$ after and before {\em setting} its value to $x_i$.
+\end{description}
+Following the above reasoning, the contribution of each feature  depends on the order $\perm$ in which the feature values arrive or are imposed. We write the contribution of feature $i$ given the permutation $\perm$ as
+\begin{equation}
+\contribution_i(\perm) = \val(\{j: j \preceq_\perm i\}) - \val(\{j: j \prec_\perm i\}) \: ,
+\label{eq:contperm}
+\end{equation}
+with $j \prec_\perm i$ if $j$ precedes $i$ in the permutation $\perm$, i.e., if $\perm(j) < \perm(i)$, and where we define the value function
+\begin{equation}
+\val(S) = \expectation \left[f(\vX) | \svop{S} \right] = \int d\vX_{\bar{S}} \: P(\vX_{\bar{S}}|\lvop{S}) f(\vX_{\bar{S}},\vx_S) \: .
+\label{eq:valuedef}
+\end{equation}
+Here $S$ is the subset of indices of features with known ``in-coalition'' feature values $\vx_S$. To compute the expectation, we still need to average over the ``out-of-coalition'' feature values $\vX_{\bar{S}}$ with $\bar{S} = \allfeatures \setminus S$, the complement of $S$. The operator $\operator()$ specifies how the distribution of the ``out-of-coalition'' features $\vX_{\bar{S}}$ depends on the ``in-coalition'' feature values $\vx_{S}$. To arrive at the passive interpretation, we set $\operator()$ to conventional conditioning by observation, yielding $P(\vX_{\bar{S}}|\vx_{S})$. For the active interpretation, we need to condition by intervention, for which we resort to Pearl's \textit{do}-calculus~\cite{pearl1995causal} and write $P(\vX_{\bar{S}}|\lvdo{S})$. \comment{Do we need a longer introduction/explanation of \textit{do}-calculus?} A third option is to ignore the feature values $\vx_S$ and just take the unconditional, marginal distribution $P(\vX_{\bar{S}})$. We will refer to the corresponding Shapley values as conditional, causal, and marginal, respectively.
+
+It is easy to check that the efficiency property~(\ref{eq:efficiency}) holds for any permutation $\perm$.
+%\begin{eqnarray*}
+%\sum_{i=1}^m \contribution_i(\perm) & = & \sum_{i=1}^m \left(
+%\expectation \left[f(\vX) | \svop{\{j:\perm(j) \leq \perm(i)\}} \right] - \expectation \left[f(\vX) | \svop{\{j:\perm(j) < \perm(i)\}} \right] \right) \\
+%& = & \sum_{i=1}^m \left(\expectation \left[f(\vX) | \svop{\{j:j \leq i\}} \right] - \expectation \left[f(\vX) | \svop{\{j:j < i\}} \right] \right) \\
+%& = & \expectation \left[f(\vX) | \svop{\{j:j \leq m\}} \right] - \expectation \left[f(\vX) | \svop{\{j:j < 1\}} \right] \\
+%& = & f(\vx) - \expectation [f(\vX)] \: .
+%\end{eqnarray*}
+So, for any distribution over permutations $w(\perm)$ with $\sum_{\perm} w(\perm) = 1$, the contribution
+\[
+\contribution_i = \sum_{\perm} w(\perm) \contribution_i(\perm)
+\]
+still satisfies~(\ref{eq:efficiency}). An obvious choice would be to take a uniform distribution $w(\perm) = 1/n!$. We then arrive at the standard definition of Shapley values:
+\[
+\contribution_i = \sum_{S \subseteq \allfeatures\setminus i} \frac{|S|! (n-|S|-1)!}{n!} \left[\val(S \cup i) - \val(S) \right] \: ,
+\]
+where we use shorthand $i$ for the singleton $\{i\}$. Besides efficiency, these Shapley values uniquely satisfy three other desirable properties~\cite{shapley1953value}.
+\begin{description}
+	\item[Linearity:] for two value functions $\val_1$ and $\val_2$, we have $\contribution_i(\alpha_1 \val_1 + \alpha_2 \val_2) = \alpha_1 \contribution_i(\val_1) + \alpha_2 \contribution_i(\val_2)$. This guarantees that the Shapley value of a linear ensemble of models is a linear combination of the Shapley values of the individual models.
+	\item[Null player (dummy):] if $\val(S \cup i) = \val(S)$ for all $S \subseteq \allfeatures \setminus i$, then $\contribution_i = 0$. A feature that never contributes to the model output receives zero Shapley value.
+	\item[Symmetry:] if $\val(S \cup i) = \val(S \cup j)$ for all  $S \subseteq \allfeatures \setminus \{i,j\}$, then $\contribution_i = \contribution_j$. Symmetry holds for any of the three different ways (conventional conditioning, {\textit do}-calculus, ignoring) to average over the ``out-of-coalition'' features.
+\end{description}
+Efficiency, linearity, and null player still hold for a non-uniform distribution of permutations, but symmetry is then typically lost. 
+
+\comment{Part of the next two paragraphs probably to introduction.}
+
+Janzing et al.~\cite{janzing2019feature} also argued for an active, interventional interpretation of Shapley values. They make a case for using the marginal instead of the (observational) conditional distribution to compute the Shapley values when dependencies between features are due to confounding. This follows directly from our reasoning, since in models with no causal links between the features and any dependencies only due to confounding, conditioning by intervention reduces to the marginal distribution: $P(\vX_{\bar{S}}|\lvdo{S}) = P(\vX_{\bar{S}})$ for any subset $S$.
+
+Frye et al.~\cite{frye2019asymmetric} introduce asymmetric Shapley values as a way to incorporate causal information. Instead of taking a uniform distribution over all possible permutations, these asymmetric Shapley values only consider those permutations that are consistent with the causal structure between the features, i.e., are such that a known causal ancestor always precedes its descendants. Frye et al.\ apply conventional conditioning by observation to make sure that the resulting explanations respect the data manifold. This makes the approach somewhat of a mix between an active (incorporating causal structure) and a passive approach (conditioning by observation). In this paper, we suggest a more direct approach to incorporate causality, by replacing conditioning by observation with conditioning by intervention. This can, but does not have to be combined with the idea to make the permutations match the causal structure. We will illustrate the differences in the example below.
+
+\section{Illustration}
+
+\begin{figure}
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		Model A\\[1em]	
+		\tikz{
+			% nodes
+			\node[latent] (y) {$Y$};%
+			\node[latent,above=of y,xshift=0cm] (x2) {$X_2$};
+			\node[latent,above=of x2,xshift=-1.5cm,yshift=-0.45cm] (x1) {$X_1$};
+			\node[latent,above=of y,xshift=1.5cm] (x3) {$X_3$}; 
+			\node[latent,above=of x2,xshift=0.75cm,yshift=-0.45cm] (z) {$Z$};
+			% edges
+			\edge {x1,x2,x3} {y};
+			\edge {z,x1} {x2,x3};
+			\edge {z} {x3}
+			
+		}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[t]{0.45\textwidth}
+		\centering
+		Model B\\[1em]
+		\tikz{
+			% nodes
+			\node[latent] (y) {$Y$};%
+			\node[latent,above=of y,xshift=0cm] (x2) {$X_2$};
+			\node[latent,above=of x2,xshift=-1.5cm,yshift=-0.45cm] (x1) {$X_1$};
+			\node[latent,above=of y,xshift=1.5cm] (x3) {$X_3$};
+			\node[obs,above=of x2,xshift=0.75cm,yshift=-0.45cm] (z) {$Z$};
+			% edges
+			\edge {x1,x2,x3} {y};
+			\edge {x1} {x2,x3};
+			\edge {x2,x3} {z}
+		}
+	\end{minipage}
+	\caption{Two causal models. In both, $X_1$ causes $X_2$ and $X_3$. In Model A the excess correlation between $X_2$ and $X_3$ is induced by a common confounder $Z$, in Model B by selection bias.}
+	\label{fig:linmodel}
+\end{figure}
+
+For illustration, we consider two causal models in Figure~\ref{fig:linmodel}. They have a different causal structure, but the same dependency structure (all features are dependent) and we assume that the probability distribution $P(\vX)$ is exactly the same for Model A and Model B. Our estimate of the output $Y$ is a linear function of the features:
+\[
+f(\vx) = \beta_0 + \sum_{i=1}^3 \beta_i x_i \: .
+\]
+\comment{Too much detail in this section: move parts to supplement? If so, which parts?}
+Combining~(\ref{eq:contperm}) and (\ref{eq:valuedef}), we obtain, after some rewriting
+\[
+\contribution_i(\perm) =
+\beta_i \left(x_i - \expectation [X_i | \svop{j: j \prec_\perm i}]\right) + \sum_{k \succ_\perm i} \beta_k \left( \expectation [X_k | \svop{j: j \preceq_\perm i}] - \expectation [X_k | \svop{j: j \prec_\perm i}] \right) \: .
+\]
+
+For marginal Shapley values only the first term before the sum remains, yielding
+\[
+\contribution_i = \contribution_i(\perm) =
+\beta_i (x_i - \expectation [X_i]) \: ,
+\]
+as also derived in~\cite{aas2019explaining}.
+
+Analytically computing the conditional Shapley values is tedious, but conceptually straightforward. To write the equations in a compact form, we define $\bx_{k|S} = \expectation[X_k|\vx_{S}]$ and combine all expectations in a single matrix $\bar{\allmeans}$:
+\[
+\bar{\allmeans} = \left(\begin{array}{lll}
+x_1 & x_2 & x_3 \\
+\bx_1 & \bx_2 & \bx_3 \\
+\bx_{1|2} & \bx_{2|1} & \bx_{3|1} \\
+\bx_{1|3} & \bx_{2|3} & \bx_{3|2} \\
+\bx_{1|2,3} &  \bx_{2|1,3} & \bx_{3|1,2}
+\end{array}\right)
+%\mbox{~~and~~} \diagbeta =
+%\left( \begin{array}{ccc} \beta_1 & 0 & 0 \\ 0 & \beta_2 & 0 \\ 0 & %0 & \beta_3 \end{array} \right)
+%\mathop{\textrm{diag}}(\bm{\beta})
+\: .
+\]
+%We similarly define $\hx_{k|S} = \expectation[X_k|\lvdo{S}]$ for expectation under conditioning by intervention.
+Taking a uniform distribution over permutations, the conditional Shapley values for any linear model with three variables can be written as
+\begin{equation}
+\boven{\bm{\contribution}}{conditional} = \boven{\contmat}{conditional} \times \mathop{\textrm{vec}}(\bar{\allmeans} \times \mathop{\textrm{diag}}(\bm{\beta}))
+\label{eq:shapvec}
+\end{equation}
+with
+\[
+\boven{\contmat}{conditional} = {1 \over 6} \left(\begin{array}{rrrrr|rrrrr|rrrrr}
+6 & -2 & -1 & -1 & -2  &
+0 & -2 & 2 & -1 & 1  &
+0 & -2 & 2 & -1 & 1 \\ 
+0 & -2 & 2 & -1 & 1  &
+6 & -2 & -1 & -1 & -2  &
+0 & -2 & -1 & 2 & 1 \\ 
+0 & -2 & -1 & 2 & 1  &
+0 & -2 & -1 & 2 & 1  &
+6 & -2 & -1 & -1 & -2
+\end{array}\right) \: .
+\]
+\comment{Skip this explanation?}
+The multiplication with the diagonal matrix of regression coefficients $\bm{\beta} = (\beta_1,\beta_2,\beta_3)$ boils down to multiplying the $i$th column of $\bar{\allmeans}$ with $\beta_i$. Vectorization then stacks the columns on top of one another to end up with a 15-dimensional column vector. The vertical bars in the matrix $\boven{\contmat}{conditional}$ indicate the three blocks, with the first 5 columns in the matrix mapping to the first column of $\bar{\allmeans}$ with expectations of $X_1$, the next 5 columns to the expectations of $X_2$, and the final 5 columns to the expectations of $X_3$.
+
+\comment{Skip this paragraph?}
+It is easy to check that efficiency indeed holds by summing every column of $\boven{\contmat}{conditional}$. The first column of each block (which relates to the feature values themselves) adds up to $1$, the second (corresponding to the marginal expectations) to $-1$, and the other three columns to zero, as they should. Since Shapley values are constructed by always comparing two (possibly) different expectations, each row within each block sums up to zero.
+
+%The independence structure of the models in Figure~\ref{fig:linmodel} simplifies the conditional Shapley values a bit. Since $X_1$ and $X_3$ are independent, we have $\bx_{1|3} = \bx_{1}$ and $\bx_{3|1} = \bx_{3}$. We can still make use of~(\ref{eq:shapvec}) with $\tilde{\allmeans}$ replaced by $\bar{\allmeans}$ changing $\tilde{\contmat}$ into $\bar{\contmat}$ by simply adding the fourth to the second and the thirteenth column to the twelfth column:
+%\[
+%\bar{\contmat} = {1 \over 6} \left(\begin{array}{rrrrr|rrrrr|rrrrr}
+%6 & -3 & -1 & 0 & -2  &
+%0 & -2 & 2 & -1 & 1  &
+%0 & 0 & 0 & -1 & 1 \\ 
+%0 & -3 & 2 & 0 & 1  &
+%6 & -2 & -1 & -1 & -2  &
+%0 & -3 & 0 & 2 & 1 \\ 
+%0 & 0 & -1 & 0 & 1  &
+%0 & -2 & -1 & 2 & 1  &
+%6 & -3 & 0 & -1 & -2
+%\end{array}\right) \: .
+%\]
+
+Putting $X_1$ before $X_2$ and $X_3$, and $X_2$ and $X_3$ on equal footing, asymmetric Shapley values only consider the two permutations where $x_1$ is observed before $x_2$ and $x_3$, leading to (we divide by 6 to make it easier to compare with the other Shapley values)
+\[
+\boven{\contmat}{asymmetric} = {1 \over 6} \left(\begin{array}{rrrrr|rrrrr|rrrrr}
+6 & -6 & 0 & 0 & 0  &
+0 & -6 & 6 & 0 & 0  &
+0 & -6 & 6 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0  &
+6 & 0 & -3 & 0 & -3  &
+0 & 0 & -3 & 0 & 3 \\ 
+0 & 0 & 0 & 0 & 0  &
+0 & 0 & -3 & 0 & 3  &
+6 & 0 & -3 & 0 & -3
+\end{array}\right) \: .
+\]
+
+\begin{table}
+	\begin{center}
+		\begin{tabular}{r|cc} \toprule
+			expectation & model A & model B \\ \midrule
+			$\hx_{1|2}$ & \multicolumn{2}{c}{\multirow{3}{*}{$\bx_1$}} \\
+			$\hx_{1|3}$ & \multicolumn{2}{c}{} \\
+			$\hx_{1|2,3}$ & \multicolumn{2}{c}{} \\ \midrule
+			$\hx_{2|1}$ & \multicolumn{2}{c}{$\bx_{2|1}$} \\
+			$\hx_{2|3}$ & $\bx_{2}$ & $\bx_{2|3}$ \\
+			$\hx_{2|1,3}$ & $\bx_{2|1}$ & $\bx_{2|1,3}$ \\ \midrule
+			$\hx_{3|1}$ & \multicolumn{2}{c}{$\bx_{3|1}$} \\
+			$\hx_{3|2}$ & $\bx_{3}$ & $\bx_{3|2}$ \\
+			$\hx_{3|1,2}$ & $\bx_{3|1}$ & $\bx_{3|1,2}$ \\ \bottomrule
+		\end{tabular}
+	\end{center}
+	\caption{Turning expectations under conditioning by intervention, $\hx_{i|S} = \expectation[x_i|\lvdo{S}]$, into expectations under conventional conditioning by observation, $\bx_{i|S} = \expectation[x_i|\vX_S]$, for the two models in Figure~\ref{fig:linmodel}. \comment{Needed? Can put it next to Figure~\ref{fig:linmodel} to save space.}}
+	\label{tab:rewriting}
+\end{table}
+
+%Since the independence structure for Model A and Model B is the same, we end up with the same conditional and asymmetric Shapley values. Since the causal structure is different, we expect the causal Shapley values for Model A and Model B to be different.
+Using the standard rules for \textit{do}-calculus~\cite{pearl1995causal}, we show in Table~\ref{tab:rewriting} how the expectations under conditioning by intervention reduce to expectations under conditioning by observation. Since in Model A the correlation between $X_2$ and $X_3$ is due to confounding, the interventional expectations and thus Shapley values simplify considerably:
+\[
+\boven{\contmat}{causal,A} = {1 \over 6} \left(\begin{array}{rrrrr|rrrrr|rrrrr}
+6 & -6 & 0 & 0 & 0  &
+0 & -3 & 3 & 0 & 0  &
+0 & -3 & 3 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0  &
+6 & -3 & -3 & 0 & 0  &
+0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0  &
+0 & 0 & 0 & 0 & 0  &
+6 & -3 & 3 & 0 & 0
+\end{array}\right) \: .
+\]
+For Model B, on the other hand, features $X_2$ and $X_3$ do affect each other when intervened upon, which makes that compared to the conditional Shapley values only the first block changes:
+\[
+\boven{\contmat}{causal,B} = {1 \over 6} \left(\begin{array}{rrrrr|rrrrr|rrrrr}
+6 & -6 & 0 & 0 & 0 &
+0 & -2 & 2 & -1 & 1  &
+0 & -2 & 2 & -1 & 1 \\ 
+0 & 0 & 0 & 0 & 0  &
+6 & -2 & -1 & -1 & -2  &
+0 & -2 & -1 & 2 & 1 \\ 
+0 & 0 & 0 & 0 & 0  &
+0 & -2 & -1 & 2 & 1  &
+6 & -2 & -1 & -1 & -2
+\end{array}\right) \: .
+\]
+
+To make this more concrete, let us assume that $P(\vX)$ follows a multivariate normal distribution corresponding to the causal model
+\[
+X_1 \sim {\cal N}(0;1) \mbox{~~and~~} (X_2,X_3|X_1) \sim {\cal N}\left((\alpha_2 X_1, \alpha_3 X_1); \left(\begin{array}{cc} 1 & \rho \\ \rho & 1 \end{array} \right) \right) \: ,
+\]
+where for notational convenience, we chose zero means and unit variance for all noise variables. The first feature drives the second and third feature with coefficients $\alpha_2$ and $\alpha_3$. The confounding in Model A or selection bias in Model B  leads to correlation $\rho$ on top of the correlation induced by the joint dependence on the first feature. Straightforward calculations yield
+\[
+\bar{\allmeans} = \left(\begin{array}{ccc}
+x_1 & x_2 & x_3 \\
+0 & 0 & 0 \\
+{\alpha_2 \over \sigma_2^2} x_2 & \alpha_2 x_1 & \alpha_3 x_1 \\
+{\alpha_3 \over \sigma_3^2} x_3 & {\gamma \over \sigma_3^2} x_3 & {\gamma \over \sigma_2^2} x_2 \\
+{\delta_{23} x_2 + \delta_{32} x_3 \over 1 - \rho^2 + \delta_{23} \alpha_2 + \delta_{32} \alpha_3} & (\alpha_2 - \rho \alpha_3) x_1 + \rho x_3 & (\alpha_3 - \rho \alpha_2) x_1 + \rho x_2
+\end{array}\right)
+\: .
+\]
+with $\delta_{ij} = \alpha_i - \rho \alpha_j$, $\sigma_i^2 = 1 + \alpha_i^2$ (the marginal correlation for feature $i$), and $\gamma = \rho + \alpha_2 \alpha_3$ (the total correlation between the second and third feature). Plugging this and the expressions for the different $\contmat$ matrices into~(\ref{eq:shapvec}), we obtain the asymmetric Shapley values
+\begin{eqnarray*}
+	\boven{\contribution_1}{asymmetric} \isequal \beta_1 x_1 + (\alpha_2 \beta_2 + \alpha_3 \beta_3) x_1  \\
+	\boven{\contribution_2}{asymmetric} \isequal \beta_2 x_2 - \alpha_2 \beta_2 x_1 + {\rho \over 2} (\alpha_3 \beta_2 - \alpha_2 \beta_3) x_1 + {\rho \over 2} (\beta_3 x_2 - \beta_2 x_3) \\
+	\boven{\contribution_3}{asymmetric} \isequal \beta_3 x_3 - \alpha_3 \beta_3 x_1 + {\rho \over 2} (\alpha_2 \beta_3 - \alpha_3 \beta_2) x_1 + {\rho \over 2}  (\beta_2 x_3 - \beta_3 x_2) \: ,
+\end{eqnarray*}
+and the causal Shapley values, for Model A,
+\begin{eqnarray*}
+	\boven{\contribution_1}{causal,A} \isequal \beta_1 x_1 + {1 \over 2} (\alpha_2 \beta_2 + \alpha_3  \beta_3) x_1  \\
+	\boven{\contribution_2}{causal,A} \isequal \beta_2 x_2 - {1 \over 2} \alpha_2 \beta_2 x_1 \\
+	\boven{\contribution_3}{causal,A} \isequal \beta_3 x_3 - {1 \over 2} \alpha_3 \beta_3 x_1  \: .
+\end{eqnarray*}
+and, for Model B, \comment{(really ugly\ldots can we prevent this?)}
+\begin{eqnarray*}
+	\boven{\contribution_1}{causal, B} \isequal \beta_1 x_1 + {1 \over 2} (\alpha_2 \beta_2 + \alpha_3 \beta_3) x_1 - {\rho \over 6} (\alpha_3 \beta_2 + \alpha_2 \beta_3) x_1 - {1 \over 6} \left( {\alpha_3 \delta_{23} \over \sigma_3^2} \beta_2 x_3 + {\alpha_2 \delta_{32} \over \sigma_2^2} \beta_3 x_2 \right) \\
+	\boven{\contribution_2}{causal, B} \isequal \beta_2 x_2 - {1 \over 2} \alpha_2 \beta_2 x_1 + {\rho \over 6} (2 \alpha_3 \beta_2 - \alpha_2 \beta_3) x_1 + \\
+	&& {1 \over 6} \left(2 {\alpha_2 \delta_{32} \over \sigma_2^2} \beta_3 x_2 - {\alpha_3 \delta_{23} \over \sigma_3^2} \beta_2 x_3 \right) + {\rho \over 2} (\beta_3 x_2 - \beta_2 x_3) \\
+	\boven{\contribution_3}{causal, B} \isequal \beta_3 x_3 - {1 \over 2} \alpha_3 \beta_3 x_1 + {\rho \over 6} (2 \alpha_2 \beta_3 - \alpha_3 \beta_2) x_1 + \\
+	&& {1 \over 6} \left(2 {\alpha_3 \delta_{23} \over \sigma_3^2} \beta_2 x_3 - {\alpha_2 \delta_{32} \over \sigma_2^2} \beta_3 x_2 \right) + {\rho \over 2} (\beta_2 x_3 - \beta_3 x_2) \: .
+\end{eqnarray*}
+
+In this linear model, the asymmetric Shapley value for the first feature adds its indirect causal effects on the output through the second and third feature, $\alpha_2 \beta_2 x_1 + \alpha_3 \beta_3 x_1$, to its direct effect, $\beta_1 x_1$. The causal Shapley values for the first feature are somewhat more conservative: they essentially claim only half of the indirect effects through the other two features. \comment{Move the rest of this paragraph elsewhere?} This is a direct consequence of taking a uniform distribution over all permutations: for any pair of features $i$ and $j$, the feature value $x_i$ is set before and after $x_j$ for exactly half of the number of permutations. Which distribution over permutations to prefer, a uniform one or one that respects the causal structure, depends on the question the practitioner tries to answer and possibly on the application. For example, when a causal link represents a temporal relationship, it may make no sense to set a feature value before the values of all features preceding it in time have been set. In that case, it would be wise to consider a non-uniform distribution over permutations as in~\cite{frye2019asymmetric}. On the other hand, for causal models without temporal interpretation, e.g., describing presumed causal relationships between personal and biomedical variables related to Alzheimer~\cite{shen2020challenges} or between social and economic characteristics in census data~\cite{chiappa2019path}, deviating from a uniform distribution over permutations (and hence sacrificing the symmetry property) seems unnecessary. With or without uniform distribution over permutations, applying \textit{do}-calculus instead of conditioning by observation is a natural way to incorporate causal information.
+
+The Shapley values for Model A are different from those for Model B, even though the observable probability distribution $P(\vX)$ is exactly the same. Those for Model A simplify a lot, because in this model any excess correlation between $X_2$ and $X_3$ beyond the correlation resulting from the common parent $X_1$ results from a confounder. This correlation vanishes when we intervene on either $X_2$ or $X_3$. The contributions of the second and third feature are therefore just their direct effect, minus half of the indirect effect, which already has been attributed to the first feature. In Model B, on the other hand, for most expectations conditioning by intervention reduces to conditioning by observation on the same variables and does not further simplify to conditioning on less or even no variables as for Model A. Since the causal Shapley values consider all six permutations, in contrast to the asymmetric Shapley values which only consider two of them, expectations such as $\expectation[X_2|x_3]$ now also enter the equation, which considerably complicates the analytical expressions.
+
+
+\section{Causal chain graphs}
+
+\comment{This section may need some more ``fluff'' with Theorems and an algorithm or ??? All we use/need is in fact in~\cite{lauritzen2002chain}\ldots}
+Computing causal Shapley values not only requires knowledge of the probability distribution $P(\vX)$, but also of the underlying causal structure. And even then, there is no guarantee that any causal query is identifiable (see e.g., \cite{pearl2012calculus}). For example, if Model A or B also includes a causal link from $X_2$ to $X_3$, even knowing the probability distribution $P(\vX)$ and the causal structure is insufficient: it is impossible to express, for example, $P(X_3|\ldo{2})$ in terms of $P(\vX)$, essentially because, without knowing the parameters of the causal model, there is no way to tell which part of the observed dependence between $X_2$ and $X_3$ is due to the causal link and which due to the confounding or selection bias.
+
+Furthermore, and perhaps more importantly, requiring a practitioner to specify a complete causal structure, possibly even including some of its parameters, would be detrimental to the method's generic applicability. We therefore follow the same line of reasoning as in~\cite{frye2019asymmetric} and assume that a practitioner may be able to specify a causal ordering, but not much more.
+
+In the special case that a complete causal ordering of the features can be given and that all causal relationships are unconfounded, $P(\vX)$ satisfies the Markov properties associated with a directed acyclic graph (DAG) and can be written in the form
+\[
+P(\vX) = \prod_{j \in \allfeatures} P(X_j|\vX_{\spa(j)}) \: ,
+\]
+with $\pa(j)$ the parents of node $j$. If no further conditional independences are assumed, the parents of $j$ are all nodes that precede $j$ in the causal ordering. For causal DAGs, we have the interventional formula~\cite{lauritzen2002chain}:
+\begin{equation}
+P(\vX_{\bar{S}}|\lvdo{S}) = \prod_{j \in \bar{S}} P(X_j|\vX_{\spa(j)  \cap \bar{S}},\vx_{\spa(j) \cap S}) \: ,
+\label{eq:interventional}
+\end{equation}
+with $\pa(j) \cap T$ the parents of $j$ that are also part of subset $T$. The interventional formula can be used to answer any causal query of interest. We will often approximate the expectations needed to compute the Shapley values through sampling, which is particularly straightforward for causal DAGs under conditioning by intervention. Variables are sampled consecutively by following the causal ordering. The probability distribution for a feature then only depends on the values of its parents, which by then is either sampled or fixed. Since the intervention blocks the influence of all descendants, there is no need for an MCMC approach such as Gibbs sampling: the values of all features can be sampled in a single pass through the graph.
+
+If we only consider permutations that follow the causal ordering, as with asymmetric Shapley values, conditioning by intervention reduces to conditioning by observation.
+
+We may not always be willing or able to give a complete ordering between the individual variables, but rather a partial ordering as, for example, in Figure~\ref{fig:linmodel} where we have the partial ordering $(\{1\},\{2,3\})$: the first feature precedes the second and third feature in the causal ordering, with the second and third feature on equal footing, i.e., without specifying whether the second causes the third or vice versa. Here causal chain graphs~\cite{lauritzen2002chain} come to the rescue. A causal chain graph has directed and undirected edges. All features that are treated on an equal footing are linked together with undirected edges and become part of the same chain component. Edges between chain components are directed and represent causal relationships. The probability distribution $P(\vX)$ now factorizes as a ``DAG of chain components'':
+\[
+P(\vX) = \prod_{\tau} P(\vX_\tau|\vX_{\spa(\tau)}) \: ,
+\]
+with each $\tau$ corresponding to a chain component, consisting of all features that are treated on an equal footing.
+
+How to compute the effect of an intervention now depends on the interpretation of the generative process leading to the undirected part of the probability distribution. One possible interpretation is that the undirected part corresponds to the equilibrium distribution of a dynamic process resulting from interactions between the variables within a component~\cite{lauritzen2002chain}. In this case, setting the value of a feature does affect the distribution of the variables within the same component and the interventional formula reads
+\[
+P(\vX_{\bar{S}}|\lvdo{S}) = \prod_{\tau} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{\spa(\tau) \cap S},\vx_{\tau \cap S}) \: .
+\]
+That is, in the observational distribution we need to condition on intervened features that are parents and those that are within the same component. The same interventional formula applies when the dependencies within a component are the result of a selection bias as in Model B in Figure~\ref{fig:linmodel}.
+
+However, if we assume that the undirected part of the probability distribution is the consequence of marginalizing out a common confounder, we should take
+\[
+P(\vX_{\bar{S}}|\lvdo{S}) = \prod_{\tau} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{\spa(\tau) \cap S}) \: ,
+\]
+i.e., we should only condition on the parent components, not on the intervened variables within the same component. This interpretation is consistent with~\cite{janzing2019feature} and Model A in Figure~\ref{fig:linmodel}.
+
+So, to be able to compute the expectations in the Shapley equations under an interventional interpretation, we need to specify (1) a partial order and (2) whether any dependencies between features that are treated on an equal footing are most likely the result of mutual interaction or selection, or of a common confounder. Based on this information, any expectation by intervention can be translated to an expectation by observation.
+
+To compute these expectations, we can rely on the various methods that have been proposed to compute conditional Shapley values~\cite{aas2019explaining,frye2019asymmetric}. Following~\cite{aas2019explaining}, we will assume a multivariate Gaussian distribution for $P(\vX)$ that we estimate from the training data. Alternative proposals include assuming a Gaussian copula distribution, estimating from the empirical (conditional) distribution (both from~\cite{aas2019explaining}) and a variational autoencoder~\cite{frye2019asymmetric}. 
+
+\section{Experiments}
+
+\comment{From here on just rough text and ideas.}
+
+Show that it works. For now: example on bike rental. Do we predict more bike shares on a warm, but cloudy day in August because of the season or because of the weather? \comment{ADNI as another example? Tried German Credit Data, but hard to see differences between causal and conditioning, mainly because the features, such as gender and age, that can be considered causes of some of the others, hardly affect the prediction. Other suggestions?} \comment{Currently using a relatively straightforward adaptation of the code of~\cite{aas2019explaining}. How to describe this? Do we need to publish the code? Do we need to show results for asymmetric Shapley values as well? If so, need to dig deeper into the code. Also: currently no code for handling discrete variables. Could connect to Ruifei's Gaussian copula's for mixed missing data, if needed?}
+
+\section{Discussion}
+
+Which Shapley value to use depends on interpretation: what happens if we set the features to their values compared to what happens to when we observe that features obtain their values. Both interpretations are fine, but in most cases the causal interpretation seems to be the one to prefer/implicitly implied.
+
+Marginal fine when dependencies are purely the result of confounding, as Janzing argued. However, when there actually are causal relationships between the features and/or the dependencies between features results from selection bias or mutual feedback, expectations under conditioning by intervention do not simplify to marginal expectations.
+
+Novel algorithm, based on causal chain graphs. All that a practitioner needs to provide is a partial causal order (as for asymmetric Shapley) and how to interpret dependencies between features that are on the same footing. Conditioning by intervention becomes conditioning by observation, but only on ancestors and possibly, depending on the interpretation, features within the same component. Any existing approach for conditional Shapley values can be easily adapted: if anything the expectations simplify, since no conditioning on descendants.
+
+Provides an interpretation for asymmetric Shapley values: for all permutations that are consistent with the causal ordering, conditioning by intervention boils down to conditioning by observation. However, current definition~\cite{frye2019asymmetric} implicitly assumes that dependencies between features that are on the same footing is due to mutual feedback or selection bias, not common confounding. Whether or not to only consider permutations that match the causal ordering depends on application and possibly taste. This paper shows that it is unnecessary to give away symmetry in order to arrive at a causal interpretation of Shapley values. Roughly speaking, asymmetric (causal/conditioning) Shapley values attribute all indirect effects of a causal variable through a mediator on the output to the causal variable \comment{(is this the right term?)}, subtracting it from the Shapley value of the mediator (since efficiency should hold). Symmetric Shapley values are more conservative and attribute only half to the causal variable.
+
+\comment{Discuss non-manipulable causes as in~\cite{pearl2018obesity}?}
+	
+\comment{Mention that it's easy to combine with any of TreeSHAP, KernelShap, and so on?}
+
+\comment{Compare with counterfactual explanations?}
+
+%\section*{Broader Impact}
+%
+%Authors are required to include a statement of the broader impact of their work, including its ethical aspects and future societal consequences. 
+%Authors should discuss both positive and negative outcomes, if any. For instance, authors should discuss a) 
+%who may benefit from this research, b) who may be put at disadvantage from this research, c) what are the consequences of failure of the system, and d) whether the task/method leverages
+%biases in the data. If authors believe this is not applicable to them, authors can simply state this.
+
+%Use unnumbered first level headings for this section, which should go at the end of the paper. {\bf Note that this section does not count towards the eight pages of content that are allowed.}
+
+%\begin{ack}
+%Use unnumbered first level headings for the acknowledgments. All acknowledgments
+%go at the end of the paper before the list of references. Moreover, you are required to declare 
+%funding (financial activities supporting the submitted work) and competing interests (related financial activities outside the submitted work). 
+%More information about this disclosure can be found at: \url{https://neurips.cc/Conferences/2020/PaperInformation/FundingDisclosure}.
+
+\bibliography{shapleyrefs}
+\bibliographystyle{plain}
+
+
+
+\end{document}
