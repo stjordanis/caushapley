@@ -38,6 +38,10 @@
 \usepackage{subcaption}
 \usetikzlibrary{backgrounds}
 \usepackage{multirow}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsthm}
+\usepackage{mathtools}
 
 \newcommand{\een}{\mathbb{1}}
 \newcommand{\vX}{\mathbf{X}}
@@ -74,11 +78,14 @@
 \newcommand{\onder}[2]{{#1}_{\mbox{\scriptsize #2}}}
 \newcommand{\boven}[2]{#1^{\mbox{\scriptsize #2}}}
 \newcommand{\isequal}{\hspace*{-2.5mm} & = & \hspace*{-2.5mm}}
+\newcommand{\chaincomponents}{{\cal T}}
+\newcommand{\isequaldo}[1]{\hspace*{-2.5mm} & \overset{(#1)}{=} & \hspace*{-2.5mm}}
 
 \newcommand{\comment}[1]{{\color{red} #1}}
 
 
-
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
 
 \title{Causal Shapley values}
 
@@ -124,7 +131,9 @@
 \maketitle
 
 \begin{abstract}
-Explainability. Causal interpretation of Shapley values.
+	Shapley values have become one of the most popular model-agnostic methods within explainable artificial intelligence. They explain the output of a possibly complex and highly non-linear machine learning model by attributing the difference between the model output and an average, baseline output to the different features that are used as input to the model. Being based on game-theoretic principles, Shapley values uniquely satisfy several desirable properties. Shapley values are typically computed under the assumption that features are independent.
+	
+	In this paper, we propose a novel framework for causal Shapley values that encompasses and sheds new light on recent previous work that aims to relax the independence assumption. Our framework is based on an active, causal interpretation of feature attribution. Replacing conventional conditioning by observation with conditioning by intervention, we can call upon Pearl's \textit{do}-calculus to compute the Shapley values, without giving in on any of their desirable properties. We provide a practical implementation based on causal chain graphs and illustrate causal Shapley values on several real-world examples.	\comment{Not completely happy yet. Suggestions welcome!}
 \end{abstract}
 
 
@@ -542,7 +551,8 @@ The Shapley values for Model A are different from those for Model B, even though
 
 \section{Causal chain graphs}
 
-\comment{This section may need some more ``fluff'' with Theorems and an algorithm or ??? All we use/need is in fact in~\cite{lauritzen2002chain}\ldots}
+\comment{Added a theorem, corollaries, a figure, and an algorithm. Still need to decide which ones to keep and then adapt the text accordingly by adding the appropriate references and removing repetitions.}
+
 Computing causal Shapley values not only requires knowledge of the probability distribution $P(\vX)$, but also of the underlying causal structure. And even then, there is no guarantee that any causal query is identifiable (see e.g., \cite{pearl2012calculus}). For example, if Model A or B also includes a causal link from $X_2$ to $X_3$, even knowing the probability distribution $P(\vX)$ and the causal structure is insufficient: it is impossible to express, for example, $P(X_3|\ldo{2})$ in terms of $P(\vX)$, essentially because, without knowing the parameters of the causal model, there is no way to tell which part of the observed dependence between $X_2$ and $X_3$ is due to the causal link and which due to the confounding or selection bias.
 
 Furthermore, and perhaps more importantly, requiring a practitioner to specify a complete causal structure, possibly even including some of its parameters, would be detrimental to the method's generic applicability. We therefore follow the same line of reasoning as in~\cite{frye2019asymmetric} and assume that a practitioner may be able to specify a causal ordering, but not much more.
@@ -558,25 +568,167 @@ P(\vX_{\bar{S}}|\lvdo{S}) = \prod_{j \in \bar{S}} P(X_j|\vX_{\spa(j)  \cap \bar{
 \end{equation}
 with $\pa(j) \cap T$ the parents of $j$ that are also part of subset $T$. The interventional formula can be used to answer any causal query of interest. We will often approximate the expectations needed to compute the Shapley values through sampling, which is particularly straightforward for causal DAGs under conditioning by intervention. Variables are sampled consecutively by following the causal ordering. The probability distribution for a feature then only depends on the values of its parents, which by then is either sampled or fixed. Since the intervention blocks the influence of all descendants, there is no need for an MCMC approach such as Gibbs sampling: the values of all features can be sampled in a single pass through the graph.
 
-If we only consider permutations that follow the causal ordering, as with asymmetric Shapley values, conditioning by intervention reduces to conditioning by observation.
+%If we only consider permutations that follow the causal ordering, as with asymmetric Shapley values, conditioning by intervention reduces to conditioning by observation.
+
+\begin{figure}
+	\centering
+	\tikz{
+		% nodes
+		
+		\node (t1) at (-3,2) [align=left]{partial causal ordering:\\[1em]
+		$\left\{(1,2),(3,4,5),(6,7)\right\}$};
+		\node (t2) at (-0.5,2) {\Huge $\Rightarrow$};	
+		\node (t3) at (4.5,2) {\Huge $\Rightarrow$};		
+		\node (1) at (0,4) [circle,draw,inner sep=0.5mm] {\scriptsize $X_1$};
+		\node (2) at (1,4) [circle,draw,inner sep=0.5mm] {\scriptsize $X_2$};
+		\node (3) at (1.9,2.8) [circle,draw,inner sep=0.5mm] {\scriptsize $X_3$};
+		\node (4) at (3.1,2.8) [circle,draw,inner sep=0.5mm] {\scriptsize $X_4$};
+		\node (5) at (2.5,1.8) [circle,draw,inner sep=0.5mm] {\scriptsize $X_5$};
+		\node (6) at (1,0.5) [circle,draw,inner sep=0.5mm] {\scriptsize $X_6$};
+		\node (7) at (2,0.5) [circle,draw,inner sep=0.5mm] {\scriptsize $X_7$};
+		\node (8) [draw,label=above:$\tau_1$,inner sep=0.5mm,fit=(1) (2)] {};
+		\node (9) [draw,label=above:$\tau_2$,inner sep=0.5mm,fit=(3) (4) (5)] {};
+		\node (10) [draw,label=above:$\tau_3$,inner sep=0.5mm,fit=(6) (7)] {};
+		\draw (1) -- (2);
+		\draw (3) -- (4) -- (5) -- (3);
+		\draw (6) -- (7);
+		\edge {8} {9};
+		\edge {8,9} {10};
+%
+		\node (11) at (5,4) [circle,draw,inner sep=0.5mm] {\scriptsize $X_1$};
+		\node (12) at (6,4) [circle,draw,inner sep=0.5mm] {\scriptsize $X_2$};
+		\node (13) at (6.9,2.8) [circle,draw,inner sep=0.5mm] {\scriptsize $X_3$};
+		\node (14) at (8.1,2.8) [circle,draw,inner sep=0.5mm] {\scriptsize $X_4$};
+		\node (15) at (7.5,1.8) [circle,draw,inner sep=0.5mm] {\scriptsize $X_5$};
+		\node (16) at (6,0.5) [circle,draw,inner sep=0.5mm] {\scriptsize $X_6$};
+		\node (17) at (7,0.5) [circle,draw,inner sep=0.5mm] {\scriptsize $X_7$};
+		\node (21) at (5.5,4.8) [circle,draw,inner sep=0.7mm]
+		{\scriptsize $Z_1$};
+		\node (22) at (6.5,-0.3) [fill=gray!25,circle,draw,inner sep=0.7mm]
+		{\scriptsize $Z_2$};
+		\node (18) [draw,label=above:$\tau_1$,inner sep=0.5mm,fit=(11) (12) (21)] {};
+		\node (19) [draw,label=above:$\tau_2$,inner sep=0.5mm,fit=(13) (14) (15)] {};
+		\node (20) [draw,label=above:$\tau_3$,inner sep=0.5mm,fit=(16) (17) (22)] {};
+		\edge {18} {19};
+		\edge {18,19} {20};
+		\edge {21} {11,12};
+		\edge {13,14} {15};
+		\edge {14,15} {13};
+		\edge {15,13} {14};
+		\edge {16,17} {22};
+		
+	}	
+	\caption{From partial ordering to causal chain graph. Features on equal footing are combined into a fully connected chain component. How to handle interventions within each component depends on the generative process that best explains the (surplus) dependencies. In this example, the dependency between $X_1$ and $X_2$ in chain component $\tau_1$ is assumed to be the result of a common confounder. The surplus dependencies in $\tau_2$ and $\tau_3$ are assumed to be caused by mutual feedback and selection bias, respectively. \comment{Attempt to illustrate the main ideas. Could be nice, but probably not enough space?}}
+	\label{fig:chaingraph}
+\end{figure}
 
 We may not always be willing or able to give a complete ordering between the individual variables, but rather a partial ordering as, for example, in Figure~\ref{fig:linmodel} where we have the partial ordering $(\{1\},\{2,3\})$: the first feature precedes the second and third feature in the causal ordering, with the second and third feature on equal footing, i.e., without specifying whether the second causes the third or vice versa. Here causal chain graphs~\cite{lauritzen2002chain} come to the rescue. A causal chain graph has directed and undirected edges. All features that are treated on an equal footing are linked together with undirected edges and become part of the same chain component. Edges between chain components are directed and represent causal relationships. The probability distribution $P(\vX)$ now factorizes as a ``DAG of chain components'':
 \[
-P(\vX) = \prod_{\tau} P(\vX_\tau|\vX_{\spa(\tau)}) \: ,
+P(\vX) = \prod_{\tau \in \chaincomponents} P(\vX_\tau|\vX_{\spa(\tau)}) \: ,
 \]
 with each $\tau$ corresponding to a chain component, consisting of all features that are treated on an equal footing.
 
-How to compute the effect of an intervention now depends on the interpretation of the generative process leading to the undirected part of the probability distribution. One possible interpretation is that the undirected part corresponds to the equilibrium distribution of a dynamic process resulting from interactions between the variables within a component~\cite{lauritzen2002chain}. In this case, setting the value of a feature does affect the distribution of the variables within the same component and the interventional formula reads
-\[
-P(\vX_{\bar{S}}|\lvdo{S}) = \prod_{\tau} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{\spa(\tau) \cap S},\vx_{\tau \cap S}) \: .
-\]
-That is, in the observational distribution we need to condition on intervened features that are parents and those that are within the same component. The same interventional formula applies when the dependencies within a component are the result of a selection bias as in Model B in Figure~\ref{fig:linmodel}.
+How to compute the effect of an intervention now depends on the interpretation of the generative process leading to the (surplus) dependencies between features within each component. If we assume that these are the consequence of marginalizing out a common confounder, as in Model A in Figure~\ref{fig:linmodel}, intervention on a particular feature will break the dependency with the other features. We will refer to the set of chain components for which this applies as $\onder{\chaincomponents}{confounding}$. Another possible interpretation is that the undirected part corresponds to the equilibrium distribution of a dynamic process resulting from interactions between the variables within a component~\cite{lauritzen2002chain}. In this case, setting the value of a feature does affect the distribution of the variables within the same component. The same applies to the case of selection bias, as in Model B in Figure~\ref{fig:linmodel}.
 
-However, if we assume that the undirected part of the probability distribution is the consequence of marginalizing out a common confounder, we should take
+\begin{theorem}
+For causal chain graphs, we have the interventional formula
+\begin{eqnarray*}
+P(\vX_{\bar{S}}|\lvdo{S}) \isequal \prod_{\tau \in \chaincomponents_{\textrm{\upshape \scriptsize confounding}}} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{\spa(\tau) \cap S}) \times \\
+&& \prod_{\tau \in \chaincomponents_{\overline{\textrm{\upshape \scriptsize confounding}}}} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{\spa(\tau) \cap S},\vx_{\tau \cap S}) \: .
+\end{eqnarray*}
+\end{theorem}
+
+\begin{proof}
+\begin{eqnarray*}
+	P(\vX_{\bar{S}}|\lvdo{S}) \isequaldo{1} \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\lvdo{S}) \hfill \\
+	\isequaldo{3}  \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\lvdo{S \cap \spa(\tau)},\lvdo{S \cap \tau}) \\
+	\isequaldo{2}  \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{S \cap \spa(\tau)},\lvdo{S \cap \tau}) \: ,
+\end{eqnarray*}
+where the number above each equal sign refers to the standard \textit{do}-calculus rule from~\cite{pearl2012calculus} that is applied. For a chain component with dependencies induced by a common confounder, rule (3) applies once more and yields
 \[
-P(\vX_{\bar{S}}|\lvdo{S}) = \prod_{\tau} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{\spa(\tau) \cap S}) \: ,
+P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{S \cap \spa(\tau)}) \: ,
 \]
-i.e., we should only condition on the parent components, not on the intervened variables within the same component. This interpretation is consistent with~\cite{janzing2019feature} and Model A in Figure~\ref{fig:linmodel}.
+whereas for a chain component with dependencies induced by selection bias or mutual interactions, rule (2) again applies:
+\[
+P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{S \cap \spa(\tau)},\vx_{S \cap \tau})) \: .
+\]
+\comment{Proof probably needs to be extended, which is fine when it goes to the supplement anyway.}
+\end{proof}
+
+%We should take
+%\[
+%P(\vX_{\bar{S}}|\lvdo{S}) = \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{\spa(\tau) \cap S}) \: ,
+%\]
+%i.e., we should only condition on the parent components, not on the intervened variables within the same component. This interpretation is consistent with~\cite{janzing2019feature} and Model A in Figure~\ref{fig:linmodel}.
+%
+%One possible interpretation is that the undirected part corresponds to the equilibrium distribution of a dynamic process resulting from interactions between the variables within a component~\cite{lauritzen2002chain}. In this case, setting the value of a feature does affect the distribution of the variables within the same component. The same applies to the case of selection bias, as in Model B in Figure~\ref{fig:linmodel}. W
+%
+%
+%
+%
+% and the interventional formula reads
+%\[
+%P(\vX_{\bar{S}}|\lvdo{S}) = \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{\spa(\tau) \cap S},\vx_{\tau \cap S}) \: .
+%\]
+%That is, in the observational distribution we need to condition on intervened features that are parents and those that are within the same component. The same interventional formula applies when the dependencies within a component are the result of a selection bias as in Model B in Figure~\ref{fig:linmodel}.
+%
+%However, if we assume that the undirected part of the probability distribution is the consequence of marginalizing out a common confounder, we should take
+%\[
+%P(\vX_{\bar{S}}|\lvdo{S}) = \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{\spa(\tau) \cap S}) \: ,
+%\]
+%i.e., we should only condition on the parent components, not on the intervened variables within the same component. This interpretation is consistent with~\cite{janzing2019feature} and Model A in Figure~\ref{fig:linmodel}.
+
+\begin{algorithm}
+	\caption{Compute the value function $\val(S)$ under conditioning by intervention. \comment{Include in main text? Seems rather obvious\ldots}
+%	User has to specify a partial causal ordering of the features, which is translated to a chain graph with components $\chaincomponents$, and for each (non-singleton) component $\tau$ whether or not surplus dependencies are the result of confounding. Other prerequisites include access to the model $f()$, feature vector $\vx$, (procedure to sample from the) probability distribution $P(\vX)$, and number of samples $\onder{N}{samples}$.
+}
+	\label{alg:sampling}
+	\begin{algorithmic}[1]
+		\Function{ValueFunction}{$S$}
+		\For{$k \gets 1 \mbox{~to~} \onder{N}{samples}$}
+		\ForAll{$j \gets 1 \mbox{~to~} |\chaincomponents|$} \Comment{run over all chain components in their causal order}
+			\If{confounding$(\tau)$} 
+				\ForAll{$i \in \tau \cap \bar{S}$}
+					\State Sample $\tilde{x}_i^{(k)} \sim P(X_i|\tilde{\vx}_{\spa(\tau_j) \cap \bar{S}}^{(k)},\vx_{\spa(\tau_j) \cap \bar{S}})$ \Comment{can be drawn independently}
+				\EndFor
+			\Else
+				\State Sample $\tilde{\vx}_{\tau \cap \bar{S}}^{(k)} \sim P(\vX_{\tau_j \cap \bar{S}}|\tilde{\vx}_{\spa(\tau_j) \cap \bar{S}}^{(k)},\vx_{\spa(\tau_j) \cap \bar{S}})$ \Comment{e.g., through Gibbs sampling}
+			\EndIf
+		\EndFor
+		\EndFor
+		\State $\val \gets {\displaystyle {1 \over \onder{N}{samples}} \sum_{k=1}^{\onder{N}{samples}} f(\vx_S,\tilde{\vx}_{\bar{S}}^{(k)})}$
+		\State \Return $\val$
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+Theorem~1 connects to observations made and algorithms proposed in recent papers.
+\begin{corollary}
+	With all features combined in a single component and all dependencies induced by confounding, as in~\cite{janzing2019feature}, causal Shapley values are equivalent to marginal Shapley values. 
+\end{corollary}
+\begin{proof}
+	We immediately get $P(\vX_{\bar{S}}|\lvdo{S}) = P(\vX_{\bar{S}})$ for all subsets $S$, i.e., as if all features are independent.
+\end{proof}
+\begin{corollary}
+	With all features combined in a single component and all dependencies induced by selection bias or mutual interactions, causal Shapley values are equivalent to conditional Shapley values as proposed in~\cite{aas2019explaining}.
+\end{corollary}
+\begin{proof}
+	Now $P(\vX_{\bar{S}}|\lvdo{S}) = P(\vX_{\bar{S}}|\vx_{S})$ for all subsets $S$, which boils down to conventional conditioning by observation.
+\end{proof}
+\begin{corollary}
+	When we only take into account permutations that match the causal ordering and assume that all dependencies within chain components are induced by selection bias or mutual interactions, the resulting asymmetric causal Shapley values are equivalent to the asymmetric conditional Shapley values as defined in~\cite{frye2019asymmetric}.
+\end{corollary}
+\begin{proof}
+	Following~\cite{frye2019asymmetric}, asymmetric Shapley values only include those permutations $\perm$ for which $i \prec_\perm j$ for all known ancestors $i$ of descendants $j$ in the causal graph. For those permutations, we are guaranteed to have $\chaincomponents \cap S \preceq_{{\cal CG}} \chaincomponents \cap \bar{S}$, that is, the chain components that contain features from $S$ are never later in the causal ordering of the chain graph ${\cal CG}$ than those that contain features from $\bar{S}$. We then have
+	\begin{eqnarray*}
+	P(\vX_{\bar{S}}|\vx_S) \isequal \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{S}) \\
+	\isequal \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{\spa(\tau) \cap S},\vx_{\tau \cap S}) = P(\vX_{\bar{S}}|\lvdo{S}) \: ,
+	\end{eqnarray*}
+	where in the last step we used that $\onder{\chaincomponents}{confounding} = \emptyset$.
+\end{proof}
+In the case of Corollary~1 and \cite{janzing2019feature}, asymmetric conditional Shapley values do not reduce to marginal Shapley values, but to conditional Shapley values. It is not easy to see how this can be fixed by choosing another distribution on the permutations.
+
+\comment{Add another theorem about direct and indirect effects?}
 
 So, to be able to compute the expectations in the Shapley equations under an interventional interpretation, we need to specify (1) a partial order and (2) whether any dependencies between features that are treated on an equal footing are most likely the result of mutual interaction or selection, or of a common confounder. Based on this information, any expectation by intervention can be translated to an expectation by observation.
 
