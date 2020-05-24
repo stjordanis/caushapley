@@ -30,10 +30,10 @@
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{fig:linmodel}{{1}{3}{Two causal models. In both, $X_1$ causes $X_2$ and $X_3$. In Model A the excess correlation between $X_2$ and $X_3$ is induced by a common confounder $Z$, in Model B by selection bias.\relax }{figure.caption.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Illustration}{3}{section.3}}
+\newlabel{eq:shapvec}{{4}{3}{Illustration}{equation.3.4}{}}
 \citation{pearl1995causal}
 \@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Turning expectations under conditioning by intervention, $\mathaccentV {hat}05E{x}_{i|S} = \mathbb  {E}[x_i|\mathit  {do}(\mathbf  {X}_{S} = \mathbf  {x}_{S})]$, into expectations under conventional conditioning by observation, $\mathaccentV {bar}016{x}_{i|S} = \mathbb  {E}[x_i|\mathbf  {X}_S]$, for the two models in Figure\nobreakspace  {}\ref  {fig:linmodel}. {\color  {red} Needed? Can put it next to Figure\nobreakspace  {}\ref  {fig:linmodel} to save space.}\relax }}{4}{table.caption.3}}
 \newlabel{tab:rewriting}{{1}{4}{Turning expectations under conditioning by intervention, $\hx _{i|S} = \expectation [x_i|\lvdo {S}]$, into expectations under conventional conditioning by observation, $\bx _{i|S} = \expectation [x_i|\vX _S]$, for the two models in Figure~\ref {fig:linmodel}. \comment {Needed? Can put it next to Figure~\ref {fig:linmodel} to save space.}\relax }{table.caption.3}{}}
-\newlabel{eq:shapvec}{{4}{4}{Illustration}{equation.3.4}{}}
 \citation{frye2019asymmetric}
 \citation{shen2020challenges}
 \citation{chiappa2019path}
@@ -44,16 +44,16 @@
 \@writefile{toc}{\contentsline {section}{\numberline {4}Causal chain graphs}{6}{section.4}}
 \newlabel{eq:interventional}{{5}{6}{Causal chain graphs}{equation.4.5}{}}
 \citation{lauritzen2002chain}
+\citation{pearl2012calculus}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces From partial ordering to causal chain graph. Features on equal footing are combined into a fully connected chain component. How to handle interventions within each component depends on the generative process that best explains the (surplus) dependencies. In this example, the dependency between $X_1$ and $X_2$ in chain component $\tau _1$ is assumed to be the result of a common confounder. The surplus dependencies in $\tau _2$ and $\tau _3$ are assumed to be caused by mutual feedback and selection bias, respectively. {\color  {red} Attempt to illustrate the main ideas. Could be nice, but probably not enough space?}\relax }}{7}{figure.caption.4}}
 \newlabel{fig:chaingraph}{{2}{7}{From partial ordering to causal chain graph. Features on equal footing are combined into a fully connected chain component. How to handle interventions within each component depends on the generative process that best explains the (surplus) dependencies. In this example, the dependency between $X_1$ and $X_2$ in chain component $\tau _1$ is assumed to be the result of a common confounder. The surplus dependencies in $\tau _2$ and $\tau _3$ are assumed to be caused by mutual feedback and selection bias, respectively. \comment {Attempt to illustrate the main ideas. Could be nice, but probably not enough space?}\relax }{figure.caption.4}{}}
-\citation{pearl2012calculus}
 \citation{janzing2019feature}
 \citation{aas2019explaining}
 \citation{frye2019asymmetric}
 \citation{frye2019asymmetric}
+\citation{frye2019asymmetric}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Compute the value function ${v}(S)$ under conditioning by intervention. {\color  {red} Include in main text? Seems rather obvious\ldots  } \relax }}{8}{algorithm.1}}
 \newlabel{alg:sampling}{{1}{8}{Compute the value function $\val (S)$ under conditioning by intervention. \comment {Include in main text? Seems rather obvious\ldots } \relax }{algorithm.1}{}}
-\citation{janzing2019feature}
 \citation{aas2019explaining}
 \citation{frye2019asymmetric}
 \citation{aas2019explaining}
@@ -61,7 +61,6 @@
 \citation{frye2019asymmetric}
 \citation{aas2019explaining}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Experiments}{9}{section.5}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{9}{section.6}}
 \citation{frye2019asymmetric}
 \citation{pearl2018obesity}
 \bibdata{shapleyrefs}
@@ -76,3 +75,4 @@
 \bibcite{shapley1953value}{9}
 \bibcite{shen2020challenges}{10}
 \bibstyle{plain}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{10}{section.6}}

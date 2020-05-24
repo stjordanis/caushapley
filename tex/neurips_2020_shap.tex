@@ -80,6 +80,8 @@
 \newcommand{\isequal}{\hspace*{-2.5mm} & = & \hspace*{-2.5mm}}
 \newcommand{\chaincomponents}{{\cal T}}
 \newcommand{\isequaldo}[1]{\hspace*{-2.5mm} & \overset{(#1)}{=} & \hspace*{-2.5mm}}
+\newcommand{\Spre}{\underline{S}}
+\newcommand{\Spost}{\bar{S}}
 
 \newcommand{\comment}[1]{{\color{red} #1}}
 
@@ -281,9 +283,9 @@ with expectation taken over some (for now assumed to be known) probability distr
 f(\vx) = f_0 + \sum_{i=1}^n \contribution_i \: ,
 \label{eq:efficiency}
 \end{equation}
-where we will refer to $\contribution_i$ as the contribution of feature $i$ to the output $f(\vx)$. Equation~(\ref{eq:efficiency}) is referred to as the efficiency property, which appears to be a sensible desideratum for any attribution method and we here take as our starting point.
+where we will refer to $\contribution_i$ as the contribution of feature $i$ to the output $f(\vx)$. Equation~(\ref{eq:efficiency}) is referred to as the efficiency property, which appears to be a sensible desideratum for any attribution method and we therefore take here as our starting point.
 
-We can think of (at least) two different interpretations that, as we will see, will lead to two different approaches for computing the contributions.
+We can think of (at least) two different interpretations on how to go from knowing none of the feature values in $f_0$ to knowing all feature values in $f(\vx)$.
 \begin{description}
 	\item[Passive.] We interpret the feature vector $\vx$ as a passive observation. Feature values come in one after the other and the contribution of feature $i$ should reflect the difference in expected value of $f(\vX)$ after and before {\em observing} its feature value $x_i$.
 	\item[Active.] We interpret the feature vector $\vx$ as the result of an action. Feature values are imposed one after the other and the contribution of feature $i$ relates to the difference in expected value of $f(\vX)$ after and before {\em setting} its value to $x_i$.
@@ -293,7 +295,7 @@ Following the above reasoning, the contribution of each feature  depends on the 
 \contribution_i(\perm) = \val(\{j: j \preceq_\perm i\}) - \val(\{j: j \prec_\perm i\}) \: ,
 \label{eq:contperm}
 \end{equation}
-with $j \prec_\perm i$ if $j$ precedes $i$ in the permutation $\perm$, i.e., if $\perm(j) < \perm(i)$, and where we define the value function
+with $j \prec_\perm i$ if $j$ precedes $i$ in the permutation $\perm$ and where we define the value function
 \begin{equation}
 \val(S) = \expectation \left[f(\vX) | \svop{S} \right] = \int d\vX_{\bar{S}} \: P(\vX_{\bar{S}}|\lvop{S}) f(\vX_{\bar{S}},\vx_S) \: .
 \label{eq:valuedef}
@@ -308,11 +310,11 @@ It is easy to check that the efficiency property~(\ref{eq:efficiency}) holds for
 %& = & \expectation \left[f(\vX) | \svop{\{j:j \leq m\}} \right] - \expectation \left[f(\vX) | \svop{\{j:j < 1\}} \right] \\
 %& = & f(\vx) - \expectation [f(\vX)] \: .
 %\end{eqnarray*}
-So, for any distribution over permutations $w(\perm)$ with $\sum_{\perm} w(\perm) = 1$, the contribution
+So, for any distribution over permutations $w(\perm)$ with $\sum_{\perm} w(\perm) = 1$, the contributions
 \[
 \contribution_i = \sum_{\perm} w(\perm) \contribution_i(\perm)
 \]
-still satisfies~(\ref{eq:efficiency}). An obvious choice would be to take a uniform distribution $w(\perm) = 1/n!$. We then arrive at the standard definition of Shapley values:
+still satisfy~(\ref{eq:efficiency}). An obvious choice would be to take a uniform distribution $w(\perm) = 1/n!$. We then arrive at the standard definition of Shapley values:
 \[
 \contribution_i = \sum_{S \subseteq \allfeatures\setminus i} \frac{|S|! (n-|S|-1)!}{n!} \left[\val(S \cup i) - \val(S) \right] \: ,
 \]
@@ -320,7 +322,7 @@ where we use shorthand $i$ for the singleton $\{i\}$. Besides efficiency, these 
 \begin{description}
 	\item[Linearity:] for two value functions $\val_1$ and $\val_2$, we have $\contribution_i(\alpha_1 \val_1 + \alpha_2 \val_2) = \alpha_1 \contribution_i(\val_1) + \alpha_2 \contribution_i(\val_2)$. This guarantees that the Shapley value of a linear ensemble of models is a linear combination of the Shapley values of the individual models.
 	\item[Null player (dummy):] if $\val(S \cup i) = \val(S)$ for all $S \subseteq \allfeatures \setminus i$, then $\contribution_i = 0$. A feature that never contributes to the model output receives zero Shapley value.
-	\item[Symmetry:] if $\val(S \cup i) = \val(S \cup j)$ for all  $S \subseteq \allfeatures \setminus \{i,j\}$, then $\contribution_i = \contribution_j$. Symmetry holds for any of the three different ways (conventional conditioning, {\textit do}-calculus, ignoring) to average over the ``out-of-coalition'' features.
+	\item[Symmetry:] if $\val(S \cup i) = \val(S \cup j)$ for all  $S \subseteq \allfeatures \setminus \{i,j\}$, then $\contribution_i = \contribution_j$. Symmetry holds for marginal, conditional, and causal Shapley values.
 \end{description}
 Efficiency, linearity, and null player still hold for a non-uniform distribution of permutations, but symmetry is then typically lost. 
 
@@ -427,7 +429,7 @@ with
 The multiplication with the diagonal matrix of regression coefficients $\bm{\beta} = (\beta_1,\beta_2,\beta_3)$ boils down to multiplying the $i$th column of $\bar{\allmeans}$ with $\beta_i$. Vectorization then stacks the columns on top of one another to end up with a 15-dimensional column vector. The vertical bars in the matrix $\boven{\contmat}{conditional}$ indicate the three blocks, with the first 5 columns in the matrix mapping to the first column of $\bar{\allmeans}$ with expectations of $X_1$, the next 5 columns to the expectations of $X_2$, and the final 5 columns to the expectations of $X_3$.
 
 \comment{Skip this paragraph?}
-It is easy to check that efficiency indeed holds by summing every column of $\boven{\contmat}{conditional}$. The first column of each block (which relates to the feature values themselves) adds up to $1$, the second (corresponding to the marginal expectations) to $-1$, and the other three columns to zero, as they should. Since Shapley values are constructed by always comparing two (possibly) different expectations, each row within each block sums up to zero.
+By summing every column of $\boven{\contmat}{conditional}$, we can perform the sanity check that efficiency indeed holds. The first column of each block (which relates to the feature values themselves) adds up to $1$, the second (corresponding to the marginal expectations) to $-1$, and the other three columns to zero, as they should. Since Shapley values are constructed by always comparing two (possibly) different expectations, each row within each block sums up to zero.
 
 %The independence structure of the models in Figure~\ref{fig:linmodel} simplifies the conditional Shapley values a bit. Since $X_1$ and $X_3$ are independent, we have $\bx_{1|3} = \bx_{1}$ and $\bx_{3|1} = \bx_{3}$. We can still make use of~(\ref{eq:shapvec}) with $\tilde{\allmeans}$ replaced by $\bar{\allmeans}$ changing $\tilde{\contmat}$ into $\bar{\contmat}$ by simply adding the fourth to the second and the thirteenth column to the twelfth column:
 %\[
@@ -544,7 +546,7 @@ and, for Model B, \comment{(really ugly\ldots can we prevent this?)}
 	&& {1 \over 6} \left(2 {\alpha_3 \delta_{23} \over \sigma_3^2} \beta_2 x_3 - {\alpha_2 \delta_{32} \over \sigma_2^2} \beta_3 x_2 \right) + {\rho \over 2} (\beta_2 x_3 - \beta_3 x_2) \: .
 \end{eqnarray*}
 
-In this linear model, the asymmetric Shapley value for the first feature adds its indirect causal effects on the output through the second and third feature, $\alpha_2 \beta_2 x_1 + \alpha_3 \beta_3 x_1$, to its direct effect, $\beta_1 x_1$. The causal Shapley values for the first feature are somewhat more conservative: they essentially claim only half of the indirect effects through the other two features. \comment{Move the rest of this paragraph elsewhere?} This is a direct consequence of taking a uniform distribution over all permutations: for any pair of features $i$ and $j$, the feature value $x_i$ is set before and after $x_j$ for exactly half of the number of permutations. Which distribution over permutations to prefer, a uniform one or one that respects the causal structure, depends on the question the practitioner tries to answer and possibly on the application. For example, when a causal link represents a temporal relationship, it may make no sense to set a feature value before the values of all features preceding it in time have been set. In that case, it would be wise to consider a non-uniform distribution over permutations as in~\cite{frye2019asymmetric}. On the other hand, for causal models without temporal interpretation, e.g., describing presumed causal relationships between personal and biomedical variables related to Alzheimer~\cite{shen2020challenges} or between social and economic characteristics in census data~\cite{chiappa2019path}, deviating from a uniform distribution over permutations (and hence sacrificing the symmetry property) seems unnecessary. With or without uniform distribution over permutations, applying \textit{do}-calculus instead of conditioning by observation is a natural way to incorporate causal information.
+In this linear model, the asymmetric Shapley value for the first feature adds its indirect causal effects on the output through the second and third feature, $\alpha_2 \beta_2 x_1 + \alpha_3 \beta_3 x_1$, to its direct effect, $\beta_1 x_1$. The causal Shapley values for the first feature are somewhat more conservative: they essentially claim only half of the indirect effects through the other two features. \comment{Move the rest of this paragraph elsewhere? Now overlap with direct/indirect in next section.} This is a direct consequence of taking a uniform distribution over all permutations: for any pair of features $i$ and $j$, the feature value $x_i$ is set before and after $x_j$ for exactly half of the number of permutations. Which distribution over permutations to prefer, a uniform one or one that respects the causal structure, depends on the question the practitioner tries to answer and possibly on the application. For example, when a causal link represents a temporal relationship, it may make no sense to set a feature value before the values of all features preceding it in time have been set. In that case, it would be wise to consider a non-uniform distribution over permutations as in~\cite{frye2019asymmetric}. On the other hand, for causal models without temporal interpretation, e.g., describing presumed causal relationships between personal and biomedical variables related to Alzheimer~\cite{shen2020challenges} or between social and economic characteristics in census data~\cite{chiappa2019path}, deviating from a uniform distribution over permutations (and hence sacrificing the symmetry property) seems unnecessary. With or without uniform distribution over permutations, applying \textit{do}-calculus instead of conditioning by observation is a natural way to incorporate causal information.
 
 The Shapley values for Model A are different from those for Model B, even though the observable probability distribution $P(\vX)$ is exactly the same. Those for Model A simplify a lot, because in this model any excess correlation between $X_2$ and $X_3$ beyond the correlation resulting from the common parent $X_1$ results from a confounder. This correlation vanishes when we intervene on either $X_2$ or $X_3$. The contributions of the second and third feature are therefore just their direct effect, minus half of the indirect effect, which already has been attributed to the first feature. In Model B, on the other hand, for most expectations conditioning by intervention reduces to conditioning by observation on the same variables and does not further simplify to conditioning on less or even no variables as for Model A. Since the causal Shapley values consider all six permutations, in contrast to the asymmetric Shapley values which only consider two of them, expectations such as $\expectation[X_2|x_3]$ now also enter the equation, which considerably complicates the analytical expressions.
 
@@ -726,13 +728,27 @@ Theorem~1 connects to observations made and algorithms proposed in recent papers
 	\end{eqnarray*}
 	where in the last step we used that $\onder{\chaincomponents}{confounding} = \emptyset$.
 \end{proof}
-In the case of Corollary~1 and \cite{janzing2019feature}, asymmetric conditional Shapley values do not reduce to marginal Shapley values, but to conditional Shapley values. It is not easy to see how this can be fixed by choosing another distribution on the permutations.
 
-\comment{Add another theorem about direct and indirect effects?}
+Conditioning by intervention in causal chain graphs boils down to conditioning by observation, where features within components that are later in the causal ordering are excluded from the conditioning set. The asymmetric Shapley values in~\cite{frye2019asymmetric}, since still based on conditioning by observation, need to choose a non-uniform distribution over permutations to achieve the same. Our analysis shows that this restriction is not needed and be considered a separate choice, perpendicular to conditioning by observation or by intervention.
+
+%In the case of Corollary~1 and \cite{janzing2019feature}, asymmetric conditional Shapley values do not reduce to marginal Shapley values, but to conditional Shapley values. It is not easy to see how this can be fixed by choosing another distribution on the permutations.
+
+With a causal interpretation of Shapley values, we can distinguish between direct and indirect effects. Let us consider the contribution $\contribution_i(\perm)$ of a particular permutation $\perm$ and feature $i$. With $\Spre = \{j: j \prec_\perm i\}$ and $\Spost = \{j: j \succ_\perm i\}$, we can decompose the contribution into a direct and an indirect effect:
+\begin{eqnarray*}
+\contribution_i(\perm) \isequal
+%\val(\Spre \cup i) - \val(\Spre) \\ \isequal
+\expectation[f(\vX_{\Spost},\vx_{\Spre \cup i})|\lvdo{\Spre \cup i}] - \expectation[f(\vX_{\Spost \cup i},\vx_{\Spre})|\lvdo{\Spre}] ~~~~~~\mbox{(total effect)} \\
+\isequal \expectation[f(\vX_{\Spost},\vx_{\Spre \cup i})|\lvdo{\Spre}] - \expectation[f(\vX_{\Spost \cup i},\vx_{\Spre})|\lvdo{\Spre}] + ~~~~~~~\mbox{(direct effect)} \\
+&& \! \! \! \! \expectation[f(\vX_{\Spost},\vx_{\Spre \cup i})|\lvdo{\Spre \cup i}] - \expectation[f(\vX_{\Spost},\vx_{\Spre \cup i})|\lvdo{\Spre}] ~~~~\mbox{(indirect effect)}
+\end{eqnarray*}
+The direct effect measures the expected change in model output when the stochastic feature $X_i$ is replaced by its feature value $x_i$, without changing the distribution of the other ``out-of-coalition'' features. The indirect effect measures the difference in expectation when the distribution of the other ``out-of-coalition'' features changes due to the additional intervention $\ldo{i}$. For any pair of features $(i,j)$ with $j \succ_{\cal CG} i$, the indirect effect of feature $i$ through feature $j$ is added to the Shapley value for $i$, if and only if $j \succ_\perm i$. This goes at the expense of the direct effect of feature $j$, essentially because when feature $j$ is set to its value, the direct effect is computed relative to the expectation conditioned upon intervention given a set of features, including $x_i$. Asymmetric (causal) Shapley values only incorporate permutations $\perm$ with $j \succ_\perm i$ if $j \succ_{\cal CG} i$. With symmetric causal Shapley values, $j \succ_\perm i$ in half of the permutations $\perm$: in the other half feature $j$ is intervened upon before feature $i$ and there is no indirect effect to be accounted for. This makes the indirect effect in asymmetric Shapley values roughly a factor two times the indirect effect in symmetric Shapley values.
+
+
+\comment{Turn the above into a Theorem? Bit hard to make concrete.}
 
 So, to be able to compute the expectations in the Shapley equations under an interventional interpretation, we need to specify (1) a partial order and (2) whether any dependencies between features that are treated on an equal footing are most likely the result of mutual interaction or selection, or of a common confounder. Based on this information, any expectation by intervention can be translated to an expectation by observation.
 
-To compute these expectations, we can rely on the various methods that have been proposed to compute conditional Shapley values~\cite{aas2019explaining,frye2019asymmetric}. Following~\cite{aas2019explaining}, we will assume a multivariate Gaussian distribution for $P(\vX)$ that we estimate from the training data. Alternative proposals include assuming a Gaussian copula distribution, estimating from the empirical (conditional) distribution (both from~\cite{aas2019explaining}) and a variational autoencoder~\cite{frye2019asymmetric}. 
+To compute these expectations, we can rely on the various methods that have been proposed to compute conditional Shapley values~\cite{aas2019explaining,frye2019asymmetric}. Following~\cite{aas2019explaining}, we will assume a multivariate Gaussian distribution for $P(\vX)$ that we estimate from the training data. Alternative proposals include assuming a Gaussian copula distribution, estimating from the empirical (conditional) distribution (both from~\cite{aas2019explaining}) and a variational autoencoder~\cite{frye2019asymmetric}.
 
 \section{Experiments}
 
@@ -742,7 +758,7 @@ Show that it works. For now: example on bike rental. Do we predict more bike sha
 
 \section{Discussion}
 
-Which Shapley value to use depends on interpretation: what happens if we set the features to their values compared to what happens to when we observe that features obtain their values. Both interpretations are fine, but in most cases the causal interpretation seems to be the one to prefer/implicitly implied.
+Whether to use conditional or causal Shapley values depends on interpretation: what happens if we set the features to their values compared to what happens to when we observe that features obtain their values. Both interpretations are fine, but in most cases the causal interpretation seems to be the one to prefer/implicitly implied.
 
 Marginal fine when dependencies are purely the result of confounding, as Janzing argued. However, when there actually are causal relationships between the features and/or the dependencies between features results from selection bias or mutual feedback, expectations under conditioning by intervention do not simplify to marginal expectations.
 
