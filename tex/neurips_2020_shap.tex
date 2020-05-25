@@ -133,9 +133,9 @@
 \maketitle
 
 \begin{abstract}
-	Shapley values have become one of the most popular model-agnostic methods within explainable artificial intelligence. They explain the output of a possibly complex and highly non-linear machine learning model by attributing the difference between the model output and an average, baseline output to the different features that are used as input to the model. Being based on game-theoretic principles, Shapley values uniquely satisfy several desirable properties. Shapley values are typically computed under the assumption that features are independent.
+	Shapley values have become one of the most popular model-agnostic methods within explainable artificial intelligence. They explain the output of a possibly complex and highly non-linear machine learning model by attributing the difference between the model output and an average, baseline output to the different features that are used as input to the model. Being based on game-theoretic principles, Shapley values uniquely satisfy several desirable properties. Shapley values are typically computed under the assumption that features are independent, which ignores any causal structure between the features and can lead to illogical explanations.
 	
-	In this paper, we propose a novel framework for causal Shapley values that encompasses and sheds new light on recent previous work that aims to relax the independence assumption. Our framework is based on an active, causal interpretation of feature attribution. Replacing conventional conditioning by observation with conditioning by intervention, we can call upon Pearl's \textit{do}-calculus to compute the Shapley values, without giving in on any of their desirable properties. We provide a practical implementation based on causal chain graphs and illustrate causal Shapley values on several real-world examples.	\comment{Not completely happy yet. Suggestions welcome!}
+	In this paper, we propose a novel framework for causal Shapley values that encompasses and sheds new light on recent previous work that aims to relax the independence assumption. Our framework is based on an active, causal interpretation of feature attribution. Replacing conventional conditioning by observation with conditioning by intervention, we call upon Pearl's \textit{do}-calculus to compute the Shapley values, without giving in on any of their desirable properties. We provide a practical implementation for deriving Shapley values based on causal chain graphs and illustrate causal Shapley values on several real-world examples.	\comment{Not completely happy yet. Suggestions welcome!}
 \end{abstract}
 
 
@@ -283,7 +283,7 @@ with expectation taken over some (for now assumed to be known) probability distr
 f(\vx) = f_0 + \sum_{i=1}^n \contribution_i \: ,
 \label{eq:efficiency}
 \end{equation}
-where we will refer to $\contribution_i$ as the contribution of feature $i$ to the output $f(\vx)$. Equation~(\ref{eq:efficiency}) is referred to as the efficiency property, which appears to be a sensible desideratum for any attribution method and we therefore take here as our starting point.
+where we will refer to $\contribution_i$ as the contribution of feature $i$ to the output $f(\vx)$. Equation~(\ref{eq:efficiency}) is referred to as the efficiency property~\cite{shapley1953value}, which appears to be a sensible desideratum for any attribution method and we therefore take here as our starting point.
 
 We can think of (at least) two different interpretations on how to go from knowing none of the feature values in $f_0$ to knowing all feature values in $f(\vx)$.
 \begin{description}
@@ -300,7 +300,7 @@ with $j \prec_\perm i$ if $j$ precedes $i$ in the permutation $\perm$ and where 
 \val(S) = \expectation \left[f(\vX) | \svop{S} \right] = \int d\vX_{\bar{S}} \: P(\vX_{\bar{S}}|\lvop{S}) f(\vX_{\bar{S}},\vx_S) \: .
 \label{eq:valuedef}
 \end{equation}
-Here $S$ is the subset of indices of features with known ``in-coalition'' feature values $\vx_S$. To compute the expectation, we still need to average over the ``out-of-coalition'' feature values $\vX_{\bar{S}}$ with $\bar{S} = \allfeatures \setminus S$, the complement of $S$. The operator $\operator()$ specifies how the distribution of the ``out-of-coalition'' features $\vX_{\bar{S}}$ depends on the ``in-coalition'' feature values $\vx_{S}$. To arrive at the passive interpretation, we set $\operator()$ to conventional conditioning by observation, yielding $P(\vX_{\bar{S}}|\vx_{S})$. For the active interpretation, we need to condition by intervention, for which we resort to Pearl's \textit{do}-calculus~\cite{pearl1995causal} and write $P(\vX_{\bar{S}}|\lvdo{S})$. \comment{Do we need a longer introduction/explanation of \textit{do}-calculus?} A third option is to ignore the feature values $\vx_S$ and just take the unconditional, marginal distribution $P(\vX_{\bar{S}})$. We will refer to the corresponding Shapley values as conditional, causal, and marginal, respectively.
+Here $S$ is the subset of indices of features with known `in-coalition' feature values $\vx_S$. To compute the expectation, we still need to average over the `out-of-coalition' feature values $\vX_{\bar{S}}$ with $\bar{S} = \allfeatures \setminus S$, the complement of $S$. The operator $\operator()$ specifies how the distribution of the `out-of-coalition' features $\vX_{\bar{S}}$ depends on the `in-coalition' feature values $\vx_{S}$. To arrive at the passive interpretation, we set $\operator()$ to conventional conditioning by observation, yielding $P(\vX_{\bar{S}}|\vx_{S})$. For the active interpretation, we need to condition by intervention, for which we resort to Pearl's \textit{do}-calculus~\cite{pearl1995causal} and write $P(\vX_{\bar{S}}|\lvdo{S})$. \comment{Do we need a longer introduction/explanation of \textit{do}-calculus?} A third option is to ignore the feature values $\vx_S$ and just take the unconditional, marginal distribution $P(\vX_{\bar{S}})$. We will refer to the corresponding Shapley values as conditional, causal, and marginal, respectively.
 
 It is easy to check that the efficiency property~(\ref{eq:efficiency}) holds for any permutation $\perm$.
 %\begin{eqnarray*}
@@ -406,12 +406,8 @@ x_1 & x_2 & x_3 \\
 \: .
 \]
 %We similarly define $\hx_{k|S} = \expectation[X_k|\lvdo{S}]$ for expectation under conditioning by intervention.
-Taking a uniform distribution over permutations, the conditional Shapley values for any linear model with three variables can be written as
-\begin{equation}
-\boven{\bm{\contribution}}{conditional} = \boven{\contmat}{conditional} \times \mathop{\textrm{vec}}(\bar{\allmeans} \times \mathop{\textrm{diag}}(\bm{\beta}))
-\label{eq:shapvec}
-\end{equation}
-with
+Any vector $\bm{\contribution}$ with the Shapley values of the three features can be written as a linear combination of these expectations times the regression coefficients $\bm{\beta}$.
+With definition of the matrix
 \[
 \boven{\contmat}{conditional} = {1 \over 6} \left(\begin{array}{rrrrr|rrrrr|rrrrr}
 6 & -2 & -1 & -1 & -2  &
@@ -423,10 +419,16 @@ with
 0 & -2 & -1 & 2 & 1  &
 0 & -2 & -1 & 2 & 1  &
 6 & -2 & -1 & -1 & -2
-\end{array}\right) \: .
+\end{array}\right) \: ,
 \]
+the conditional Shapley values for any linear model with three variables and a uniform distribution over permutations can be written as
+\begin{equation}
+\boven{\bm{\contribution}}{conditional} = \boven{\contmat}{conditional}  \mathop{\textrm{vec}}(\mathop{\textrm{diag}}(\bm{\beta}) \bar{\allmeans}) \: .
+\label{eq:shapvec}
+\end{equation}
 \comment{Skip this explanation?}
-The multiplication with the diagonal matrix of regression coefficients $\bm{\beta} = (\beta_1,\beta_2,\beta_3)$ boils down to multiplying the $i$th column of $\bar{\allmeans}$ with $\beta_i$. Vectorization then stacks the columns on top of one another to end up with a 15-dimensional column vector. The vertical bars in the matrix $\boven{\contmat}{conditional}$ indicate the three blocks, with the first 5 columns in the matrix mapping to the first column of $\bar{\allmeans}$ with expectations of $X_1$, the next 5 columns to the expectations of $X_2$, and the final 5 columns to the expectations of $X_3$.
+%The multiplication with the diagonal matrix of regression coefficients $\bm{\beta} = (\beta_1,\beta_2,\beta_3)$ boils down to multiplying the $i$th column of $\bar{\allmeans}$ with $\beta_i$.
+Vectorization stacks the columns on top of one another to end up with a 15-dimensional column vector. The vertical bars in the matrix $\boven{\contmat}{conditional}$ indicate the three blocks, with the first 5 columns in the matrix mapping to the first column of $\bar{\allmeans}$ with expectations of $X_1$, the next 5 columns to the expectations of $X_2$, and the final 5 columns to the expectations of $X_3$.
 
 \comment{Skip this paragraph?}
 By summing every column of $\boven{\contmat}{conditional}$, we can perform the sanity check that efficiency indeed holds. The first column of each block (which relates to the feature values themselves) adds up to $1$, the second (corresponding to the marginal expectations) to $-1$, and the other three columns to zero, as they should. Since Shapley values are constructed by always comparing two (possibly) different expectations, each row within each block sums up to zero.
@@ -465,9 +467,9 @@ Putting $X_1$ before $X_2$ and $X_3$, and $X_2$ and $X_3$ on equal footing, asym
 	\begin{center}
 		\begin{tabular}{r|cc} \toprule
 			expectation & model A & model B \\ \midrule
-			$\hx_{1|2}$ & \multicolumn{2}{c}{\multirow{3}{*}{$\bx_1$}} \\
-			$\hx_{1|3}$ & \multicolumn{2}{c}{} \\
-			$\hx_{1|2,3}$ & \multicolumn{2}{c}{} \\ \midrule
+			$\hx_{1|2}$ & \multicolumn{2}{c}{$\bx_1$} \\
+			$\hx_{1|3}$ & \multicolumn{2}{c}{$\bx_1$} \\
+			$\hx_{1|2,3}$ & \multicolumn{2}{c}{$\bx_1$} \\ \midrule
 			$\hx_{2|1}$ & \multicolumn{2}{c}{$\bx_{2|1}$} \\
 			$\hx_{2|3}$ & $\bx_{2}$ & $\bx_{2|3}$ \\
 			$\hx_{2|1,3}$ & $\bx_{2|1}$ & $\bx_{2|1,3}$ \\ \midrule
@@ -525,7 +527,7 @@ x_1 & x_2 & x_3 \\
 \end{array}\right)
 \: .
 \]
-with $\delta_{ij} = \alpha_i - \rho \alpha_j$, $\sigma_i^2 = 1 + \alpha_i^2$ (the marginal correlation for feature $i$), and $\gamma = \rho + \alpha_2 \alpha_3$ (the total correlation between the second and third feature). Plugging this and the expressions for the different $\contmat$ matrices into~(\ref{eq:shapvec}), we obtain the asymmetric Shapley values
+with $\delta_{ij} = \alpha_i - \rho \alpha_j$, $\sigma_i^2 = 1 + \alpha_i^2$ (the marginal variance for feature $i$), and $\gamma = \rho + \alpha_2 \alpha_3$ (the total covariance between the second and third feature). Plugging this and the expressions for the different $\contmat$ matrices into~(\ref{eq:shapvec}), we obtain the asymmetric Shapley values
 \begin{eqnarray*}
 	\boven{\contribution_1}{asymmetric} \isequal \beta_1 x_1 + (\alpha_2 \beta_2 + \alpha_3 \beta_3) x_1  \\
 	\boven{\contribution_2}{asymmetric} \isequal \beta_2 x_2 - \alpha_2 \beta_2 x_1 + {\rho \over 2} (\alpha_3 \beta_2 - \alpha_2 \beta_3) x_1 + {\rho \over 2} (\beta_3 x_2 - \beta_2 x_3) \\
@@ -557,7 +559,7 @@ The Shapley values for Model A are different from those for Model B, even though
 
 Computing causal Shapley values not only requires knowledge of the probability distribution $P(\vX)$, but also of the underlying causal structure. And even then, there is no guarantee that any causal query is identifiable (see e.g., \cite{pearl2012calculus}). For example, if Model A or B also includes a causal link from $X_2$ to $X_3$, even knowing the probability distribution $P(\vX)$ and the causal structure is insufficient: it is impossible to express, for example, $P(X_3|\ldo{2})$ in terms of $P(\vX)$, essentially because, without knowing the parameters of the causal model, there is no way to tell which part of the observed dependence between $X_2$ and $X_3$ is due to the causal link and which due to the confounding or selection bias.
 
-Furthermore, and perhaps more importantly, requiring a practitioner to specify a complete causal structure, possibly even including some of its parameters, would be detrimental to the method's generic applicability. We therefore follow the same line of reasoning as in~\cite{frye2019asymmetric} and assume that a practitioner may be able to specify a causal ordering, but not much more.
+Furthermore, and perhaps more importantly, requiring a practitioner to specify a complete causal structure, possibly even including some of its parameters, would be detrimental to the method's general applicability. We therefore follow the same line of reasoning as in~\cite{frye2019asymmetric} and assume that a practitioner may be able to specify a causal ordering, but not much more.
 
 In the special case that a complete causal ordering of the features can be given and that all causal relationships are unconfounded, $P(\vX)$ satisfies the Markov properties associated with a directed acyclic graph (DAG) and can be written in the form
 \[
@@ -636,23 +638,23 @@ How to compute the effect of an intervention now depends on the interpretation o
 For causal chain graphs, we have the interventional formula
 \begin{eqnarray*}
 P(\vX_{\bar{S}}|\lvdo{S}) \isequal \prod_{\tau \in \chaincomponents_{\textrm{\upshape \scriptsize confounding}}} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{\spa(\tau) \cap S}) \times \\
-&& \prod_{\tau \in \chaincomponents_{\overline{\textrm{\upshape \scriptsize confounding}}}} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{\spa(\tau) \cap S},\vx_{\tau \cap S}) \: .
+&& \prod_{\tau \in \chaincomponents_{\overline{\textrm{\upshape \scriptsize confounding}}}} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau) \cap \bar{S}},\vx_{\spa(\tau) \cap S},\vx_{\tau \cap S}) \: .
 \end{eqnarray*}
 \end{theorem}
 
 \begin{proof}
 \begin{eqnarray*}
 	P(\vX_{\bar{S}}|\lvdo{S}) \isequaldo{1} \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\lvdo{S}) \hfill \\
-	\isequaldo{3}  \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\lvdo{S \cap \spa(\tau)},\lvdo{S \cap \tau}) \\
-	\isequaldo{2}  \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{S \cap \spa(\tau)},\lvdo{S \cap \tau}) \: ,
+	\isequaldo{3}  \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\lvdo{\spa(\tau) \cap S},\lvdo{\tau \cap S}) \\
+	\isequaldo{2}  \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{\spa(\tau) \cap S},\lvdo{\tau \cap S}) \: ,
 \end{eqnarray*}
 where the number above each equal sign refers to the standard \textit{do}-calculus rule from~\cite{pearl2012calculus} that is applied. For a chain component with dependencies induced by a common confounder, rule (3) applies once more and yields
 \[
-P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{S \cap \spa(\tau)}) \: ,
+P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{\spa(\tau) \cap S}) \: ,
 \]
 whereas for a chain component with dependencies induced by selection bias or mutual interactions, rule (2) again applies:
 \[
-P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{S \cap \spa(\tau)},\vx_{S \cap \tau})) \: .
+P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{ \spa(\tau) \cap S},\vx_{\tau \cap S})) \: .
 \]
 \comment{Proof probably needs to be extended, which is fine when it goes to the supplement anyway.}
 \end{proof}
@@ -689,12 +691,12 @@ P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{S \cap \spa(\tau)}
 		\Function{ValueFunction}{$S$}
 		\For{$k \gets 1 \mbox{~to~} \onder{N}{samples}$}
 		\ForAll{$j \gets 1 \mbox{~to~} |\chaincomponents|$} \Comment{run over all chain components in their causal order}
-			\If{confounding$(\tau)$} 
-				\ForAll{$i \in \tau \cap \bar{S}$}
+			\If{confounding$(\tau_j)$} 
+				\ForAll{$i \in \tau_j \cap \bar{S}$}
 					\State Sample $\tilde{x}_i^{(k)} \sim P(X_i|\tilde{\vx}_{\spa(\tau_j) \cap \bar{S}}^{(k)},\vx_{\spa(\tau_j) \cap \bar{S}})$ \Comment{can be drawn independently}
 				\EndFor
 			\Else
-				\State Sample $\tilde{\vx}_{\tau \cap \bar{S}}^{(k)} \sim P(\vX_{\tau_j \cap \bar{S}}|\tilde{\vx}_{\spa(\tau_j) \cap \bar{S}}^{(k)},\vx_{\spa(\tau_j) \cap \bar{S}})$ \Comment{e.g., through Gibbs sampling}
+				\State Sample $\tilde{\vx}_{\tau_j \cap \bar{S}}^{(k)} \sim P(\vX_{\tau_j \cap \bar{S}}|\tilde{\vx}_{\spa(\tau_j) \cap \bar{S}}^{(k)},\vx_{\spa(\tau_j) \cap \bar{S}},\vx_{\tau_j \cap S})$ \Comment{e.g., Gibbs sampling}
 			\EndIf
 		\EndFor
 		\EndFor
@@ -721,19 +723,21 @@ Theorem~1 connects to observations made and algorithms proposed in recent papers
 	When we only take into account permutations that match the causal ordering and assume that all dependencies within chain components are induced by selection bias or mutual interactions, the resulting asymmetric causal Shapley values are equivalent to the asymmetric conditional Shapley values as defined in~\cite{frye2019asymmetric}.
 \end{corollary}
 \begin{proof}
-	Following~\cite{frye2019asymmetric}, asymmetric Shapley values only include those permutations $\perm$ for which $i \prec_\perm j$ for all known ancestors $i$ of descendants $j$ in the causal graph. For those permutations, we are guaranteed to have $\chaincomponents \cap S \preceq_{{\cal CG}} \chaincomponents \cap \bar{S}$, that is, the chain components that contain features from $S$ are never later in the causal ordering of the chain graph ${\cal CG}$ than those that contain features from $\bar{S}$. We then have
+	Following~\cite{frye2019asymmetric}, asymmetric Shapley values only include those permutations $\perm$ for which $i \prec_\perm j$ for all known ancestors $i$ of descendants $j$ in the causal graph. For those permutations, we are guaranteed to have
+%	$\chaincomponents \cap S \preceq_{{\cal CG}} \chaincomponents \cap \bar{S}$
+	$\tau \prec_{\mathcal{CG}} \tau'$ for all $\tau, \tau' \in \mathcal{T}$ such that $\tau \cap S \neq \emptyset, \tau' \cap \bar{S} \neq \emptyset$. That is, the chain components that contain features from $S$ are never later in the causal ordering of the chain graph ${\cal CG}$ than those that contain features from $\bar{S}$. We then have
 	\begin{eqnarray*}
 	P(\vX_{\bar{S}}|\vx_S) \isequal \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{S}) \\
 	\isequal \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{\spa(\tau) \cap S},\vx_{\tau \cap S}) = P(\vX_{\bar{S}}|\lvdo{S}) \: ,
 	\end{eqnarray*}
-	where in the last step we used that $\onder{\chaincomponents}{confounding} = \emptyset$.
+	where in the last step we used the fact that $\onder{\chaincomponents}{confounding} = \emptyset$.
 \end{proof}
 
-Conditioning by intervention in causal chain graphs boils down to conditioning by observation, where features within components that are later in the causal ordering are excluded from the conditioning set. The asymmetric Shapley values in~\cite{frye2019asymmetric}, since still based on conditioning by observation, need to choose a non-uniform distribution over permutations to achieve the same. Our analysis shows that this restriction is not needed and be considered a separate choice, perpendicular to conditioning by observation or by intervention.
+Conditioning by intervention in causal chain graphs boils down to conditioning by observation, where features within components that are later in the causal ordering are excluded from the conditioning set. The asymmetric Shapley values in~\cite{frye2019asymmetric}, since still based on conditioning by observation, need to choose a non-uniform distribution over permutations to achieve the same. Our analysis shows that this restriction to permutations that are consistent with the causal ordering is not needed and be considered a separate choice, orthogonal to conditioning by observation or by intervention.
 
 %In the case of Corollary~1 and \cite{janzing2019feature}, asymmetric conditional Shapley values do not reduce to marginal Shapley values, but to conditional Shapley values. It is not easy to see how this can be fixed by choosing another distribution on the permutations.
 
-With a causal interpretation of Shapley values, we can distinguish between direct and indirect effects. Let us consider the contribution $\contribution_i(\perm)$ of a particular permutation $\perm$ and feature $i$. With $\Spre = \{j: j \prec_\perm i\}$ and $\Spost = \{j: j \succ_\perm i\}$, we can decompose the contribution into a direct and an indirect effect:
+With a causal interpretation of Shapley values, we can decompose our explanation to reflect the contribution of direct and indirect effects. Let us consider the contribution $\contribution_i(\perm)$ of a particular permutation $\perm$ and feature $i$. With $\Spre = \{j: j \prec_\perm i\}$ and $\Spost = \{j: j \succ_\perm i\}$, we can write:
 \begin{eqnarray*}
 \contribution_i(\perm) \isequal
 %\val(\Spre \cup i) - \val(\Spre) \\ \isequal
@@ -741,7 +745,7 @@ With a causal interpretation of Shapley values, we can distinguish between direc
 \isequal \expectation[f(\vX_{\Spost},\vx_{\Spre \cup i})|\lvdo{\Spre}] - \expectation[f(\vX_{\Spost \cup i},\vx_{\Spre})|\lvdo{\Spre}] + ~~~~~~~\mbox{(direct effect)} \\
 && \! \! \! \! \expectation[f(\vX_{\Spost},\vx_{\Spre \cup i})|\lvdo{\Spre \cup i}] - \expectation[f(\vX_{\Spost},\vx_{\Spre \cup i})|\lvdo{\Spre}] ~~~~\mbox{(indirect effect)}
 \end{eqnarray*}
-The direct effect measures the expected change in model output when the stochastic feature $X_i$ is replaced by its feature value $x_i$, without changing the distribution of the other ``out-of-coalition'' features. The indirect effect measures the difference in expectation when the distribution of the other ``out-of-coalition'' features changes due to the additional intervention $\ldo{i}$. For any pair of features $(i,j)$ with $j \succ_{\cal CG} i$, the indirect effect of feature $i$ through feature $j$ is added to the Shapley value for $i$, if and only if $j \succ_\perm i$. This goes at the expense of the direct effect of feature $j$, essentially because when feature $j$ is set to its value, the direct effect is computed relative to the expectation conditioned upon intervention given a set of features, including $x_i$. Asymmetric (causal) Shapley values only incorporate permutations $\perm$ with $j \succ_\perm i$ if $j \succ_{\cal CG} i$. With symmetric causal Shapley values, $j \succ_\perm i$ in half of the permutations $\perm$: in the other half feature $j$ is intervened upon before feature $i$ and there is no indirect effect to be accounted for. This makes the indirect effect in asymmetric Shapley values roughly a factor two times the indirect effect in symmetric Shapley values.
+The direct effect measures the expected change in model output when the stochastic feature $X_i$ is replaced by its feature value $x_i$, without changing the distribution of the other `out-of-coalition' features. The indirect effect measures the difference in expectation when the distribution of the other `out-of-coalition' features changes due to the additional intervention $\ldo{i}$. For any pair of features $(i,j)$ with $j \succ_{\cal CG} i$, the indirect effect of feature $i$ through feature $j$ is added to the Shapley value for $i$, if and only if $j \succ_\perm i$. This goes at the expense of the direct effect of feature $j$, essentially because when feature $j$ is set to its value, the direct effect is computed relative to the expectation conditioned upon intervention given a set of features, including $x_i$. Asymmetric (causal) Shapley values only incorporate permutations $\perm$ with $j \succ_\perm i$ if $j \succ_{\cal CG} i$. With symmetric causal Shapley values, $j \succ_\perm i$ in half of the permutations $\perm$: in the other half feature $j$ is intervened upon before feature $i$ and there is no indirect effect to be accounted for. This makes the indirect effect in asymmetric Shapley values roughly a factor two times the indirect effect in symmetric Shapley values.
 
 
 \comment{Turn the above into a Theorem? Bit hard to make concrete.}
@@ -758,13 +762,13 @@ Show that it works. For now: example on bike rental. Do we predict more bike sha
 
 \section{Discussion}
 
-Whether to use conditional or causal Shapley values depends on interpretation: what happens if we set the features to their values compared to what happens to when we observe that features obtain their values. Both interpretations are fine, but in most cases the causal interpretation seems to be the one to prefer/implicitly implied.
+Whether to use conditional or causal Shapley values depends on interpretation: what happens if we set the features to their values compared to what happens to when we observe that features obtain their values. Both interpretations are fine, but the latter enables us to leverage additional available information regarding the causal structure.
 
-Marginal fine when dependencies are purely the result of confounding, as Janzing argued. However, when there actually are causal relationships between the features and/or the dependencies between features results from selection bias or mutual feedback, expectations under conditioning by intervention do not simplify to marginal expectations.
+Marginal Shapley values are perfectly fine when dependencies are purely the result of confounding, as argued in~\cite{janzing2019feature}. However, when these dependencies are the result of causal relationships or even due to selection bias or mutual feedback, then expectations under conditioning by intervention do not simplify to marginal expectations.
 
-Novel algorithm, based on causal chain graphs. All that a practitioner needs to provide is a partial causal order (as for asymmetric Shapley) and how to interpret dependencies between features that are on the same footing. Conditioning by intervention becomes conditioning by observation, but only on ancestors and possibly, depending on the interpretation, features within the same component. Any existing approach for conditional Shapley values can be easily adapted: if anything the expectations simplify, since no conditioning on descendants.
+We proposed a novel algorithm to compute causal Shapley values, based on causal chain graphs. All that a practitioner needs to provide is a partial causal order (as for asymmetric Shapley values) and a way to interpret dependencies between features that are on equal footing. Conditioning by intervention becomes conditioning by observation, but only on ancestors and possibly, depending on the interpretation, on features within the same component. Any existing approach for conditional Shapley values can be easily adapted. If anything the expectations simplify, since there is no conditioning by observation on the descendants.
 
-Provides an interpretation for asymmetric Shapley values: for all permutations that are consistent with the causal ordering, conditioning by intervention boils down to conditioning by observation. However, current definition~\cite{frye2019asymmetric} implicitly assumes that dependencies between features that are on the same footing is due to mutual feedback or selection bias, not common confounding. Whether or not to only consider permutations that match the causal ordering depends on application and possibly taste. This paper shows that it is unnecessary to give away symmetry in order to arrive at a causal interpretation of Shapley values. Roughly speaking, asymmetric (causal/conditioning) Shapley values attribute all indirect effects of a causal variable through a mediator on the output to the causal variable \comment{(is this the right term?)}, subtracting it from the Shapley value of the mediator (since efficiency should hold). Symmetric Shapley values are more conservative and attribute only half to the causal variable.
+Our analysis also provides new insights on asymmetric Shapley values: for all permutations that are consistent with the causal ordering, conditioning by intervention boils down to conditioning by observation. However, the current definition in~\cite{frye2019asymmetric} implicitly assumes that dependencies between features that are on equal footing is due to mutual feedback or selection bias, not common confounding. Whether or not to only consider permutations that match the causal ordering depends on the application and possibly one's preference. This paper shows that it is unnecessary to forgo symmetry in order to arrive at a causal interpretation of Shapley values. Roughly speaking, asymmetric (causal/conditioning) Shapley values attribute all indirect effects of a causal variable through a mediator on the output to the causal variable \comment{(is this the right term?)}, subtracting them from the Shapley value of the mediator. Symmetric Shapley values are more conservative and attribute only half to the causal variable.
 
 \comment{Discuss non-manipulable causes as in~\cite{pearl2018obesity}?}
 	
