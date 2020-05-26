@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.28)  25 MAY 2020 21:34
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.28)  26 MAY 2020 13:56
 entering extended mode
 **./neurips_2020_shap.tex
 (neurips_2020_shap.tex
@@ -1095,18 +1095,18 @@ Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
-
+ [3]
 
 Package amsmath Warning: Foreign command \over;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 412.
+(amsmath)                 on input line 414.
 
 
-Overfull \hbox (1.37476pt too wide) detected at line 423
+Overfull \hbox (1.37476pt too wide) detected at line 425
 \OMS/cmsy/m/n/10 C[] \OT1/cmr/m/n/10 = [] []  \OML/cmm/m/it/10 ;
  []
 
-[3] [4] [5]
+[4] [5] [6]
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
@@ -1140,25 +1140,29 @@ Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
- [6] [7]
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [7]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 688.
- [8] [9] (neurips_2020_shap.bbl) [10]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 799.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 799.
+put line 690.
+
+[8] [9] (neurips_2020_shap.bbl [10]) [11]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 801.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 801.
  (neurips_2020_shap.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 799.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 799.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 801.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 801.
 Package rerunfilecheck Info: File `neurips_2020_shap.out' has not changed.
 (rerunfilecheck)             Checksum: F9A61721F68F56078DE5A2B452A29A85;321.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 799.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 801.
  ) 
 Here is how much of TeX's memory you used:
- 23966 strings out of 492970
- 467171 string characters out of 3135855
- 612551 words of memory out of 3000000
- 27164 multiletter control sequences out of 15000+200000
- 71852 words of font info for 212 fonts, out of 3000000 for 9000
+ 23980 strings out of 492970
+ 467351 string characters out of 3135855
+ 610164 words of memory out of 3000000
+ 27166 multiletter control sequences out of 15000+200000
+ 72432 words of font info for 218 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  55i,12n,78p,1876b,835s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc} <C:\Users\tomhe\App
@@ -1180,9 +1184,9 @@ nts/symbols/msbm10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uh
 vr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Prog
 ram Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 
 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on neurips_2020_shap.pdf (10 pages, 266531 bytes).
+Output written on neurips_2020_shap.pdf (11 pages, 269363 bytes).
 PDF statistics:
- 242 PDF objects out of 1000 (max. 8388607)
- 42 named destinations out of 1000 (max. 500000)
+ 252 PDF objects out of 1000 (max. 8388607)
+ 45 named destinations out of 1000 (max. 500000)
  36925 words of extra memory for PDF output out of 42996 (max. 10000000)
 

@@ -30,6 +30,19 @@ Steffen~L Lauritzen and Thomas~S Richardson.
 \newblock {\em Journal of the Royal Statistical Society: Series B (Statistical
   Methodology)}, 64(3):321--348, 2002.
 
+\bibitem{lundberg2020local}
+Scott~M Lundberg, Gabriel Erion, Hugh Chen, Alex DeGrave, Jordan~M Prutkin,
+  Bala Nair, Ronit Katz, Jonathan Himmelfarb, Nisha Bansal, and Su-In Lee.
+\newblock From local explanations to global understanding with explainable ai
+  for trees.
+\newblock {\em Nature machine intelligence}, 2(1):2522--5839, 2020.
+
+\bibitem{lundberg2017unified}
+Scott~M Lundberg and Su-In Lee.
+\newblock A unified approach to interpreting model predictions.
+\newblock In {\em Advances in neural information processing systems}, pages
+  4765--4774, 2017.
+
 \bibitem{pearl1995causal}
 Judea Pearl.
 \newblock Causal diagrams for empirical research.
