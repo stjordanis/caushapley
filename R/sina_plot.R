@@ -1,13 +1,39 @@
 #' Make a sina plot of the Shapley values computed using shapr.
 #'
-#' @param explanation shapr list containing an explanation produced by shapr::explain
+#' @param explanation shapr list containing an explanation produced by shapr::explain.
 #'
 #' @author Ioan Gabriel Bucur
 #'
-#' @return
+#' @return ggplot2 object containing the sina plot.
 #' @export
 #'
 #' @examples
+#' # set parameters and random seed
+#' set.seed(2020)
+#' N <- 1000
+#' m <- 4
+#' sds <- runif(4, 0.5, 1.5)
+#' pars <- runif(7, -1, 1)
+#' 
+#' # running SEM
+#' X_1 <- rnorm(N, sd = sds[1])
+#' Z <- rnorm(N, 1)
+#' X_2 <- X_1 * pars[1] + Z * pars[2] + rnorm(N, sd = sds[2])
+#' X_3 <- X_1 * pars[3] + Z * pars[4] + rnorm(N, sd = sds[3])
+#' Y <- X_1 * pars[5] + X_2 * pars[6] + X_3 * pars[7] + rnorm(N, sd = sds[4])
+#'
+#' # collecting data
+#' mu_A <- rep(0, m)
+#' X_A <- cbind(X_1, X_2, X_3)
+#' dat_A <- cbind(X_A, Y)
+#' cov_A <- cov(dat_A)
+#' 
+#' model <- lm(Y ~ . + 0 , data = as.data.frame(dat_A))
+#' explainer <- shapr(X_A, model)
+#' y_mean <- mean(Y)
+#' 
+#' explanation_classic <- shapr::explain(dat_A, approach = "empirical", explainer = explainer, prediction_zero = y_mean)
+#' sina_plot(explanation)
 #' 
 #' @seealso \link[SHAPforxgboost]{shap.plot.summary}
 #' 
@@ -60,6 +86,6 @@ sina_plot <- function(explanation) {
     #   limits = rev(levels(data_long$variable)), 
     #   labels = label.feature(rev(levels(data_long$variable)))) + 
     labs(y = "SHAP value (impact on model output)", 
-         x = "", color = "Feature value  ")
+         x = "", color = "Scaled feature value  ")
 }
 
