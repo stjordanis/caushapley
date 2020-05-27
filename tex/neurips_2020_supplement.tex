@@ -90,7 +90,7 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}[theorem]{Corollary}
 
-\title{Causal Shapley Values: Exploiting Causal Knowledge to Explain Individual Predictions of Complex Models} 
+\title{Causal Shapley values: explaining individual predictions when features are causally related}
 
 % The \author macro works with any number of authors. There are two commands
 % used to separate the names and addresses of multiple authors: \And and \AND.
@@ -134,9 +134,11 @@
 \maketitle
 
 \begin{abstract}
-Shapley values underlie one of the most popular model-agnostic methods within explainable artificial intelligence. These values are designed to attribute the difference between the model output and an average baseline output to the different features used as input to the model. Being based on solid game-theoretic principles, Shapley values uniquely satisfy several desirable properties, which is why they are increasingly used to explain the output of a possibly complex and highly non-linear machine learning model. However, they are typically computed under the assumption that features are independent, which ignores any causal structure between the features and can lead to unreliable explanations.
-
-In this paper, we propose a novel framework for computing Shapley values that generalizes recent work aiming to relax or defend the independence assumption. By employing Pearl's \textit{do}-calculus, we show how these `causal' Shapley values can be derived for general causal graphs without sacrificing any of their desirable properties. Moreover, causal Shapley values enable us to separate the contribution of direct and indirect effects. We provide a practical implementation for computing causal Shapley values based on causal chain graphs and illustrate their utility on several real-world examples.
+	Shapley values have become one of the most popular model-agnostic methods within explainable artificial intelligence. They explain the output of a possibly complex and highly non-linear machine learning model by attributing the difference between the model output and an average, baseline output to the different features that are used as input to the model. Being based on game-theoretic principles, Shapley values uniquely satisfy several desirable properties. Shapley values are typically computed under the assumption that features are independent, which ignores any causal structure between the features and can lead to unreliable explanations.
+	
+	In this paper, we propose a novel framework for causal Shapley values that generalizes recent work that aims to relax or defend the independence assumption.
+	% Our framework is based on an active, causal interpretation of feature attribution.
+	Making use of Pearl's \textit{do}-calculus, we show how causal Shapley values can be derived for general causal graphs, without giving in on any of their desirable properties and with the possibility to separate direct from indirect effects. We provide a practical implementation for computing Shapley values based on causal chain graphs and illustrate causal Shapley values on several real-world examples.
 \end{abstract}
 
 
@@ -275,7 +277,7 @@ The Shapley-value approach, that we also focus on in this paper, has quickly bec
 
 When applied to explain the output of a machine learning model, Shapley values consider the difference between the model's output when knowing all feature values and its baseline output when knowing none of the feature values and spread this difference among the features that are used as input to the model. A crucial subroutine of the approach needs to compute or estimate the expected model output when some features are known, while others are dropped. Early approaches, such as~\cite{vstrumbelj2014explaining} estimate this expectation by assuming that the features are independent. This is also the approach taken in~\cite{lundberg2017unified}, but mainly for computational reasons. We will refer to these as marginal Shapley values. Aas et al.~\cite{aas2019explaining} argue and illustrate that marginal Shapley values may lead to incorrect explanations when features are highly correlated, motivating what we will refer to as conditional Shapley values. Even more recently, Janzing et al.~\cite{janzing2019feature} suggest the contrary, when stating that marginal rather than conditional expectations provide the right notion of dropping features. They make a distinction between conditioning by observation and conditioning by intervention, and argue that the latter is to be preferred and then boils down to marginal expectations. This argument is also picked up by~\cite{lundberg2020local} when implementing interventional Tree SHAP. Where marginal and conditional Shapley values correspond to a uniform distribution over all possible permutations of the features, so-called asymmetric Shapley values, introduced by Frye et al.~\cite{frye2019asymmetric}, propose to incorporate causal knowledge by choosing a non-uniform distribution of permutation consistent with a (partial) causal ordering. In line with~\cite{aas2019explaining}, they then apply conventional conditioning by observation to make sure that the resulting explanations respect the data manifold.
 
-In this paper, we will follow~\cite{janzing2019feature,lundberg2020local} in proposing an active interpretation of Shapley values. (1)~We will generalize their approach and show that when features are causally related, conditioning by intervention does not reduce to unconditional observational expectations. This makes causal Shapley values truly different from marginal and conditional Shapley values and a more direct way to incorporate causal knowledge, orthogonal to asymmetric Shapley values. (2)~We extend the concept of Shapley values with the possibility to decompose feature attributions in direct and indirect effects. (3)~Making use of so-called causal chain graphs~\cite{lauritzen2002chain}, we propose a practical approach for computing causal Shapley based and illustrate this on several real-world examples.
+In this paper, we will follow~\cite{janzing2019feature,lundberg2020local} in proposing an active interpretation of Shapley values. (1) We will generalize their approach and show that when features are causally related, conditioning by intervention does not reduce to unconditional observational expectations. This makes causal Shapley values truly different from marginal and conditional Shapley values and a more direct way to incorporate causal knowledge, orthogonal to asymmetric Shapley values. (2) We extend the concept of Shapley values with the possibility to decompose feature attributions in direct and indirect effects. (3) Making use of so-called causal chain graphs~\cite{lauritzen2002chain}, we propose a practical approach for computing causal Shapley based and illustrate this on several real-world examples.
 
 \section{A causal interpretation of Shapley values}
 \label{sec:interpretation}
@@ -343,21 +345,7 @@ conditioning by intervention reduces to no conditioning at all, $P(\vX_{\bar{S}}
 
 When applied to incorporate causal knowledge, the asymmetric Shapley values introduced in~\cite{frye2019asymmetric} choose $w(\perm) \neq 0$ in~(\ref{eq:shapperm}) only for those permutations $\perm$ that are consistent with the causal structure between the features, i.e., are such that a known causal ancestor always precedes its descendants. They provide somewhat of a mix between an active, interventional (incorporating causal structure into the allowed permutations) and passive, observational (conditioning by observation) approach. This idea, to restrict the allowed permutations when computing the Shapley values, can be considered orthogonal to the replacement of conditioning by observation with conditioning by intervention. We will therefore refer to the approach of~\cite{frye2019asymmetric} as asymmetric conditional Shapley values, to contrast them with asymmetric causal Shapley values that implement both ideas.
 
-\section{Decomposing Shapley values into direct and indirect effects}
 
-Having a causal interpretation of Shapley values, we can decompose our explanation to reflect the contribution of direct and indirect effects. The contribution $\contribution_i(\perm)$ of a particular permutation $\perm$ and feature $i$ in (\ref{eq:contperm}) measures the difference in value function with and without adding $X_i$ to the `in-coalition' features. This addition has two effects: a direct effect because now we know the value of $x_i$ and an indirect effect because adding $\ldo{i}$ to the interventional set may change the distribution of the other features. For notational convenience, we write $\Spre = \{j: j \prec_\perm i\}$ and $\Spost = \{j: j \succ_\perm i\}$, and get:
-\begin{eqnarray*}
-	\contribution_i(\perm) \isequal
-	%\val(\Spre \cup i) - \val(\Spre) \\ \isequal
-	\expectation[f(\vX_{\Spost},\vx_{\Spre \cup i})|\lvdo{\Spre \cup i}] - \expectation[f(\vX_{\Spost \cup i},\vx_{\Spre})|\lvdo{\Spre}] ~~~~~~\mbox{(total effect)} \\
-	\isequal \expectation[f(\vX_{\Spost},\vx_{\Spre \cup i})|\lvdo{\Spre}] - \expectation[f(\vX_{\Spost \cup i},\vx_{\Spre})|\lvdo{\Spre}] + ~~~~~~~\mbox{(direct effect)} \\
-	&& \! \! \! \! \expectation[f(\vX_{\Spost},\vx_{\Spre \cup i})|\lvdo{\Spre \cup i}] - \expectation[f(\vX_{\Spost},\vx_{\Spre \cup i})|\lvdo{\Spre}] ~~~~\mbox{(indirect effect)}
-\end{eqnarray*}
-The direct effect measures the expected change in model output when the stochastic feature $X_i$ is replaced by its feature value $x_i$, without changing the distribution of the other `out-of-coalition' features. The indirect effect measures the difference in expectation when the distribution of the other `out-of-coalition' features changes due to the additional intervention $\ldo{i}$. Direct and indirect Shapley values can be computed by taking a, possibly weighted, average over all permutations.
-
-Let ${\cal CG}$ denote a causal graph, with $j \succ_{\cal CG} i$ if and only if there is a causal path from ancestor $j$ to descendant $i$. For any pair of features $(i,j)$ with $j \succ_{\cal CG} i$, the indirect effect of feature $i$ through feature $j$ is added to the Shapley value for $i$, if and only if $j \succ_\perm i$. This goes at the expense of the direct effect of feature $j$, essentially because when feature $j$ is set to its value, the direct effect is computed relative to the expectation conditioned upon intervention with the `in-coalition' features, which then necessarily already includes $x_i$.
-
-Asymmetric (causal) Shapley values only incorporate permutations $\perm$ with $j \succ_\perm i$ if $j \succ_{\cal CG} i$. With symmetric causal Shapley values, $j \succ_\perm i$ in half of the permutations $\perm$: in the other half feature $j$ is intervened upon before feature $i$ and there is no indirect effect to be accounted for. This makes, as we will see, the indirect part of asymmetric Shapley values roughly a factor two times the indirect part of symmetric Shapley values.
 
 \section{Illustration}
 
@@ -770,7 +758,15 @@ Conditioning by intervention in causal chain graphs boils down to conditioning b
 
 %In the case of Corollary~1 and \cite{janzing2019feature}, asymmetric conditional Shapley values do not reduce to marginal Shapley values, but to conditional Shapley values. It is not easy to see how this can be fixed by choosing another distribution on the permutations.
 
-
+With a causal interpretation of Shapley values, we can decompose our explanation to reflect the contribution of direct and indirect effects. Let us consider the contribution $\contribution_i(\perm)$ of a particular permutation $\perm$ and feature $i$. With $\Spre = \{j: j \prec_\perm i\}$ and $\Spost = \{j: j \succ_\perm i\}$, we can write:
+\begin{eqnarray*}
+\contribution_i(\perm) \isequal
+%\val(\Spre \cup i) - \val(\Spre) \\ \isequal
+\expectation[f(\vX_{\Spost},\vx_{\Spre \cup i})|\lvdo{\Spre \cup i}] - \expectation[f(\vX_{\Spost \cup i},\vx_{\Spre})|\lvdo{\Spre}] ~~~~~~\mbox{(total effect)} \\
+\isequal \expectation[f(\vX_{\Spost},\vx_{\Spre \cup i})|\lvdo{\Spre}] - \expectation[f(\vX_{\Spost \cup i},\vx_{\Spre})|\lvdo{\Spre}] + ~~~~~~~\mbox{(direct effect)} \\
+&& \! \! \! \! \expectation[f(\vX_{\Spost},\vx_{\Spre \cup i})|\lvdo{\Spre \cup i}] - \expectation[f(\vX_{\Spost},\vx_{\Spre \cup i})|\lvdo{\Spre}] ~~~~\mbox{(indirect effect)}
+\end{eqnarray*}
+The direct effect measures the expected change in model output when the stochastic feature $X_i$ is replaced by its feature value $x_i$, without changing the distribution of the other `out-of-coalition' features. The indirect effect measures the difference in expectation when the distribution of the other `out-of-coalition' features changes due to the additional intervention $\ldo{i}$. For any pair of features $(i,j)$ with $j \succ_{\cal CG} i$, the indirect effect of feature $i$ through feature $j$ is added to the Shapley value for $i$, if and only if $j \succ_\perm i$. This goes at the expense of the direct effect of feature $j$, essentially because when feature $j$ is set to its value, the direct effect is computed relative to the expectation conditioned upon intervention given a set of features, including $x_i$. Asymmetric (causal) Shapley values only incorporate permutations $\perm$ with $j \succ_\perm i$ if $j \succ_{\cal CG} i$. With symmetric causal Shapley values, $j \succ_\perm i$ in half of the permutations $\perm$: in the other half feature $j$ is intervened upon before feature $i$ and there is no indirect effect to be accounted for. This makes the indirect effect in asymmetric Shapley values roughly a factor two times the indirect effect in symmetric Shapley values.
 
 
 \comment{Turn the above into a Theorem? Bit hard to make concrete.}

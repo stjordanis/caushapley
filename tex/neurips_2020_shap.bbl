@@ -30,17 +30,23 @@ Steffen~L Lauritzen and Thomas~S Richardson.
 \newblock {\em Journal of the Royal Statistical Society: Series B (Statistical
   Methodology)}, 64(3):321--348, 2002.
 
+\bibitem{lipovetsky2001analysis}
+Stan Lipovetsky and Michael Conklin.
+\newblock Analysis of regression in game theory approach.
+\newblock {\em Applied Stochastic Models in Business and Industry},
+  17(4):319--330, 2001.
+
 \bibitem{lundberg2020local}
 Scott~M Lundberg, Gabriel Erion, Hugh Chen, Alex DeGrave, Jordan~M Prutkin,
   Bala Nair, Ronit Katz, Jonathan Himmelfarb, Nisha Bansal, and Su-In Lee.
-\newblock From local explanations to global understanding with explainable ai
+\newblock From local explanations to global understanding with explainable {AI}
   for trees.
 \newblock {\em Nature machine intelligence}, 2(1):2522--5839, 2020.
 
 \bibitem{lundberg2017unified}
 Scott~M Lundberg and Su-In Lee.
 \newblock A unified approach to interpreting model predictions.
-\newblock In {\em Advances in neural information processing systems}, pages
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
   4765--4774, 2017.
 
 \bibitem{pearl1995causal}
@@ -59,6 +65,13 @@ Judea Pearl.
   causes.
 \newblock {\em Journal of Causal Inference}, 6(2), 2018.
 
+\bibitem{ribeiro2016should}
+Marco~Tulio Ribeiro, Sameer Singh, and Carlos Guestrin.
+\newblock ``{W}hy should {I} trust you?''s {E}xplaining the predictions of any
+  classifier.
+\newblock In {\em Proceedings of the 22nd ACM SIGKDD international conference
+  on knowledge discovery and data mining}, pages 1135--1144, 2016.
+
 \bibitem{shapley1953value}
 Lloyd~S Shapley.
 \newblock A value for n-person games.
@@ -69,5 +82,11 @@ Xinpeng Shen, Sisi Ma, Prashanthi Vemuri, and Gyorgy Simon.
 \newblock Challenges and opportunities with causal discovery algorithms:
   {A}pplication to {A}lzheimer’s pathophysiology.
 \newblock {\em Scientific reports}, 10(1):1--12, 2020.
+
+\bibitem{vstrumbelj2014explaining}
+Erik {\v{S}}trumbelj and Igor Kononenko.
+\newblock Explaining prediction models and individual predictions with feature
+  contributions.
+\newblock {\em Knowledge and information systems}, 41(3):647--665, 2014.
 
 \end{thebibliography}
