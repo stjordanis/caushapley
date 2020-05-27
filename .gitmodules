@@ -1,0 +1,3 @@
+[submodule "shapr"]
+	path = shapr
+	url = https://github.com/NorskRegnesentral/shapr
