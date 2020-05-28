@@ -77,23 +77,29 @@ sample_copula <- function(index_given, n_samples, mu, cov_mat, m, x_test_gaussia
 #' colnames(x_test) <- cnms
 #' index_given <- c(4, 7)
 #' ordering <- list(c(1,2,3),c(4,5,6),c(7,8,9,10))
-#' confounding <- FALSE
-#' r <- shapr:::sample_causal(index_given, n_samples, mu, cov_mat, m, x_test, ordering, confounding)
+#' confounding <- c(TRUE, FALSE, TRUE)
+#' r <- sample_causal(index_given, n_samples, mu, cov_mat, m, x_test, ordering, confounding)
 #'
-#' @author Tom Heskes
+#' @author Tom Heskes, Ioan Gabriel Bucur
 
-sample_causal <- function(index_given, n_samples, mu, cov_mat, m, x_test, ordering = NULL, confounding = FALSE) {
+sample_causal <- function(index_given, n_samples, mu, cov_mat, m, x_test, 
+                          ordering = list(c(seq(m))), confounding = rep(FALSE, length(ordering))) {
 
   # Check input
   stopifnot(is.matrix(x_test))
+  if (length(confounding) != length(ordering)) {
+    stop("For each component in the partial order, it must be specified if there is confounding or not.")
+  }
+  if (!base::setequal(unlist(ordering), seq(m))) {
+    stop(paste("Incomplete or incorrect partial ordering specified for", m, "variables"))
+  }
 
   # not sure if this is needed/makes sense
-#  if (length(index_given) %in% c(0, m)) return(data.table::as.data.table(x_test))
-
-  if (is.null(ordering)) {
-    # back to conditioning if confounding is FALSE or no conditioning if confounding is TRUE
-    ordering <- list(c(seq(m)))
-  }
+  #  if (length(index_given) %in% c(0, m)) return(data.table::as.data.table(x_test))
+  # if (is.null(ordering)) {
+  #   ordering <- list(c(seq(m)))
+  # }
+  
   dependent_ind <- setdiff(1:length(mu),index_given)
   xall <- matrix(NA, ncol = m, nrow = n_samples)
   xall[, index_given] <- rep(x_test[index_given], each = n_samples)
@@ -101,14 +107,16 @@ sample_causal <- function(index_given, n_samples, mu, cov_mat, m, x_test, orderi
   for(i in seq(length(ordering))) {
     # check overlap between dependent_ind and component
     to_be_sampled <- intersect(ordering[[i]],dependent_ind)
-    if (length(to_be_sampled)) {
+    if (length(to_be_sampled) > 0) {
       # condition upon all variables in ancestor components
       to_be_conditioned <- unlist(ordering[0:(i-1)])
-      if (!confounding) {
+      
+      # back to conditioning if confounding is FALSE or no conditioning if confounding is TRUE
+      if (!confounding[i]) {
         # add intervened variables in the same component
-        to_be_conditioned <- union(intersect(ordering[[i]],index_given),to_be_conditioned)
+        to_be_conditioned <- union(intersect(ordering[[i]], index_given), to_be_conditioned)
       }
-      if (!length(to_be_conditioned)) {
+      if (length(to_be_conditioned) == 0) {
         # draw new samples from marginal distribution
         newsamples <- mvnfast::rmvn(n_samples, mu=mu[to_be_sampled], sigma=as.matrix(cov_mat[to_be_sampled,to_be_sampled]))
       } else {

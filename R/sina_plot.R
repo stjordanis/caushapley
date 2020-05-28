@@ -42,11 +42,14 @@
 #' 
 sina_plot <- function(explanation) {
   
+  require(tidyverse)
+  require(ggplot2)
+  
   shapley_values <- explanation$dt[, -1, drop = FALSE]
   X_values <- explanation$x_test
   
   data_long <- explanation$x_test %>%
-    as.data.table() %>%
+    data.table::as.data.table() %>%
     pivot_longer(everything()) %>%
     bind_cols(explanation$dt %>%
                 select(-none) %>%
