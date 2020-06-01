@@ -87,6 +87,8 @@ sample_causal <- function(index_given, n_samples, mu, cov_mat, m, x_test,
 
   # Check input
   stopifnot(is.matrix(x_test))
+  stopifnot(is.list(ordering))
+  
   if (length(confounding) != length(ordering)) {
     stop("For each component in the partial order, it must be specified if there is confounding or not.")
   }
@@ -96,9 +98,6 @@ sample_causal <- function(index_given, n_samples, mu, cov_mat, m, x_test,
 
   # not sure if this is needed/makes sense
   #  if (length(index_given) %in% c(0, m)) return(data.table::as.data.table(x_test))
-  # if (is.null(ordering)) {
-  #   ordering <- list(c(seq(m)))
-  # }
   
   dependent_ind <- setdiff(1:length(mu),index_given)
   xall <- matrix(NA, ncol = m, nrow = n_samples)
