@@ -6,12 +6,6 @@ Kjersti Aas, Martin Jullum, and Anders L{\o}land.
   accurate approximations to {S}hapley values.
 \newblock {\em arXiv preprint arXiv:1903.10464}, 2019.
 
-\bibitem{chiappa2019path}
-Silvia Chiappa.
-\newblock Path-specific counterfactual fairness.
-\newblock In {\em Proceedings of the AAAI Conference on Artificial
-  Intelligence}, volume~33, pages 7801--7808, 2019.
-
 \bibitem{frye2019asymmetric}
 Christopher Frye, Ilya Feige, and Colin Rowat.
 \newblock Asymmetric {S}hapley values: incorporating causal knowledge into
@@ -49,6 +43,13 @@ Scott~M Lundberg and Su-In Lee.
 \newblock In {\em Advances in Neural Information Processing Systems}, pages
   4765--4774, 2017.
 
+\bibitem{ong2013reciprocal}
+Chong~Weng Ong, Denise~M O’Driscoll, Helen Truby, Matthew~T Naughton, and
+  Garun~S Hamilton.
+\newblock The reciprocal interaction between obesity and obstructive sleep
+  apnoea.
+\newblock {\em Sleep medicine reviews}, 17(2):123--131, 2013.
+
 \bibitem{pearl1995causal}
 Judea Pearl.
 \newblock Causal diagrams for empirical research.
@@ -77,16 +78,15 @@ Lloyd~S Shapley.
 \newblock A value for n-person games.
 \newblock {\em Contributions to the Theory of Games}, 2(28):307--317, 1953.
 
-\bibitem{shen2020challenges}
-Xinpeng Shen, Sisi Ma, Prashanthi Vemuri, and Gyorgy Simon.
-\newblock Challenges and opportunities with causal discovery algorithms:
-  {A}pplication to {A}lzheimer’s pathophysiology.
-\newblock {\em Scientific reports}, 10(1):1--12, 2020.
-
 \bibitem{vstrumbelj2014explaining}
 Erik {\v{S}}trumbelj and Igor Kononenko.
 \newblock Explaining prediction models and individual predictions with feature
   contributions.
 \newblock {\em Knowledge and information systems}, 41(3):647--665, 2014.
+
+\bibitem{sundararajan2019many}
+Mukund Sundararajan and Amir Najmi.
+\newblock The many shapley values for model explanation.
+\newblock {\em arXiv preprint arXiv:1908.08474}, 2019.
 
 \end{thebibliography}
