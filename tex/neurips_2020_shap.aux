@@ -33,76 +33,72 @@
 \citation{janzing2019feature}
 \citation{lundberg2020local}
 \citation{lauritzen2002chain}
+\citation{aas2019explaining}
+\citation{lundberg2017unified}
 \citation{shapley1953value}
 \@writefile{toc}{\contentsline {section}{\numberline {2}A causal interpretation of Shapley values}{2}{section.2}}
 \newlabel{sec:interpretation}{{2}{2}{A causal interpretation of Shapley values}{section.2}{}}
 \newlabel{eq:efficiency}{{1}{2}{A causal interpretation of Shapley values}{equation.2.1}{}}
 \citation{pearl1995causal}
 \citation{shapley1953value}
-\citation{janzing2019feature}
-\citation{lundberg2020local}
-\citation{frye2019asymmetric}
-\citation{frye2019asymmetric}
+\citation{sundararajan2019many}
 \newlabel{eq:contperm}{{2}{3}{A causal interpretation of Shapley values}{equation.2.2}{}}
 \newlabel{eq:valuedef}{{3}{3}{A causal interpretation of Shapley values}{equation.2.3}{}}
 \newlabel{eq:shapperm}{{4}{3}{A causal interpretation of Shapley values}{equation.2.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Two causal models. In both, $X_1$ causes $X_2$ and $X_3$. In Model A the excess correlation between $X_2$ and $X_3$ is induced by a common confounder $Z$, in Model B by selection bias.\relax }}{4}{figure.caption.2}}
-\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:linmodel}{{1}{4}{Two causal models. In both, $X_1$ causes $X_2$ and $X_3$. In Model A the excess correlation between $X_2$ and $X_3$ is induced by a common confounder $Z$, in Model B by selection bias.\relax }{figure.caption.2}{}}
+\citation{janzing2019feature}
+\citation{lundberg2020local}
+\citation{janzing2019feature}
+\citation{frye2019asymmetric}
+\citation{frye2019asymmetric}
+\citation{ong2013reciprocal}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Decomposing Shapley values into direct and indirect effects}{4}{section.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Illustration}{4}{section.4}}
-\citation{aas2019explaining}
-\citation{pearl1995causal}
-\newlabel{eq:shapvec}{{5}{5}{Illustration}{equation.4.5}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Turning expectations under conditioning by intervention, $\mathaccentV {hat}05E{x}_{i|S} = \mathbb  {E}[x_i|\mathit  {do}(\mathbf  {X}_{S} = \mathbf  {x}_{S})]$, into expectations under conventional conditioning by observation, $\mathaccentV {bar}016{x}_{i|S} = \mathbb  {E}[x_i|\mathbf  {X}_S]$, for the two models in Figure\nobreakspace  {}\ref  {fig:linmodel}. {\color  {red} Needed? Can put it next to Figure\nobreakspace  {}\ref  {fig:linmodel} to save space.}\relax }}{6}{table.caption.3}}
-\newlabel{tab:rewriting}{{1}{6}{Turning expectations under conditioning by intervention, $\hx _{i|S} = \expectation [x_i|\lvdo {S}]$, into expectations under conventional conditioning by observation, $\bx _{i|S} = \expectation [x_i|\vX _S]$, for the two models in Figure~\ref {fig:linmodel}. \comment {Needed? Can put it next to Figure~\ref {fig:linmodel} to save space.}\relax }{table.caption.3}{}}
-\citation{frye2019asymmetric}
-\citation{shen2020challenges}
-\citation{chiappa2019path}
-\citation{pearl2012calculus}
-\citation{frye2019asymmetric}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Causal chain graphs}{7}{section.5}}
-\citation{lauritzen2002chain}
-\citation{lauritzen2002chain}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces From partial ordering to causal chain graph. Features on equal footing are combined into a fully connected chain component. How to handle interventions within each component depends on the generative process that best explains the (surplus) dependencies. In this example, the dependency between $X_1$ and $X_2$ in chain component $\tau _1$ is assumed to be the result of a common confounder. The surplus dependencies in $\tau _2$ and $\tau _3$ are assumed to be caused by mutual feedback and selection bias, respectively. {\color  {red} Attempt to illustrate the main ideas. Could be nice, but probably not enough space?}\relax }}{8}{figure.caption.4}}
-\newlabel{fig:chaingraph}{{2}{8}{From partial ordering to causal chain graph. Features on equal footing are combined into a fully connected chain component. How to handle interventions within each component depends on the generative process that best explains the (surplus) dependencies. In this example, the dependency between $X_1$ and $X_2$ in chain component $\tau _1$ is assumed to be the result of a common confounder. The surplus dependencies in $\tau _2$ and $\tau _3$ are assumed to be caused by mutual feedback and selection bias, respectively. \comment {Attempt to illustrate the main ideas. Could be nice, but probably not enough space?}\relax }{figure.caption.4}{}}
-\newlabel{eq:interventional}{{6}{8}{Causal chain graphs}{equation.5.6}{}}
-\citation{lauritzen2002chain}
-\citation{pearl2012calculus}
 \citation{janzing2019feature}
+\citation{lundberg2020local}
 \citation{aas2019explaining}
 \citation{frye2019asymmetric}
-\citation{frye2019asymmetric}
-\citation{frye2019asymmetric}
-\citation{aas2019explaining}
-\citation{frye2019asymmetric}
-\citation{aas2019explaining}
-\citation{aas2019explaining}
-\citation{frye2019asymmetric}
-\citation{aas2019explaining}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Compute the value function ${v}(S)$ under conditioning by intervention. {\color  {red} Include in main text? Seems rather obvious\ldots  } \relax }}{10}{algorithm.1}}
-\newlabel{alg:sampling}{{1}{10}{Compute the value function $\val (S)$ under conditioning by intervention. \comment {Include in main text? Seems rather obvious\ldots } \relax }{algorithm.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Experiments}{10}{section.6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Direct and indirect Shapley values for four causal models with the same observational distribution over features (such that $\mathbb  {E}[X_1] = \mathbb  {E}[X_2] = 0$ and $\mathbb  {E}[X_2|x_1] = \alpha x_1$), yet a different causal structure. Having been trained on combinations of features and corresponding targets, the resulting linear model happens to lead to predictions that ignore the first feature: $f(x_1,x_2) = \beta x_2$. The top table shows the three different patterns that can occur: `direct' ({\em  D}), `symmetric' ({\em  S}), and `asymmetric' ({\em  A}). The bottom table gives for each of the four causal models on the left the marginal, conditional, and causal Shapley values, where the latter two are further split up in symmetric and asymmetric.\relax }}{5}{figure.caption.2}}
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:fourmodels}{{1}{5}{Direct and indirect Shapley values for four causal models with the same observational distribution over features (such that $\expectation [X_1] = \expectation [X_2] = 0$ and $\expectation [X_2|x_1] = \alpha x_1$), yet a different causal structure. Having been trained on combinations of features and corresponding targets, the resulting linear model happens to lead to predictions that ignore the first feature: $f(x_1,x_2) = \beta x_2$. The top table shows the three different patterns that can occur: `direct' (\patd ), `symmetric' (\pats ), and `asymmetric' (\pata ). The bottom table gives for each of the four causal models on the left the marginal, conditional, and causal Shapley values, where the latter two are further split up in symmetric and asymmetric.\relax }{figure.caption.2}{}}
 \citation{janzing2019feature}
-\citation{lundberg2017unified}
+\citation{frye2019asymmetric}
+\citation{janzing2019feature}
 \citation{lundberg2020local}
 \citation{frye2019asymmetric}
+\citation{pearl2012calculus}
+\citation{frye2019asymmetric}
+\citation{lauritzen2002chain}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Causal chain graphs}{6}{section.4}}
+\newlabel{eq:interventional}{{5}{6}{Causal chain graphs}{equation.4.5}{}}
+\citation{lauritzen2002chain}
+\citation{lauritzen2002chain}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces From partial ordering to causal chain graph. Features on equal footing are combined into a fully connected chain component. How to handle interventions within each component depends on the generative process that best explains the (surplus) dependencies. In this example, the dependencies between $X_1$ and $X_2$ in chain component $\tau _1$ and $X_6$ and $X_7$ in $\tau _3$ are assumed to be the result of a common confounder. The surplus dependencies in $\tau _2$ are assumed to be caused by mutual interactions. {\color  {red} Attempt to illustrate the main ideas. Could be nice, but probably not enough space?}\relax }}{7}{figure.caption.3}}
+\newlabel{fig:chaingraph}{{2}{7}{From partial ordering to causal chain graph. Features on equal footing are combined into a fully connected chain component. How to handle interventions within each component depends on the generative process that best explains the (surplus) dependencies. In this example, the dependencies between $X_1$ and $X_2$ in chain component $\tau _1$ and $X_6$ and $X_7$ in $\tau _3$ are assumed to be the result of a common confounder. The surplus dependencies in $\tau _2$ are assumed to be caused by mutual interactions. \comment {Attempt to illustrate the main ideas. Could be nice, but probably not enough space?}\relax }{figure.caption.3}{}}
+\citation{pearl2012calculus}
+\citation{aas2019explaining}
+\citation{frye2019asymmetric}
+\citation{aas2019explaining}
+\citation{aas2019explaining}
+\citation{frye2019asymmetric}
+\citation{aas2019explaining}
+\citation{lundberg2017unified}
+\citation{lundberg2020local}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Experiments}{8}{section.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{8}{section.6}}
 \citation{pearl2018obesity}
 \bibdata{shapleyrefs}
 \bibcite{aas2019explaining}{1}
-\bibcite{chiappa2019path}{2}
-\bibcite{frye2019asymmetric}{3}
-\bibcite{janzing2019feature}{4}
-\bibcite{lauritzen2002chain}{5}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Discussion}{11}{section.7}}
-\bibcite{lipovetsky2001analysis}{6}
-\bibcite{lundberg2020local}{7}
-\bibcite{lundberg2017unified}{8}
+\bibcite{frye2019asymmetric}{2}
+\bibcite{janzing2019feature}{3}
+\bibcite{lauritzen2002chain}{4}
+\bibcite{lipovetsky2001analysis}{5}
+\bibcite{lundberg2020local}{6}
+\bibcite{lundberg2017unified}{7}
+\bibcite{ong2013reciprocal}{8}
 \bibcite{pearl1995causal}{9}
 \bibcite{pearl2012calculus}{10}
 \bibcite{pearl2018obesity}{11}
 \bibcite{ribeiro2016should}{12}
 \bibcite{shapley1953value}{13}
-\bibcite{shen2020challenges}{14}
-\bibcite{vstrumbelj2014explaining}{15}
+\bibcite{vstrumbelj2014explaining}{14}
+\bibcite{sundararajan2019many}{15}
 \bibstyle{plain}
