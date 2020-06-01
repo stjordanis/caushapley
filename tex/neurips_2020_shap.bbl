@@ -6,6 +6,19 @@ Kjersti Aas, Martin Jullum, and Anders L{\o}land.
   accurate approximations to {S}hapley values.
 \newblock {\em arXiv preprint arXiv:1903.10464}, 2019.
 
+\bibitem{bhatt2020explainable}
+Umang Bhatt, Alice Xiang, Shubham Sharma, Adrian Weller, Ankur Taly, Yunhan
+  Jia, Joydeep Ghosh, Ruchir Puri, Jos{\'e}~MF Moura, and Peter Eckersley.
+\newblock Explainable machine learning in deployment.
+\newblock In {\em Proceedings of the 2020 Conference on Fairness,
+  Accountability, and Transparency}, pages 648--657, 2020.
+
+\bibitem{edwards2017slave}
+Lilian Edwards and Michael Veale.
+\newblock Slave to the algorithm: {W}hy a right to an explanation is probably
+  not the remedy you are looking for.
+\newblock {\em Duke L. \& Tech. Rev.}, 16:18, 2017.
+
 \bibitem{frye2019asymmetric}
 Christopher Frye, Ilya Feige, and Colin Rowat.
 \newblock Asymmetric {S}hapley values: incorporating causal knowledge into
@@ -17,6 +30,12 @@ Dominik Janzing, Lenon Minorics, and Patrick Bl{\"o}baum.
 \newblock Feature relevance quantification in explainable {AI}: {A} causality
   problem.
 \newblock {\em arXiv preprint arXiv:1910.13413}, 2019.
+
+\bibitem{kusner2017counterfactual}
+Matt~J Kusner, Joshua Loftus, Chris Russell, and Ricardo Silva.
+\newblock Counterfactual fairness.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  4066--4076, 2017.
 
 \bibitem{lauritzen2002chain}
 Steffen~L Lauritzen and Thomas~S Richardson.
@@ -43,6 +62,12 @@ Scott~M Lundberg and Su-In Lee.
 \newblock In {\em Advances in Neural Information Processing Systems}, pages
   4765--4774, 2017.
 
+\bibitem{mittelstadt2019explaining}
+Brent Mittelstadt, Chris Russell, and Sandra Wachter.
+\newblock Explaining explanations in ai.
+\newblock In {\em Proceedings of the conference on fairness, accountability,
+  and transparency}, pages 279--288, 2019.
+
 \bibitem{ong2013reciprocal}
 Chong~Weng Ong, Denise~M O’Driscoll, Helen Truby, Matthew~T Naughton, and
   Garun~S Hamilton.
@@ -66,6 +91,13 @@ Judea Pearl.
   causes.
 \newblock {\em Journal of Causal Inference}, 6(2), 2018.
 
+\bibitem{rehder2003causal}
+Bob Rehder.
+\newblock A causal-model theory of conceptual representation and
+  categorization.
+\newblock {\em Journal of Experimental Psychology: Learning, Memory, and
+  Cognition}, 29(6):1141, 2003.
+
 \bibitem{ribeiro2016should}
 Marco~Tulio Ribeiro, Sameer Singh, and Carlos Guestrin.
 \newblock ``{W}hy should {I} trust you?''s {E}xplaining the predictions of any
@@ -78,6 +110,12 @@ Lloyd~S Shapley.
 \newblock A value for n-person games.
 \newblock {\em Contributions to the Theory of Games}, 2(28):307--317, 1953.
 
+\bibitem{sloman2005causal}
+Steven Sloman.
+\newblock {\em Causal models: How people think about the world and its
+  alternatives}.
+\newblock Oxford University Press, 2005.
+
 \bibitem{vstrumbelj2014explaining}
 Erik {\v{S}}trumbelj and Igor Kononenko.
 \newblock Explaining prediction models and individual predictions with feature
@@ -88,5 +126,13 @@ Erik {\v{S}}trumbelj and Igor Kononenko.
 Mukund Sundararajan and Amir Najmi.
 \newblock The many shapley values for model explanation.
 \newblock {\em arXiv preprint arXiv:1908.08474}, 2019.
+
+\bibitem{gdpr2017}
+European Union.
+\newblock Eu general data protection regulation (gdpr): Regulation (eu)
+  2016/679 of the european parliament and of the council of 27 april 2016 on
+  the protection of natural persons with regard to the processing of personal
+  data and on the free movement of such data, and repealing directive 95/46/ec
+  (general data protection regulation), oj 2016 l 119/1, 2016.
 
 \end{thebibliography}
