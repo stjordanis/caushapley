@@ -89,9 +89,13 @@ sample_causal <- function(index_given, n_samples, mu, cov_mat, m, x_test,
   stopifnot(is.matrix(x_test))
   stopifnot(is.list(ordering))
   
-  if (length(confounding) != length(ordering)) {
-    stop("For each component in the partial order, it must be specified if there is confounding or not.")
+  if (length(confounding) > 1 && length(confounding) != length(ordering)) {
+    stop("Confounding must be specified globally (one value for all components), or separately for each causal component in a vector.")
   }
+  if (length(confounding) == 1) {
+    confounding <- rep(confounding, length(ordering)) # replicate value for each component
+  }
+  
   if (!base::setequal(unlist(ordering), seq(m))) {
     stop(paste("Incomplete or incorrect partial ordering specified for", m, "variables"))
   }
