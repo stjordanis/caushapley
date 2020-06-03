@@ -1,0 +1,220 @@
+```{r}
+library(xgboost)
+library(shapr)
+library(caret)
+library(readr)
+library(magrittr)
+library(data.table)
+library(tidyr)
+library(dplyr)
+library(ggthemes)
+
+sapply(list.files("../shapr-master/R", full.names = TRUE), source)
+sapply(
+  grep(
+    "Rcpp",list.files("../shapr-master/src", pattern = "*.cpp$", full.names = TRUE), 
+    value = TRUE, invert = TRUE
+  ), 
+  Rcpp::sourceCpp, embeddedR = FALSE
+)
+source("../R/sina_plot.R")
+
+```
+
+
+```{r process_data}
+bike <- read.csv("day.csv")
+bike$trend <- as.integer(difftime(bike$dteday, min(as.Date(bike$dteday)))+1)/24
+bike$cosyear <- cospi(bike$trend/365*2)
+bike$sinyear <- sinpi(bike$trend/365*2)
+bike$temp <- bike$temp * (39 - (-8)) + (-8)
+bike$atemp <- bike$atemp * (50 - (-16)) + (-16)
+bike$cosweek <- cospi(bike$weekday/7*2)
+bike$sinweek <- sinpi(bike$weekday/7*2)
+bike$windspeed <- 67 * bike$windspeed
+bike$hum <- 100 * bike$hum
+
+x_var <- c("trend","cosyear","sinyear","temp","atemp","windspeed","hum")
+y_var <- "cnt"
+
+ts_plot <- ggplot(bike, aes(x=trend, y=cnt, color = temp)) + 
+  geom_point(size = 0.75) + scale_color_gradient(low="blue", high="red") + 
+  labs(colour = "temp") + xlab( "Days since 1 January 2011") +
+  ylab("Number of bikes rented") +
+  theme_minimal() + theme(legend.position = "right", legend.title = element_text(size = 10)) # theme(legend.position = c(0.25, 0.85), legend.direction = "horizontal")
+print(ts_plot)
+ggsave("../Experimental results/trend_plot.pdf", ts_plot, width = 4.5, height = 2)
+```
+
+
+
+```{r run_xgboost, echo = FALSE}
+
+# NOTE: Encountered reproducibility issues across different systems with caret, so we saved the training-test split.
+# caret::createDataPartition(bike$cnt, p = .8, list = FALSE, times = 1)
+
+trainIndex <- readRDS("train_index.rds")
+
+x_train <- as.matrix(bike[trainIndex,x_var])
+y_train <- as.matrix(bike[trainIndex,y_var])
+y_train <- y_train - mean(y_train)
+x_test <- as.matrix(bike[-trainIndex,x_var])
+y_test <- as.matrix(bike[-trainIndex,y_var])
+y_test <- y_test - mean(y_test)
+
+# Fitting a basic xgboost model to the training data
+model <- xgboost(
+  data = x_train,
+  label = y_train,
+  nround = 100,
+  verbose = TRUE
+)
+RMSE(y_test, predict(model,x_test))
+
+
+```
+
+```{r}
+explainer <- shapr(x_train, model)                    
+p <- mean(y_train)
+
+explanation_mar <- explain(
+  x_test,
+  approach = "causal",
+  explainer = explainer,
+  prediction_zero = p,
+  ordering = list(c(1:7)),
+  confounding = TRUE
+)
+```
+
+```{r}
+sina_plot(explanation_mar)
+```
+
+
+```{r}
+explainer <- shapr(x_train, model)                    
+p <- mean(y_train)
+
+explanation_caus <- explain(
+  x_test,
+  approach = "causal",
+  explainer = explainer,
+  prediction_zero = p,
+  ordering = list(c(1,2,3),c(4,5,6,7)),
+  confounding = c(TRUE, TRUE),
+  seed = 2020
+)
+
+# sina_plot(explanation_caus)
+plt <- sina_plot(explanation_caus)
+ggsave("../Experimental results/sina_plot.pdf", plt, height = 6.5, width = 6.5)
+```
+
+```{r}
+library(plotly)
+library(ggplot2)
+library(htmlwidgets)
+library(repr)
+library(ggpubr)
+
+explanation_caus_copy <- data.frame(explanation_caus$dt)
+
+explanation_caus_copy$dt$valcosyear = x_test[,"cosyear"]
+explanation_caus_copy$valtemp = x_test[,"temp"]
+
+explanation_caus_copy$shapcosyearmar = explanation_mar$dt$cosyear
+explanation_caus_copy$shapcosyearcaus = explanation_caus$dt$cosyear
+
+explanation_caus_copy$shaptempmar = explanation_mar$dt$temp
+explanation_caus_copy$shaptempcaus = explanation_caus$dt$temp
+
+
+sp_topright <- ggplot(explanation_caus_copy, aes(x=shapcosyearcaus, y=shapcosyearmar, color = valtemp)) + 
+  geom_point(size = 1) + scale_color_gradient(low="blue", high="red") +
+  xlab( "CSV cosyear") + ylab("MSV cosyear") + 
+  scale_x_continuous(limits = c(-1500, 1000), breaks = c(-1000, 0, 1000)) +
+  scale_y_continuous(limits = c(-500, 500), breaks = c(-500, 0, 500)) + 
+  theme_minimal() +
+  theme(text=element_text(size=12), axis.title.x = element_blank(), axis.title.y=element_blank(),
+        axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+        axis.text.y = element_blank(), axis.ticks.y = element_blank()) # coord_equal()
+  # labs(colour = "Feature value temp")
+
+sp_bottomleft <- ggplot(explanation_caus_copy, aes(x=shaptempmar, y=shaptempcaus, color = valtemp)) +
+  geom_point(size = 1) + scale_color_gradient(low="blue", high="red") + 
+  ylab( "CSV temp")+xlab("MSV temp") +  
+  scale_x_continuous(limits = c(-1500, 1000), breaks = c(-1000, 0, 1000)) +
+  scale_y_continuous(limits = c(-1000, 1000), breaks = c(-500, 0, 500))  + 
+  theme_minimal() +
+  theme(text=element_text(size=12), axis.text.x=element_text(size=12), axis.text.y=element_text(size=12)) #coord_equal()
+
+
+sp_bottomright <- ggplot(explanation_caus_copy, aes(x=shapcosyearcaus, y=shaptempcaus, color=valtemp)) +
+  geom_point(size = 1) + ylab("CSV temp") + xlab( "CSV cosyear") + 
+  scale_x_continuous(limits = c(-1500, 1000), breaks = c(-1000, 0, 1000)) +
+  scale_y_continuous(limits = c(-1000, 1000), breaks = c(-500, 0, 500))  + 
+  scale_color_gradient(low="blue", high="red")+
+  theme_minimal() +
+  theme(text=element_text(size=12), axis.text.x=element_text(size=12),
+        axis.title.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank()) # coord_equal()
+
+sp_topleft <- ggplot(explanation_caus_copy, aes(x=shaptempmar, y=shapcosyearmar,color =valtemp)) + 
+  geom_point(size = 1)+xlab("MSV temp")+ylab( "MSV cosyear")+
+  scale_x_continuous(limits = c(-1500, 1000), breaks = c(-1000, 0, 1000)) +
+  scale_y_continuous(limits = c(-500, 500), breaks = c(-500, 0, 500))  + 
+  scale_color_gradient(low="blue", high="red") +
+  theme_minimal() + 
+  theme(text=element_text(size=12), axis.text.x=element_blank(), axis.text.y=element_text(size=12),
+        axis.ticks.x = element_blank(), axis.title.x = element_blank()) #coord_equal()
+
+# grid <- ggarrange(sp_topleft, sp_topright, sp_bottomleft, sp_bottomright, legend = "none")
+# ggsave("../Experimental results/corr_plots.pdf", grid, width = 7, height = 5)
+grid_top <- ggarrange(sp_topleft, sp_topright, legend = "none")
+grid_bottom <- ggarrange(sp_bottomleft, sp_bottomright, legend = "none")
+
+ggsave("../Experimental results/corr_plots_top.pdf", grid_top, width = 5, height = 1)
+ggsave("../Experimental results/corr_plots_bottom.pdf", grid_bottom, width = 5, height = 2)
+```
+
+```{r, bar_plot}
+
+# bike$mnth[189]
+# bike$dteday[189]
+bike$dteday[534]
+
+# Pick row number here
+row <- 108 # corresponds to observation 534 (June 17, Year 2) in the whole data set
+feature_value <- round(x_test[row,], digit=2)
+caus <- explanation_caus$dt[row][, -1, drop = FALSE]
+mar  <- explanation_mar$dt[row][, -1, drop = FALSE]
+
+caus.l <- as.numeric(caus)
+mar.l <- as.numeric(mar)
+value = c()
+for (i in 1:length(caus.l)) {
+  value <- c(value, mar.l[i])
+  value <- c(value, caus.l[i])
+}
+
+Feature <- c(rep(paste("trend\n= ",toString(feature_value[1])) , 2) ,
+             rep(paste("cosyear\n= ",toString(feature_value[2])) , 2) ,
+             rep(paste("sinyear\n= ",toString(feature_value[3])) , 2) ,
+             rep(paste("temp\n= ",toString(feature_value[4])) , 2) ,
+             rep(paste("atemp\n= ",toString(feature_value[5])) , 2) ,
+             rep(paste("windspeed\n= ",toString(feature_value[6])) , 2) ,
+             rep(paste("hum\n= ",toString(feature_value[7])) , 2))
+Feature <- factor(Feature, levels = unique(Feature))
+Approach = rep(c("Marginal", "Causal"), 7)
+data <- data.frame(Feature,Approach,value)
+
+bp <- ggplot(data, aes(fill=Approach, y=value, x=Feature)) +
+  geom_bar(position="dodge", stat="identity") + xlab("") + ylab("Shapley value") +
+  scale_fill_manual(values=c("#00d9e0","#ffa600")) + 
+  theme_tufte() + theme(legend.position = "top") +
+  theme(axis.text.x = element_text(angle = 0, size = 12)) +
+  theme(axis.title = element_text(size = 20)) +
+  theme(legend.title = element_text(size = 16), legend.text = element_text(size = 12))
+ggsave("../Experimental results/bar_plot.pdf", bp)
+```
