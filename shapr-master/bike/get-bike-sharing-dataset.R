@@ -17,7 +17,7 @@ get.bike.data = function(data_dir){
   # temp : Normalized temperature in Celsius. The values are derived via (t-t_min)/(t_max-t_min), t_min=-8, t_max=+39 (only in hourly scale)
   bike$temp = bike$temp * (39 - (-8)) + (-8)
   # atemp: Normalized feeling temperature in Celsius. The values are derived via (t-t_min)/(t_max-t_min), t_min=-16, t_max=+50 (only in hourly scale)
-  bike$atemp = bike$atemp * (50 - (16)) + (16)
+  bike$atemp = bike$atemp * (50 - (-16)) + (-16)
 
   #windspeed: Normalized wind speed. The values are divided to 67 (max)
   bike$windspeed = 67 * bike$windspeed
