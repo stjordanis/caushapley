@@ -143,12 +143,6 @@ Judea Pearl.
 \newblock The do-calculus revisited.
 \newblock {\em arXiv preprint arXiv:1210.4852}, 2012.
 
-\bibitem{pearl2018obesity}
-Judea Pearl.
-\newblock Does obesity shorten life? {O}r is it the soda? {O}n non-manipulable
-  causes.
-\newblock {\em Journal of Causal Inference}, 6(2), 2018.
-
 \bibitem{rehder2003causal}
 Bob Rehder.
 \newblock A causal-model theory of conceptual representation and
@@ -201,7 +195,7 @@ European Union.
 \bibitem{wachter2017counterfactual}
 Sandra Wachter, Brent Mittelstadt, and Chris Russell.
 \newblock Counterfactual explanations without opening the black box: Automated
-  decisions and the gdpr.
+  decisions and the {GDPR}.
 \newblock {\em Harv. JL \& Tech.}, 31:841, 2017.
 
 \end{thebibliography}
