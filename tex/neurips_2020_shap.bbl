@@ -71,8 +71,8 @@ Harmanpreet Kaur, Harsha Nori, Samuel Jenkins, Rich Caruana, Hanna Wallach, and
 \bibitem{kumar2020problems}
 I~Elizabeth Kumar, Suresh Venkatasubramanian, Carlos Scheidegger, and Sorelle
   Friedler.
-\newblock Problems with shapley-value-based explanations as feature importance
-  measures.
+\newblock Problems with {S}hapley-value-based explanations as feature
+  importance measures.
 \newblock {\em arXiv preprint arXiv:2002.11097}, 2020.
 
 \bibitem{kusner2017counterfactual}
