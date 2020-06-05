@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.28)  5 JUN 2020 21:36
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.28)  5 JUN 2020 21:45
 entering extended mode
 **./neurips_2020_shap.tex
 (neurips_2020_shap.tex
@@ -1157,11 +1157,11 @@ Package rerunfilecheck Info: File `neurips_2020_shap.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1038.
  ) 
 Here is how much of TeX's memory you used:
- 24478 strings out of 492970
- 479272 string characters out of 3135855
+ 24481 strings out of 492970
+ 479299 string characters out of 3135855
  627463 words of memory out of 3000000
  27607 multiletter control sequences out of 15000+200000
- 69167 words of font info for 234 fonts, out of 3000000 for 9000
+ 69392 words of font info for 236 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  55i,12n,78p,1854b,868s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc} <C:\Users\tomhe\App
@@ -1181,7 +1181,7 @@ pe1/public/amsfonts/symbols/msbm10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
 /urw/helvetic/uhvr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utm
 b8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Progr
 am Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on neurips_2020_shap.pdf (10 pages, 432995 bytes).
+Output written on neurips_2020_shap.pdf (10 pages, 432999 bytes).
 PDF statistics:
  348 PDF objects out of 1000 (max. 8388607)
  65 named destinations out of 1000 (max. 500000)
