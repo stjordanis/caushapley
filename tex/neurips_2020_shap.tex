@@ -42,6 +42,7 @@
 \usepackage{algpseudocode}
 \usepackage{amsthm}
 \usepackage{mathtools}
+\usepackage{wrapfig}
 \usetikzlibrary{arrows.meta}
 
 \newcommand{\een}{\mathbb{1}}
@@ -958,7 +959,19 @@ To compute these observational expectations, we can rely on the various methods 
 
 To illustrate the difference between marginal and causal Shapley values, we consider the bike rental dataset from~\cite{fanaee2013bikerental}, where we take as features the number of days since January 2011 ({\em trend}), two cyclical variables to represent season ({\em cosyear}, {\em sinyear}), the temperature ({\em temp}), feeling temperature ({\em atemp}), windspeed ({\em windspeed}), and humidity ({\em hum}). As can be seen from the time series itself (top left plot in Figure~\ref{fig:trendplot}), the bike rental is strongly seasonal and shows an upward trend. Data was randomly split in 80\% training and 20\% test set. We trained an XGBoost model for 100 rounds. 
 
-We adapted the R package SHAPR from~\cite{aas2019explaining} to compute causal Shapley values, which essentially boiled down to an adaptation of the sampling procedure so that it draws samples from the interventional conditional distribution~(\ref{eq:chaininterventional}) instead of from a conventional observational conditional distribution. The sina plot on the righthand side of Figure~\ref{fig:trendplot} shows the causal Shapley values calculated for the trained XGBoost model on the test data, where we chose the partial order $(\{\textit{trend}\},\{\textit{cosyear},\textit{sinyear}\},\{\textrm{all weather variables}\})$, with confounding for the second component and no confounding for the third. The sina plot clearly shows the relevance of the trend and the season (in particular cosine of the year, which is -1 on January 1 and +1 on July 1). The scatter plots on the left zoom in on the causal (CSV) and marginal Shapley values (MSV) for {\em cosyear} and {\em temp.} The marginal Shapley values for {\em cosyear} vary over a much smaller range than the causal Shapley values for {\em cosyear}, and vice versa for the Shapley values for {\em temp}: where the marginal Shapley values explain the predictions predominantly based on temperature, the causal Shapley values give season much more credit for the higher bike rental in summer and the lower bike rental in winter. \comment{To be done: discussion of individual cases, aligned with example in section 3.}
+We adapted the R package SHAPR from~\cite{aas2019explaining} to compute causal Shapley values, which essentially boiled down to an adaptation of the sampling procedure so that it draws samples from the interventional conditional distribution~(\ref{eq:chaininterventional}) instead of from a conventional observational conditional distribution. The sina plot on the righthand side of Figure~\ref{fig:trendplot} shows the causal Shapley values calculated for the trained XGBoost model on the test data, where we chose the partial order $(\{\textit{trend}\},\{\textit{cosyear},\textit{sinyear}\},\{\textrm{all weather variables}\})$, with confounding for the second component and no confounding for the third. The sina plot clearly shows the relevance of the trend and the season (in particular cosine of the year, which is -1 on January 1 and +1 on July 1). The scatter plots on the left zoom in on the causal (CSV) and marginal Shapley values (MSV) for {\em cosyear} and {\em temp.} The marginal Shapley values for {\em cosyear} vary over a much smaller range than the causal Shapley values for {\em cosyear}, and vice versa for the Shapley values for {\em temp}: where the marginal Shapley values explain the predictions predominantly based on temperature, the causal Shapley values give season much more credit for the higher bike rental in summer and the lower bike rental in winter.
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{figures/bar_plots.pdf}
+	\end{center}
+	\caption{Causal and marginal Shapley values for two different days with more or less the same temperature.}
+\end{wrapfigure}
+
+This becomes even more obvious when we consider two days, October 10 with more or less the same temperature of 13 degrees. On 
+
+blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla blabla 
+%\comment{To be done: discussion of individual cases, aligned with example in section 3.}
 
 
 \section{Discussion}
