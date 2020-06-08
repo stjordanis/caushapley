@@ -1,0 +1,32 @@
+\begin{thebibliography}{1}
+
+\bibitem{aas2019explaining}
+Kjersti Aas, Martin Jullum, and Anders L{\o}land.
+\newblock Explaining individual predictions when features are dependent: {M}ore
+  accurate approximations to {S}hapley values.
+\newblock {\em arXiv preprint arXiv:1903.10464}, 2019.
+
+\bibitem{forre2019causal}
+Patrick Forr{\'e} and Joris~M Mooij.
+\newblock Causal calculus in the presence of cycles, latent confounders and
+  selection bias.
+\newblock {\em arXiv preprint arXiv:1901.00433}, 2019.
+
+\bibitem{frye2019asymmetric}
+Christopher Frye, Ilya Feige, and Colin Rowat.
+\newblock Asymmetric {S}hapley values: incorporating causal knowledge into
+  model-agnostic explainability.
+\newblock {\em arXiv preprint arXiv:1910.06358}, 2019.
+
+\bibitem{janzing2019feature}
+Dominik Janzing, Lenon Minorics, and Patrick Bl{\"o}baum.
+\newblock Feature relevance quantification in explainable {AI}: {A} causality
+  problem.
+\newblock {\em arXiv preprint arXiv:1910.13413}, 2019.
+
+\bibitem{pearl2012calculus}
+Judea Pearl.
+\newblock The \textit{do}-calculus revisited.
+\newblock {\em arXiv preprint arXiv:1210.4852}, 2012.
+
+\end{thebibliography}
