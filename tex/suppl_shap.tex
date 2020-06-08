@@ -242,7 +242,7 @@ For symmetric conditional Shapley values, we do get different contributions for 
 Here the first term in the contribution for the first feature corresponds to the direct effect and the second term to the indirect effect. The contribution for the second feature only consists of a direct effect. The contributions for the other permutation follow by swapping the indices and the final Shapley values by averaging to arrive at the {\em symmetric conditional Shapley values}
 \begin{eqnarray}
 \phi_1 \isequal \beta_1 (x_1 - \bx_1) - {1 \over 2} \beta_1 \alpha_2 (x_2 - \bx_2) + {1 \over 2} \beta_2 \alpha_1 (x_1 - \bx_1) \nonumber \\
-\phi_2 \isequal \beta_2 (x_2 - \bx_2) - {1 \over 2} \beta_2 \alpha_1 (x_1 - \bx_1) + {1 \over 2} \beta_1 \alpha_2 (x_1 - \bx_1) \: ,
+\phi_2 \isequal \beta_2 (x_2 - \bx_2) - {1 \over 2} \beta_2 \alpha_1 (x_1 - \bx_1) + {1 \over 2} \beta_1 \alpha_2 (x_2 - \bx_2) \: ,
 \label{eq:symmetric}
 \end{eqnarray}
 where now the first two terms constitute the direct effect and the third term the indirect effect.
@@ -275,7 +275,7 @@ and for the cycle
 \[
 P(X_2 | \sdo{1}) = P(X_2 | x_1) \mbox{~~since~~} X_2 \perpsg I_{X_1} ~|~ X_1 \mbox{~~and~~} P(X_1 | \sdo{2}) = P(X_1|x_2) \mbox{~~since~~} X_1 \perpsg I_{X_2} ~|~ X_2 \mbox{~~(rule 2).}
 \]
-Consequently, for the confounder the {\em symmetric and asymmetric causal Shapley values} coincide with the marginal Shapley values (consistent with~\cite{janzing2019feature}) and for the cycle with the symmetric conditional Shapley values from~(\ref{eq:symmetric}). For the chain, the causal symmetric Shapley values become
+Consequently, for the confounder the {\em symmetric} and {\em asymmetric causal Shapley values} coincide with the marginal Shapley values (consistent with~\cite{janzing2019feature}) and for the cycle with the symmetric conditional Shapley values from~(\ref{eq:symmetric}). For the chain, the causal symmetric Shapley values become
 \begin{eqnarray}
 \phi_1(1,2) \isequal \beta_1 (x_1 - \bx_1) + {1 \over 2} \beta_2 \alpha_1 (x_1 - \bx_1) \nonumber \\
 \phi_2(1,2) \isequal \beta_2 (x_2 -\bx_2) - {1 \over 2} \beta_2 \alpha_1 (x_1 - \bx_1) \: ,
