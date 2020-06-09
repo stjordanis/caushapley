@@ -119,7 +119,9 @@ weight_matrix <- function(X, normalize_W_weights = TRUE) {
 shapr <- function(x,
                   model,
                   n_combinations = NULL,
-                  feature_labels = NULL) {
+                  feature_labels = NULL,
+                  asymmetric = FALSE,
+                  ordering = NULL) {
 
   # Checks input argument
   if (!is.matrix(x) & !is.data.frame(x)) {
@@ -151,7 +153,9 @@ shapr <- function(x,
     m = explainer$n_features,
     exact = explainer$exact,
     n_combinations = n_combinations,
-    weight_zero_m = 10^6
+    weight_zero_m = 10^6,
+    asymmetric = asymmetric,
+    ordering = ordering
   )
 
   # Get weighted matrix ----------------

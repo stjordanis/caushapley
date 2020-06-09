@@ -43,7 +43,7 @@ ts_plot <- ggplot(bike, aes(x=trend, y=cnt, color = temp)) +
   ylab("Number of bikes rented") +
   theme_minimal() + theme(legend.position = "right", legend.title = element_text(size = 10)) # theme(legend.position = c(0.25, 0.85), legend.direction = "horizontal")
 print(ts_plot)
-ggsave("../Experimental results/trend_plot.pdf", ts_plot, width = 4.5, height = 2)
+ggsave("../tex/figures/final_trend_plot.pdf", ts_plot, width = 4.5, height = 2)
 ```
 
 
@@ -53,14 +53,18 @@ ggsave("../Experimental results/trend_plot.pdf", ts_plot, width = 4.5, height = 
 # NOTE: Encountered reproducibility issues across different systems with caret, so we saved the training-test split.
 # caret::createDataPartition(bike$cnt, p = .8, list = FALSE, times = 1)
 
-trainIndex <- readRDS("train_index.rds")
+set.seed(2013)
+trainIndex <- caret::createDataPartition(bike$cnt, p = .8, list = FALSE, times = 1)
+
+648 %in% trainIndex
+703 %in% trainIndex
 
 x_train <- as.matrix(bike[trainIndex,x_var])
-y_train <- as.matrix(bike[trainIndex,y_var])
-y_train <- y_train - mean(y_train)
+y_train_orig <- as.matrix(bike[trainIndex,y_var])
+y_train <- y_train_orig - mean(y_train_orig)
 x_test <- as.matrix(bike[-trainIndex,x_var])
-y_test <- as.matrix(bike[-trainIndex,y_var])
-y_test <- y_test - mean(y_test)
+y_test_orig <- as.matrix(bike[-trainIndex,y_var])
+y_test <- y_test_orig - mean(y_train_orig)
 
 # Fitting a basic xgboost model to the training data
 model <- xgboost(
@@ -84,17 +88,16 @@ explanation_mar <- explain(
   explainer = explainer,
   prediction_zero = p,
   ordering = list(c(1:7)),
-  confounding = TRUE
+  confounding = TRUE,
+  seed = 2020
 )
-```
 
-```{r}
 sina_plot(explanation_mar)
 ```
 
 
 ```{r}
-explainer <- shapr(x_train, model)                    
+explainer <- shapr(x_train, model)
 p <- mean(y_train)
 
 explanation_caus <- explain(
@@ -102,14 +105,34 @@ explanation_caus <- explain(
   approach = "causal",
   explainer = explainer,
   prediction_zero = p,
-  ordering = list(c(1,2,3),c(4,5,6,7)),
-  confounding = c(TRUE, TRUE),
+  ordering = list(1, c(2, 3), c(4,5,6,7)),
+  confounding = c(FALSE, TRUE, FALSE),
   seed = 2020
 )
 
 # sina_plot(explanation_caus)
-plt <- sina_plot(explanation_caus)
-ggsave("../Experimental results/sina_plot.pdf", plt, height = 6.5, width = 6.5)
+sina_plot(explanation_caus)
+# ggsave("../tex/figures/sina_plot.pdf", ggplot2::last_plot(), height = 6.5, width = 6.5)
+```
+
+```{r asymmetric}
+explainer_asym <- shapr(x_train, model, asymmetric = TRUE, ordering = list(1, c(2, 3), c(4,5,6,7)))
+p <- mean(y_train)
+
+explanation_asym <- explain(
+  x_test,
+  approach = "causal",
+  explainer = explainer_asym,
+  prediction_zero = p,
+  asymmetric = TRUE,
+  ordering = list(1, c(2, 3), c(4,5,6,7)),
+  confounding = c(FALSE, TRUE, FALSE),
+  seed = 2020
+)
+
+# sina_plot(explanation_caus)
+sina_plot(explanation_asym)
+
 ```
 
 ```{r}
@@ -174,47 +197,178 @@ sp_topleft <- ggplot(explanation_caus_copy, aes(x=shaptempmar, y=shapcosyearmar,
 grid_top <- ggarrange(sp_topleft, sp_topright, legend = "none")
 grid_bottom <- ggarrange(sp_bottomleft, sp_bottomright, legend = "none")
 
-ggsave("../Experimental results/corr_plots_top.pdf", grid_top, width = 5, height = 1)
-ggsave("../Experimental results/corr_plots_bottom.pdf", grid_bottom, width = 5, height = 2)
+ggsave("../tex/figures/final_corr_plots_top.pdf", grid_top, width = 5, height = 1)
+ggsave("../tex/figures/final_corr_plots_bottom.pdf", grid_bottom, width = 5, height = 2)
 ```
 
 ```{r, bar_plot}
 
-# bike$mnth[189]
-# bike$dteday[189]
-bike$dteday[534]
+# trainIndex <- setdiff(1:nrow(bike), c(471, 568))
+# 
+# trainIndex <- setdiff(1:nrow(bike), c(648, 703))
+# 
+# x_train <- as.matrix(bike[trainIndex,x_var])
+# y_train <- as.matrix(bike[trainIndex,y_var])
+# y_train <- y_train - mean(y_train)
+# 
+# x_test <- as.matrix(bike[-trainIndex,x_var])
+# y_test <- as.matrix(bike[-trainIndex,y_var])
+# y_test <- y_test - mean(as.matrix(bike[trainIndex,y_var]))
+# 
+# model <- xgboost(
+#   data = x_train,
+#   label = y_train,
+#   nround = 200,
+#   verbose = TRUE
+# )
 
-# Pick row number here
-row <- 108 # corresponds to observation 534 (June 17, Year 2) in the whole data set
-feature_value <- round(x_test[row,], digit=2)
-caus <- explanation_caus$dt[row][, -1, drop = FALSE]
-mar  <- explanation_mar$dt[row][, -1, drop = FALSE]
+# RMSE(y_test, predict(model,x_test))
 
-caus.l <- as.numeric(caus)
-mar.l <- as.numeric(mar)
-value = c()
-for (i in 1:length(caus.l)) {
-  value <- c(value, mar.l[i])
-  value <- c(value, caus.l[i])
-}
+# add_fake_days <- function(x_test, dates) {
+#   
+#   for (date in dates) {
+#       day <- yday(date)
+#     x_mean <- unlist(colMeans(x_train))
+#     x_mean[c('cosyear', 'sinyear')] <- c(cospi(day / 365 * 2), sinpi(day / 365 * 2)) 
+#     # x_mean['trend'] <- bike$trend[day]
+#     x_test <- rbind(x_test, matrix(x_mean, nrow = 1, dimnames = list(paste0("f", day), colnames(x_test))))
+#   }
+#   
+#   x_test
+# }
+# 
+# art_dates <- c("2011-02-01", "2011-05-01", "2011-08-01", "2011-11-01")
+# 
+# 
+# # x_test <- add_fake_days(x_test, c("2011-03-20", "2011-06-21", "2011-09-23", "2011-12-22"))
+# x_test <- add_fake_days(x_test, art_dates)
+# 
+# explainer <- shapr(x_train, model)                    
+# p <- mean(y_train)
 
-Feature <- c(rep(paste("trend\n= ",toString(feature_value[1])) , 2) ,
-             rep(paste("cosyear\n= ",toString(feature_value[2])) , 2) ,
-             rep(paste("sinyear\n= ",toString(feature_value[3])) , 2) ,
-             rep(paste("temp\n= ",toString(feature_value[4])) , 2) ,
-             rep(paste("atemp\n= ",toString(feature_value[5])) , 2) ,
-             rep(paste("windspeed\n= ",toString(feature_value[6])) , 2) ,
-             rep(paste("hum\n= ",toString(feature_value[7])) , 2))
-Feature <- factor(Feature, levels = unique(Feature))
-Approach = rep(c("Marginal", "Causal"), 7)
-data <- data.frame(Feature,Approach,value)
+# x_test <- as.matrix(rbind(bike[c(648, 703), x_var]))
 
-bp <- ggplot(data, aes(fill=Approach, y=value, x=Feature)) +
-  geom_bar(position="dodge", stat="identity") + xlab("") + ylab("Shapley value") +
-  scale_fill_manual(values=c("#00d9e0","#ffa600")) + 
-  theme_tufte() + theme(legend.position = "top") +
-  theme(axis.text.x = element_text(angle = 0, size = 12)) +
-  theme(axis.title = element_text(size = 20)) +
-  theme(legend.title = element_text(size = 16), legend.text = element_text(size = 12))
-ggsave("../Experimental results/bar_plot.pdf", bp)
+autumn <- which(setdiff(1:nrow(bike), trainIndex) == 648)
+winter <- which(setdiff(1:nrow(bike), trainIndex) == 703)
+
+# explanation_mar <- explain(
+#   x_test,
+#   approach = "causal",
+#   explainer = explainer,
+#   prediction_zero = p,
+#   ordering = list(c(1:7)),
+#   confounding = TRUE,
+#   seed = 2020
+# )
+# 
+# explanation_caus <- explain(
+#   x_test,
+#   approach = "causal",
+#   explainer = explainer,
+#   prediction_zero = p,
+#   ordering = list(1, c(2, 3), c(4,5,6,7)),
+#   confounding = c(FALSE, TRUE, FALSE),
+#   seed = 2020
+# )
+
+# explanation_mar$dt[, 'temp']
+# 
+# bike$dteday[471] # April 15
+# bike$dteday[568] # July 21
+# 
+# solstices <- yday("2011-0")
+
+# date_names <- bike$dteday[c(471, 568, 79, 172, 266, 356)]
+
+dt_marg <- explanation_mar$dt %>%
+  slice(c(autumn, winter)) %>%
+  select(cosyear, temp) %>%
+  mutate(date = bike$dteday[c(648, 703)], type = 'Marginal')
+
+dt_caus <- explanation_caus$dt %>%
+  slice(c(autumn, winter)) %>%
+  select(cosyear, temp) %>%
+  mutate(date = bike$dteday[c(648, 703)], type = 'Causal')
+
+dt_asym <- explanation_asym$dt %>%
+  slice(c(autumn, winter)) %>%
+  select(cosyear, temp) %>%
+  mutate(date = bike$dteday[c(648, 703)], type = 'Asymmetric')
+
+dt_all <- dt_marg %>% pivot_longer(c(cosyear, temp)) %>%
+  rbind(dt_caus %>% pivot_longer(c(cosyear, temp))) %>%
+  rbind(dt_asym %>% pivot_longer(c(cosyear, temp)))
+
+bp <- ggplot(dt_all, 
+       aes(x = name, y = value, group = interaction(date, name), fill = date, label = round(value, 2))) +
+  geom_col(position = "dodge") +
+  theme_classic() + ylab("Shapley value") +
+  facet_wrap(vars(type)) + theme(axis.title.x = element_blank()) +
+  scale_fill_manual(values = c('indianred4', 'ivory4')) + 
+  theme(legend.position = c(0.75, 0.25), axis.title = element_text(size = 20),
+        legend.title = element_text(size = 16), legend.text = element_text(size = 14),
+        axis.text.x = element_text(size = 12), axis.text.y = element_text(size = 12),
+        strip.text.x = element_text(size = 14))
+
+predict(model, x_test)[c(autumn, winter)] + mean(y_train_orig)
+
+ggsave("../tex/figures/bar_plots.pdf", bp, width = 6, height = 3)
+  
+  # this segment creates the bar plot with labels just inside the top of each bar
+  # note: geom_col() is equivalent to geom_bar(stat = "identity"), with less typing
+
+  # geom_text(position = position_dodge(width = 0.9),
+  #           vjust = 1.1) +
+  
+  # this segment creates the arrows & labels for the differences
+  # geom_line(aes(group = interaction(type, name)), position = position_nudge(0.15),
+  #           arrow = arrow(length=unit(0.3,"cm"))) +
+  
+  
+  # stat_summary(aes(x = interaction(type, name), y = value), 
+  #              geom = "label",
+  #              fun.data = function(x){
+  #                return(data.frame(y = max(x) + 25,
+  #                                  label = paste0(round(diff(x) / x[1] * 100, 2), "%")))
+  #              },
+  #              fontface = "bold", fill = "lightgrey",
+  #              inherit.aes = FALSE,
+  #              position = position_nudge(0.15)) +
+
+
+
+# Feature <- c(rep(paste("trend\n= ",toString(feature_value[1])) , 2) ,
+#              rep(paste("cosyear\n= ",toString(feature_value[2])) , 2) ,
+#              rep(paste("sinyear\n= ",toString(feature_value[3])) , 2) ,
+#              rep(paste("temp\n= ",toString(feature_value[4])) , 2) ,
+#              rep(paste("atemp\n= ",toString(feature_value[5])) , 2) ,
+#              rep(paste("windspeed\n= ",toString(feature_value[6])) , 2) ,
+#              rep(paste("hum\n= ",toString(feature_value[7])) , 2))
+# Feature <- factor(Feature, levels = unique(Feature))
+# Approach = rep(c("Marginal", "Causal"), 7)
+# 
+# # Pick row number here
+# row <- 1 # corresponds to observation 534 (June 17, Year 2) in the whole data set
+# feature_value <- round(explanation_caus$x_test[row,], digit=2)
+# caus <- explanation_caus$dt[row][, -1, drop = FALSE]
+# mar  <- explanation_mar$dt[row][, -1, drop = FALSE]
+# 
+# caus.l <- as.numeric(caus)
+# mar.l <- as.numeric(mar)
+# value = c()
+# for (i in 1:length(caus.l)) {
+#   value <- c(value, mar.l[i])
+#   value <- c(value, caus.l[i])
+# }
+# 
+# data <- data.frame(Feature,Approach,value)
+
+# bp <- ggplot(data, aes(fill=Approach, y=value, x=Feature)) +
+#   geom_bar(position="dodge", stat="identity") + xlab("") + ylab("Shapley value") +
+#   scale_fill_manual(values=c("#00d9e0","#ffa600")) + 
+#   theme_tufte() + theme(legend.position = "top") +
+#   theme(axis.text.x = element_text(angle = 0, size = 12)) +
+#   theme(axis.title = element_text(size = 20)) +
+#   theme(legend.title = element_text(size = 16), legend.text = element_text(size = 12))
+
 ```

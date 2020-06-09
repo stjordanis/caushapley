@@ -201,7 +201,7 @@ explain.empirical <- function(x, explainer, approach, prediction_zero,
 #'
 #' @export
 
-explain.causal <- function(x, explainer, approach, prediction_zero, mu = NULL, cov_mat = NULL, ordering = NULL, confounding = FALSE, ...) {
+explain.causal <- function(x, explainer, approach, prediction_zero, mu = NULL, cov_mat = NULL, ordering = NULL, confounding = FALSE, asymmetric = FALSE, ...) {
 
   # Add arguments to explainer object
   explainer$x_test <- explainer_x_test(x, explainer$feature_labels)
@@ -231,7 +231,7 @@ explain.causal <- function(x, explainer, approach, prediction_zero, mu = NULL, c
   explainer$confounding <- confounding
 
   # Generate data
-  dt <- prepare_data(explainer, ...)
+  dt <- prepare_data(explainer, asymmetric = asymmetric, ordering = ordering, ...)
   if (!is.null(explainer$return)) return(dt)
 
   # Predict
@@ -243,7 +243,7 @@ explain.causal <- function(x, explainer, approach, prediction_zero, mu = NULL, c
 
 #' @rdname explain
 #' @export
-explain.gaussian <- function(x, explainer, approach, prediction_zero, mu = NULL, cov_mat = NULL, ...) {
+explain.gaussian <- function(x, explainer, approach, prediction_zero, mu = NULL, cov_mat = NULL, asymmetric = FALSE, ordering = NULL, ...) {
 
   # Add arguments to explainer object
   explainer$x_test <- explainer_x_test(x, explainer$feature_labels)
@@ -270,7 +270,7 @@ explain.gaussian <- function(x, explainer, approach, prediction_zero, mu = NULL,
   }
 
   # Generate data
-  dt <- prepare_data(explainer, ...)
+  dt <- prepare_data(explainer, asymmetric = asymmetric, ordering = ordering, ...)
   if (!is.null(explainer$return)) return(dt)
 
   # Predict
