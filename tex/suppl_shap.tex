@@ -383,17 +383,17 @@ Theorem~1 connects to observations made and algorithms proposed in recent papers
 
 \section{Additional illustrations on the bike rental data}
 
-Figure~\ref{fig:sinaplots} shows sina plots for asymmetric conditional Shapley values (left) and marginal Shapley values (right), to be compared with the sina plots for symmetric causal Shapley values in Figure~3 of the main text. The sina plots for asymmetric causal Shapley values are virtually indistinguishable from those for the asymmetric conditional Shapley values.
+Figure~\ref{fig:sinaplots} shows sina plots for asymmetric conditional Shapley values (left) and marginal Shapley values (right), to be compared with the sina plots for symmetric causal Shapley values in Figure~3 of the main text. In this case, the sina plots for asymmetric causal Shapley values are virtually indistinguishable from those for the asymmetric conditional Shapley values.
 
 It can be seen that the marginal Shapley values strongly focus on temperature, largely ignoring the seasonal variables. The asymmetric Shapley values do the opposite: they focus on the seasonal variables, in particular {\em cosyear} and put much less emphasis on the temperature variables.
 
 \begin{figure}[t]
 	\centering
 	\begin{minipage}{.49\linewidth}
-%		\includegraphics[width=\textwidth]{figures/sina_plot_asymmetric.pdf}
+	\includegraphics[width=\textwidth]{figures/sina_plot_asymmetric.pdf}
 	\end{minipage}
 	\begin{minipage}{.49\linewidth}
-%		\includegraphics[width=\textwidth]{figures/sina_plot_marginal.pdf}
+	\includegraphics[width=\textwidth]{figures/sina_plot_marginal.pdf}
 	\end{minipage}
 	\caption{Sina plots of asymmetric (conditional) Shapley values (left) and marginal Shapley values (right). See Figure~3 in the main text for further details.}
 	\label{fig:sinaplots}
