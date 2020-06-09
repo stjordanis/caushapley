@@ -33,7 +33,7 @@
 #'
 #' # Subsample of combinations
 #' x <- shapr:::feature_combinations(m = 13, n_combinations = 1e3)
-feature_combinations <- function(m, exact = TRUE, n_combinations = 200, weight_zero_m = 10^6) {
+feature_combinations <- function(m, exact = TRUE, n_combinations = 200, weight_zero_m = 10^6, asymmetric = FALSE, ordering = NULL) {
 
   # Force user to use a natural number for n_combinations if m > 12
   if (m > 12 & is.null(n_combinations)) {
@@ -59,7 +59,7 @@ feature_combinations <- function(m, exact = TRUE, n_combinations = 200, weight_z
   }
 
   if (exact) {
-    dt <- feature_exact(m, weight_zero_m)
+    dt <- feature_exact(m, weight_zero_m, asymmetric, ordering)
   } else {
     dt <- feature_not_exact(m, n_combinations, weight_zero_m)
     stopifnot(
@@ -74,7 +74,7 @@ feature_combinations <- function(m, exact = TRUE, n_combinations = 200, weight_z
 }
 
 #' @keywords internal
-feature_exact <- function(m, weight_zero_m = 10^6) {
+feature_exact <- function(m, weight_zero_m = 10^6, asymmetric = FALSE, ordering = NULL) {
 
   features <- id_combination <- n_features <- shapley_weight <- N <- NULL # due to NSE notes in R CMD check
 
@@ -84,6 +84,22 @@ feature_exact <- function(m, weight_zero_m = 10^6) {
   dt[, n_features := length(features[[1]]), id_combination]
   dt[, N := .N, n_features]
   dt[, shapley_weight := shapley_weights(m = m, N = N, n_features, weight_zero_m)]
+  
+  if (asymmetric == TRUE) {
+    
+    # message("Asymmetric flag enabled. Only using permutations consistent with the ordering.")
+    
+    # By default, no ordering in specified, meaning all variables are in one component.
+    if (is.null(ordering)) {
+      message("feature_exact: Using no ordering by default.")
+      ordering <- list(1:m)
+    }
+    
+    # Filter out the features that do not agree with the order
+    dt <- dt[sapply(dt$features, respects_order, ordering), ]
+    dt[, N := .(count = .N), by = n_features]
+    dt[, shapley_weight := .(shapley_weights(m, N, n_features))]
+  }
 
   return(dt)
 }

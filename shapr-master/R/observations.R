@@ -198,7 +198,7 @@ prepare_data.empirical <- function(x, seed = 1, n_samples = 1e3, index_features 
 
 #' @rdname prepare_data
 #' @export
-prepare_data.causal <- function(x, seed = NULL, n_samples = 1e3, index_features = NULL, ...) {
+prepare_data.causal <- function(x, seed = NULL, n_samples = 1e3, index_features = NULL, asymmetric = FALSE, ordering = NULL, ...) {
 
   id <- id_combination <- w <- NULL # due to NSE notes in R CMD check
 
@@ -209,6 +209,20 @@ prepare_data.causal <- function(x, seed = NULL, n_samples = 1e3, index_features 
     features <- x$X$features
   } else {
     features <- x$X$features[index_features]
+  }
+  
+  if (asymmetric == TRUE) {
+    
+    message("Asymmetric flag enabled. Only using permutations consistent with the ordering.")
+    
+    # By default, no ordering in specified, meaning all variables are in one component.
+    if (is.null(ordering)) {
+      message("Using no ordering by default.")
+      ordering <- list(1:ncol(x$x_test))
+    }
+    
+    # Filter out the features that do not agree with the order
+    features <- features[sapply(features, respects_order, ordering = ordering)]
   }
 
   for (i in seq(n_xtest)) {
@@ -235,9 +249,10 @@ prepare_data.causal <- function(x, seed = NULL, n_samples = 1e3, index_features 
   return(dt)
 }
 
+
 #' @rdname prepare_data
 #' @export
-prepare_data.gaussian <- function(x, seed = 1, n_samples = 1e3, index_features = NULL, ...) {
+prepare_data.gaussian <- function(x, seed = 1, n_samples = 1e3, index_features = NULL, asymmetric = FALSE, ordering = NULL, ...) {
 
   id <- id_combination <- w <- NULL # due to NSE notes in R CMD check
 
@@ -248,6 +263,20 @@ prepare_data.gaussian <- function(x, seed = 1, n_samples = 1e3, index_features =
     features <- x$X$features
   } else {
     features <- x$X$features[index_features]
+  }
+  
+  if (asymmetric == TRUE) {
+    
+    message("Asymmetric flag enabled. Only using permutations consistent with the ordering.")
+    
+    # By default, no ordering in specified, meaning all variables are in one component.
+    if (is.null(ordering)) {
+      message("Using no ordering by default.")
+      ordering <- list(1:ncol(x$x_test))
+    }
+    
+    # Filter out the features that do not agree with the order
+    features <- features[sapply(features, respects_order, ordering = ordering)]
   }
 
   for (i in seq(n_xtest)) {
