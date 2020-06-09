@@ -92,7 +92,7 @@
 
 
 \newtheorem{theorem}{Theorem}
-\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{corollary}{Corollary}
 
 \title{Supplement of ``Causal Shapley Values: Exploiting Causal Knowledge to Explain Individual Predictions of Complex Models''} 
 
@@ -180,7 +180,7 @@ Through consecutive application of these rules, we can try to turn any intervent
 			\node[latent] at (0,0) (y1) {$Y$};%
 			\node[latent] at (0,1.5) (x12) {$X_2$};
 			\node[latent] at (0,3) (x11) {$X_1$};
-			\node[text height=1em, anchor=north] at (0,4.2) {Chain};
+			\node[text height=1em, anchor=north] at (0,4.2) {Chain and fork};
 			\draw[arrow] (x12) -- node[anchor=west]{$\beta_2$} (y1);
 			\draw[arrow] (x11) -- (x12);
 			\draw[arrow] (x11) to[bend right] node[anchor=east]{$\beta_1$}(y1);
@@ -204,11 +204,11 @@ Through consecutive application of these rules, we can try to turn any intervent
 			\draw[arrow] (x42) to[bend left=15] (x41);
 			\draw[arrow] (x41) to[bend right] node[anchor=east]{$\beta_1$}(y4);			
 		}
-	\caption{Three causal models with the same observational distribution over features, yet a different causal structure.}
+	\caption{Three causal models with the same observational distribution over features, yet a different causal structure. To connect to the models in the main text, we set $\beta_1 = 0$ and $\beta_2 = \beta$, except that for the `fork' we set $\beta_2 = 0$, $\beta_1 = \beta$, and then swap the indices.}
 	\label{fig:threemodels}
 \end{figure}
 
-We will make use of the {\em do}-calculus rules above to derive the various Shapley values for the four different models in Figure~1 in the main text. To this end, we consider the three models in Figure~\ref{fig:threemodels} that predict $f(x_1,x_2) = \beta_1 x_1 + \beta_2 x_2$ for general values of $\beta_1$ and $\beta_2$. All three models have the same observational probability distribution, with $\expectation[X_i] = \bx_i$ and $\expectation[X_{3-i}] = \alpha_i x_i$, for $i = 1,2$. We will arrive at the main text's results for the `chain', `confounder', and `cycle' by setting $\beta_1 = 0$, whereas for the `fork' we set $\beta_2 = 0$ and swap the two indices. We then further need to take $\bx_1 = \bx_2 = 0$, and $\alpha = \alpha_2$.
+We will make use of the {\em do}-calculus rules above to derive the causal Shapley values for the four different models in Figure~1 in the main text. To this end, we consider the three models in Figure~\ref{fig:threemodels} that predict $f(x_1,x_2) = \beta_1 x_1 + \beta_2 x_2$ for general values of $\beta_1$ and $\beta_2$. All three models have the same observational probability distribution, with $\expectation[X_i] = \bx_i$ and $\expectation[X_{3-i}] = \alpha_i x_i$, for $i = 1,2$, yet different causal structures. We will arrive at the main text's results for the `chain', `confounder', and `cycle' by setting $\beta_1 = 0$, whereas for the `fork' we set $\beta_2 = 0$ and swap the two indices. We then further need to take $\bx_1 = \bx_2 = 0$, and $\alpha = \alpha_2$.
 
 Following the definitions in the main text, the contribution of feature $i$ given permutation $\perm$ is the difference in value function before and after setting the feature to its value:
 \begin{equation}
@@ -283,7 +283,7 @@ Consequently, for the confounder the {\em symmetric} and {\em asymmetric causal 
 \end{eqnarray}
 where the asymmetric causal Shapley values coincides with the asymmetric conditional Shapley values from~(\ref{eq:asymmetric}).
 
-Collecting all results and setting $\bx_1 = \bx_2 = \beta_1 = 0$, $\beta_2 = \beta$, and $\alpha_1 = \alpha$ (after swapping the indices for the `fork'), we arrive at the Shapley values reported in Figure~1 in the main text. Note that, apart from the marginal Shapley values, the only Shapley values that show no indirect effect for the second feature for nonzero $\beta_1$ are the causal Shapley values for the chain and the confounder, and the asymmetric conditional Shapley values for the chain. For all others, the indirect effect for the second feature vanishes because we chose to set $\beta_1 = 0$.
+Collecting all results and setting $\bx_1 = \bx_2 = \beta_1 = 0$, $\beta_2 = \beta$, and $\alpha_1 = \alpha$ (after swapping the indices for the `fork'), we arrive at the Shapley values reported in Figure~1 in the main text. Note that for most Shapley values, the indirect effect for the second feature vanishes because we chose to set $\beta_1 = 0$. The exceptions, apart from the marginal Shapley values, are the causal Shapley values for the chain and the confounder, as well as the asymmetric conditional Shapley values for the chain: these show no indirect effect for the second feature even for nonzero $\beta_1$.
 
 \section{Proofs and corollaries on causal chain graphs}
 
@@ -374,9 +374,7 @@ Theorem~1 connects to observations made and algorithms proposed in recent papers
 	When we only take into account permutations that match the causal ordering and assume that all dependencies within chain components are induced by mutual interactions, the resulting asymmetric causal Shapley values are equivalent to the asymmetric conditional Shapley values as defined in~\cite{frye2019asymmetric}.
 \end{corollary}
 \begin{proof}
-	Following~\cite{frye2019asymmetric}, asymmetric Shapley values only include those permutations $\perm$ for which $i \prec_\perm j$ for all known ancestors $i$ of descendants $j$ in the causal graph. For those permutations, we are guaranteed to have
-%	$\chaincomponents \cap S \preceq_{{\cal CG}} \chaincomponents \cap \bar{S}$
-	$\tau \prec_{\mathcal{CG}} \tau'$ for all $\tau, \tau' \in \mathcal{T}$ such that $\tau \cap S \neq \emptyset, \tau' \cap \bar{S} \neq \emptyset$. That is, the chain components that contain features from $S$ are never later in the causal ordering of the chain graph ${\cal CG}$ than those that contain features from $\bar{S}$. We then have
+	Following~\cite{frye2019asymmetric}, asymmetric Shapley values only include those permutations $\perm$ for which $i \prec_\perm j$ for all known ancestors $i$ of descendants $j$ in the causal graph. For those permutations, we are guaranteed to have $\tau \prec_G \tau'$ for all $\tau, \tau' \in \mathcal{T}$ such that $\tau \cap S \neq \emptyset, \tau' \cap \bar{S} \neq \emptyset$. That is, the chain components that contain features from $S$ are never later in the causal ordering of the chain graph $G$ than those that contain features from $\bar{S}$. We then have
 	\[
 	P(\vX_{\bar{S}}|\vx_S) = \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{S}) = \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{\spa(\tau) \cap S},\vx_{\tau \cap S}) = P(\vX_{\bar{S}}|\svdo{S}) \: ,
 	\]
