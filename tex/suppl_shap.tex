@@ -146,7 +146,7 @@
 
 \section{\textit{Do}-calculus for cyclic graphs}
 
-For completeness, we here repeat the rules of {\em do}-calculus for cyclic graphs, in the notation of~\cite{forre2019causal}, which generalizes~\cite{pearl2012calculus}. We are given a causal graph $G$. To each node $X_i$ which is intervened upon, we add an `intervention node' $I_{X_i}$, with a directed edge from $I_{X_i}$ to $X_i$ that we clamp to the value $x_i$. The corresponding graph is called $\hat{G}^+$. $\hat{G}_{\dodo(\vW)}$ is now obtained by removing from $\hat{G}^+$ all incoming edges to variables that are part of $\vW$, except those from the corresponding intervention nodes $I_{\vW}$. We use shorthand
+For completeness, we here repeat the rules of {\em do}-calculus for cyclic graphs, in the notation of the generalized ID algorithm of ~\cite{forre2019causal}, which generalizes~\cite{pearl2012calculus}. We are given a causal graph $G$. To each node $X_i$ which is intervened upon, we add an `intervention node' $I_{X_i}$, with a directed edge from $I_{X_i}$ to $X_i$ that we clamp to the value $x_i$. The corresponding graph is called $\hat{G}^+$. $\hat{G}_{\dodo(\vW)}$ is now obtained by removing from $\hat{G}^+$ all incoming edges to variables that are part of $\vW$, except those from the corresponding intervention nodes $I_{\vW}$. We use shorthand
 \[
 \vY \perpsg \vX ~|~ \vZ, \dodo(\mathbf{W})
 \]
@@ -289,12 +289,12 @@ Collecting all results and setting $\bx_1 = \bx_2 = \beta_1 = 0$, $\beta_2 = \be
 
 In this section we expand on the proof of Theorem~1 in the main text and add some corollaries to link back to other approaches for computing Shapley values.
 
-The probability distribution for a causal chain graph reads
+The probability distribution for a causal chain graph boils down to a directed acyclic graph of chain components:
 \begin{equation}
 P(\vX) = \prod_{\tau \in \chaincomponents} P(\vX_\tau|\vX_{\spa(\tau)}) \: .
 \label{eq:chaingraph}
 \end{equation}
-For each chain component, we further need to specify whether  (surplus) dependencies within the component are due to confounding or due to mutual interactions. Given this information, we can turn any causal query into an observational distribution with the following interventional formula.
+For each (fully connected) chain component, we further need to specify whether (surplus) dependencies within the component are due to confounding or due to mutual interactions. Given this information, we can turn any causal query into an observational distribution with the following interventional formula.
 
 \begin{theorem}
 	For causal chain graphs, we have the interventional formula 
@@ -311,7 +311,10 @@ Plugging in~(\ref{eq:chaingraph}) and using shorthand $\svdo{} = \lvdo{}$, we ob
 P(\vX_{\bar{S}}|\svdo{S}) = P(\vX|\svdo{S})
 \isequaldono{1} \prod_{\tau \in \chaincomponents} P(\vX_\tau|\vX_{\spa(\tau)},\svdo{S}) = \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\svdo{S})
 \]
-where in the second step we implicitly made use of {\em do}-calculus rule~(1): the conditional independencies in the causal chain graph are preserved when we intervene on some of the variables.
+where in the second step we implicitly made use of {\em do}-calculus rule~(1): the conditional independencies in the causal chain graph $G$ are preserved when we intervene on some of the variables, that is
+\[
+P(\vX_{\tau}|\vX_{\tau' \prec_G \tau},\svdo{S}) = P(\vX_{\tau}|\vX_{\spa(\tau)},\svdo{S}) \: .
+\]
 
 Now rule~(3) tells us that we can ignore any interventions from nodes in components further down the causal chain graph as well as those from higher up that are shielded by the direct parents:
 \[
@@ -362,13 +365,14 @@ Theorem~1 connects to observations made and algorithms proposed in recent papers
 	With all features combined in a single component and all dependencies induced by confounding, as in~\cite{janzing2019feature}, causal Shapley values are equivalent to marginal Shapley values. 
 \end{corollary}
 \begin{proof}
-	{\em Do}-calculus rule~(3) yields $P(\vX_{\bar{S}}|\svdo{S}) = P(\vX_{\bar{S}})$ for all subsets $S$, i.e., as if all features are independent.
+	With just a single confounded component $\tau$, $\pa(\tau) = \emptyset$ and~(\ref{eq:chaininterventional}) reduces to $P(\vX_{\bar{S}})$.
+%	{\em Do}-calculus rule~(3) yields $P(\vX_{\bar{S}}|\svdo{S}) = P(\vX_{\bar{S}})$ for all subsets $S$, i.e., as if all features are independent.
 \end{proof}
 \begin{corollary}
 	With all features combined in a single component and all dependencies induced by mutual interactions, causal Shapley values are equivalent to conditional Shapley values as proposed in~\cite{aas2019explaining}.
 \end{corollary}
 \begin{proof}
-	Now, {\em do}-calculus rule~(2) applies and gives $P(\vX_{\bar{S}}|\svdo{S}) = P(\vX_{\bar{S}}|\vx_{S})$ for all subsets $S$, which boils down to conventional conditioning by observation.
+	With just a single non-confounded component $\tau$, $\pa(\tau) = \emptyset$ and~(\ref{eq:chaininterventional}) reduces to $P(\vX_{\bar{S}}|\vx_{S})$.
 \end{proof}
 \begin{corollary}
 	When we only take into account permutations that match the causal ordering and assume that all dependencies within chain components are induced by mutual interactions, the resulting asymmetric causal Shapley values are equivalent to the asymmetric conditional Shapley values as defined in~\cite{frye2019asymmetric}.
