@@ -3,25 +3,18 @@ save_plots <- TRUE
 
 # 0 - Load Packages and Source Files --------------------------------------
 
+library(tidyverse)
 library(data.table)
 library(xgboost)
-
-library(ggplot2)
 library(ggpubr)
+library(shapr) # NOTE: must be installed by running build.R in the root directory
 
-
-# TODO: this should not be needed when installing package
-sapply(list.files("shapr-master/R", full.names = TRUE), source)
-sapply(
-  grep(
-    "Rcpp",list.files("shapr-master/src", pattern = "*.cpp$", full.names = TRUE), 
-    value = TRUE, invert = TRUE
-  ), 
-  Rcpp::sourceCpp, embeddedR = FALSE
-)
+# For sina plotting capabilities
 source("R/sina_plot.R")
 
-
+if (save_plots) {
+  dir.create("figures")
+}
 
 # 1 - Prepare and Plot Data -----------------------------------------------
 
@@ -47,7 +40,7 @@ bike_plot <- ggplot(bike, aes(x = trend, y = cnt, color = temp)) +
   theme(legend.position = "right", legend.title = element_text(size = 10))
 
 if (save_plots) {
-  ggsave("bike_rental_plot.pdf", bike_plot, width = 4.5, height = 2)
+  ggsave("figures/bike_rental_plot.pdf", bike_plot, width = 4.5, height = 2)
 } else {
   print(bike_plot)
 }
@@ -80,6 +73,8 @@ model <- xgboost(
 )
 # caret::RMSE(y_test, predict(model, x_test))
 
+message("1. Prepared and plotted data, trained XGBoost model")
+
 # 2 - Compute Shapley Values ----------------------------------------------
 
 explainer_symmetric <- shapr(x_train, model)                    
@@ -103,10 +98,12 @@ sina_causal <- sina_plot(explanation_causal)
 ylim_causal <- sina_causal$coordinates$limits$y
 
 if (save_plots) {
-  ggsave("sina_plot_causal.pdf", sina_causal, height = 6.5, width = 6.5)
+  ggsave("figures/sina_plot_causal.pdf", sina_causal, height = 6.5, width = 6.5)
 } else {
   print(sina_causal)
 }
+
+message("2a. Computed and plotted causal Shapley values")
 
 
 # b. For computing marginal Shapley values, we assume one component with confounding
@@ -124,10 +121,12 @@ sina_marginal <- sina_plot(explanation_marginal) +
   coord_flip(ylim = ylim_causal) + ylab("Marginal Shapley value (impact on model output)")
 
 if (save_plots) {
-  ggsave("sina_plot_marginal.pdf", sina_marginal, height = 6.5, width = 6.5)
+  ggsave("figures/sina_plot_marginal.pdf", sina_marginal, height = 6.5, width = 6.5)
 } else {
   print(sina_marginal)
 }
+
+message("2b. Computed and plotted marginal Shapley values")
 
 
 # c. Finally, we compute the asymmetric Shapley values for the same partial order
@@ -148,11 +147,12 @@ sina_asymmetric <- sina_plot(explanation_asymmetric) +
   coord_flip(ylim = ylim_causal) + ylab("Asymmetric conditional Shapley value (impact on model output)")
 
 if (save_plots) {
-  ggsave("sina_plot_asymmetric.pdf", sina_asymmetric, height = 6.5, width = 6.5)
+  ggsave("figures/sina_plot_asymmetric.pdf", sina_asymmetric, height = 6.5, width = 6.5)
 } else {
   print(sina_asymmetric)
 }
 
+message("2c. Computed and plotted asymmetric conditional Shapley values")
 
 # d. Asymmetric causal Shapley values (very similar to the conditional ones)
 
@@ -171,10 +171,12 @@ sina_asymmetric_causal <- sina_plot(explanation_asymmetric_causal) +
   coord_flip(ylim = ylim_causal) + ylab("Asymmetric causal Shapley value (impact on model output)")
 
 if (save_plots) {
-  ggsave("sina_plot_asymmetric_causal.pdf", sina_asymmetric_causal, height = 6.5, width = 6.5)
+  ggsave("figures/sina_plot_asymmetric_causal.pdf", sina_asymmetric_causal, height = 6.5, width = 6.5)
 } else {
   print(sina_asymmetric_causal)
 }
+
+message("2d. Computed and plotted asymmetric conditional Shapley values")
 
 
 # 3 - Shapley value scatter plots (Figure 3) ------------------------------
@@ -233,11 +235,13 @@ grid_top <- ggarrange(scatterplot_topleft, scatterplot_topright, legend = "none"
 grid_bottom <- ggarrange(scatterplot_bottomleft, scatterplot_bottomright, legend = "none")
 
 if (save_plots) {
-  ggsave("scatter_plots_top.pdf", grid_top, width = 5, height = 1)
-  ggsave("scatter_plots_bottom.pdf", grid_bottom, width = 5, height = 2)
+  ggsave("figures/scatter_plots_top.pdf", grid_top, width = 5, height = 1)
+  ggsave("figures/scatter_plots_bottom.pdf", grid_bottom, width = 5, height = 2)
 } else {
   print(ggarrange(grid_top, grid_bottom, nrow = 2))
 }
+
+message("3. Produced scatter plots comparing marginal and causal Shapley values on the test set")
 
 
 # 4 - Shapley value bar plots (Figure 4) ----------------------------------
@@ -250,20 +254,20 @@ october <- which(as.integer(row.names(x_test)) == which(bike$dteday == "2012-10-
 december <- which(as.integer(row.names(x_test)) == which(bike$dteday == "2012-12-03"))
 
 # predicted values for the two points
-predict(model, x_test)[c(october, december)] + mean(y_train_orig)
+# predict(model, x_test)[c(october, december)] + mean(y_train_nc)
 
 dt_marginal <- explanation_marginal$dt %>%
-  slice(c(october, december)) %>%
+  dplyr::slice(c(october, december)) %>%
   select(cosyear, temp) %>%
   mutate(date = c("2012-10-09", "2012-12-03"), type = 'Marginal')
 
 dt_causal <- explanation_causal$dt %>%
-  slice(c(october, december)) %>%
+  dplyr::slice(c(october, december)) %>%
   select(cosyear, temp) %>%
   mutate(date = c("2012-10-09", "2012-12-03"), type = 'Causal')
 
 dt_asymmetric <- explanation_asymmetric$dt %>%
-  slice(c(october, december)) %>%
+  dplyr::slice(c(october, december)) %>%
   select(cosyear, temp) %>%
   mutate(date = c("2012-10-09", "2012-12-03"), type = 'Asymmetric')
 
@@ -284,7 +288,9 @@ bar_plots <- ggplot(dt_all, aes(x = name, y = value, group = interaction(date, n
 
 
 if (save_plots) {
-  ggsave("bar_plots.pdf", bar_plots, width = 6, height = 3)
+  ggsave("figures/bar_plots.pdf", bar_plots, width = 6, height = 3)
 } else {
   print(bar_plots)
 }
+
+message("4. Produced bar plots comparing marginal, causal, and asymmetric conditional Shapley values")
