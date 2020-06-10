@@ -308,15 +308,10 @@ For each (fully connected) chain component, we further need to specify whether (
 \begin{proof}
 Plugging in~(\ref{eq:chaingraph}) and using shorthand $\svdo{} = \lvdo{}$, we obtain
 \[
-P(\vX_{\bar{S}}|\svdo{S}) = P(\vX|\svdo{S})
-\isequaldono{1} \prod_{\tau \in \chaincomponents} P(\vX_\tau|\vX_{\spa(\tau)},\svdo{S}) = \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\svdo{S})
+P(\vX_{\bar{S}}|\svdo{S}) = P(\vX|\svdo{S}) = \prod_{\tau \in \chaincomponents} P(\vX_{\tau}|\vX_{\tau' \prec_G \tau},\svdo{S})
+\isequaldono{1} \prod_{\tau \in \chaincomponents} P(\vX_\tau|\vX_{\spa(\tau)},\svdo{S}) = \prod_{\tau \in \chaincomponents} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\svdo{S}) \: ,
 \]
-where in the second step we implicitly made use of {\em do}-calculus rule~(1): the conditional independencies in the causal chain graph $G$ are preserved when we intervene on some of the variables, that is
-\[
-P(\vX_{\tau}|\vX_{\tau' \prec_G \tau},\svdo{S}) = P(\vX_{\tau}|\vX_{\spa(\tau)},\svdo{S}) \: .
-\]
-
-Now rule~(3) tells us that we can ignore any interventions from nodes in components further down the causal chain graph as well as those from higher up that are shielded by the direct parents:
+where in the second step we made use of {\em do}-calculus rule~(1): the conditional independencies in the causal chain graph $G$ are preserved when we intervene on some of the variables. Now rule~(3) tells us that we can ignore any interventions from nodes in components further down the causal chain graph as well as those from higher up that are shielded by the direct parents:
 \[
 P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\svdo{S})
 \isequaldono{3} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\svdo{\spa(\tau) \cap S},\svdo{\tau \cap S}) \: .
