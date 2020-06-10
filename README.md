@@ -11,8 +11,6 @@ This code requires an [R installation](https://cran.r-project.org/). After insta
 
 `R build.R`.
 
-WARNING: The code is based on the [*shapr*](https://github.com/NorskRegnesentral/shapr) package. If this package is already in your library, running the build script will replace the current package installation.
-
 Reproducing Results from Paper
 --------------
 

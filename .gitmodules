@@ -1,6 +1,3 @@
-[submodule "shapr"]
-	path = shapr
-	url = https://github.com/NorskRegnesentral/shapr
 [submodule "caushapr"]
 	path = caushapr
 	url = https://gitlab.science.ru.nl/gbucur/caushapr
