@@ -1,6 +1,15 @@
-# Loading necessary packages using pacman
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(tidyverse, xgboost, data.table, ggpubr)
+# Load necessary packages and install them if needed
+load_packages <- function(names) {
+  for (name in names) {
+    if (!require(name, character.only = TRUE)) {
+      install.packages(name, repos = "https://cran.r-project.org", dependencies = TRUE)
+      library(name, character.only = TRUE)
+    }
+  }
+}
+
+package_list <- c("devtools", "tidyverse", "xgboost", "data.table", "ggpubr")
+load_packages(package_list)
 
 # Installing the causally enhanced shapr package from source
-install.packages("shapr", clean = TRUE, repos = NULL, type = "source")
+devtools::install_local("shapr", dependencies = TRUE)
