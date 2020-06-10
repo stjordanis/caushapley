@@ -58,8 +58,8 @@ sina_plot <- function(explanation) {
                 pivot_longer(everything()) %>%
                 select(-name) %>%
                 rename(shap = value)) %>%
-    group_by(name) %>%
     mutate(name = factor(name, levels = rev(names(explanation$dt)))) %>%
+    group_by(name) %>%
     arrange(name) %>%
     mutate(mean_value = mean(value)) %>%
     mutate(std_value = (value - min(value)) / (max(value) - min(value)))
