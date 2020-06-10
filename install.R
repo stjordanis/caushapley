@@ -8,7 +8,7 @@ load_packages <- function(names) {
   }
 }
 
-package_list <- c("tidyverse", "xgboost", "data.table", "ggpubr", "devtools")
+package_list <- c("devtools", "tidyverse", "xgboost", "data.table", "ggpubr")
 load_packages(package_list)
 
 # Installing the causally enhanced shapr package from source
