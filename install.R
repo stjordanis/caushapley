@@ -2,7 +2,7 @@
 load_packages <- function(names) {
   for (name in names) {
     if (!require(name, character.only = TRUE)) {
-      install.packages(name)
+      install.packages(name, repos = "https://cran.r-project.org", dependencies = TRUE)
       library(name, character.only = TRUE)
     }
   }
