@@ -73,7 +73,7 @@ explanation <- explain(
   explainer = explainer,
   prediction_zero = p,
   ordering = list(4,2,3,1),
-  confounding = FALSE
+  confounding = c(FALSE,FALSE,FALSE,FALSE)
 )
 
 # Printing the Shapley values for the test data.
@@ -85,7 +85,7 @@ plot(explanation)
 ```{r}
 #setwd("../gcd")
 #source("gcd_preprocessing.R")
-load("../gcd/gcd_data_bin.Rdata")
+load("gcd/gcd_data_bin.Rdata")
 N <- dim(data)[1]
 
 set.seed(0)
@@ -136,7 +136,7 @@ explanation <- explain(
   explainer = explainer,
   prediction_zero = p,
   ordering = list(7,5,c(1,3,6),c(2,4)),
-  confounding = FALSE
+  confounding = c(FALSE,FALSE,FALSE,FALSE)
 )
 
 # Printing the Shapley values for the test data.
@@ -146,22 +146,22 @@ print(explanation$dt)
 plot(explanation)
 ```
 ```{r}
-bike <- read.csv("../bike/bike-sharing-daily.txt")
+bike <- read.csv("bike/bike-sharing-daily.csv")
 bike$trend <- as.integer(difftime(bike$dteday, min(as.Date(bike$dteday)))+1)/24
 bike$cosyear <- cospi(bike$trend/365*2)
 bike$sinyear <- sinpi(bike$trend/365*2)
 bike$temp <- bike$temp * (39 - (-8)) + (-8)
-bike$atemp <- bike$atemp * (50 - (16)) + (16)
+bike$atemp <- bike$atemp * (50 - (-16)) + (-16)
 bike$cosweek <- cospi(bike$weekday/7*2)
 bike$sinweek <- sinpi(bike$weekday/7*2)
 bike$windspeed <- 67 * bike$windspeed
 bike$hum <- 100 * bike$hum
 #x_var <- c("trend","cosyear","sinyear","holiday","cosweek","sinweek","workingday","temp","atemp","windspeed","hum")
 #x_var <- c("cosyear","sinyear","cosweek","sinweek","temp","windspeed","hum")
-x_var <- c("trend","cosyear","sinyear","workingday","temp","atemp","windspeed","hum")
+x_var <- c("trend","cosyear","sinyear","temp","atemp","windspeed","hum")
 y_var <- "cnt"
 set.seed(2)
-trainIndex <- caret::createDataPartition(bike$cnt, p = .9, list = FALSE, times = 1)
+trainIndex <- caret::createDataPartition(bike$cnt, p = .8, list = FALSE, times = 1)
 x_train <- as.matrix(bike[trainIndex,x_var])
 y_train <- bike[trainIndex,y_var]
 y_train <- y_train - mean(y_train)
@@ -176,7 +176,7 @@ dim(x_test)
 model <- xgboost(
   data = x_train,
   label = y_train,
-  nround = 20,
+  nround = 100,
   verbose = FALSE
 )
 
@@ -192,7 +192,7 @@ explanation <- explain(
   approach = "causal",
   explainer = explainer,
   prediction_zero = p,
-  ordering = list(c(1:8)),
+  ordering = list(c(1:7)),
   confounding = FALSE
 )
 
@@ -204,7 +204,7 @@ print(explanation$dt)
 ```
 ```{r}
 #install.packages("ggforce")
-for (ii in seq(8)){
+for (ii in seq(7)){
   plot(as.matrix(x_test)[,ii],as.matrix(explanation$dt)[,ii+1])
   }
 ```
@@ -216,8 +216,8 @@ explanation2 <- explain(
   approach = "causal",
   explainer = explainer,
   prediction_zero = p,
-  ordering = list(c(1,2,3,4),c(5,6,7,8)),
-  confounding = TRUE
+  ordering = list(1,c(2,3),c(4,5,6,7)),
+  confounding = c(TRUE,TRUE,FALSE)
 )
 
 # Printing the Shapley values for the test data.
@@ -228,8 +228,14 @@ print(explanation2$dt)
 ```
 
 ```{r}
-for (ii in seq(8)){
+for (ii in seq(7)){
   plot(as.matrix(explanation$dt)[,ii+1],as.matrix(explanation2$dt)[,ii+1])
   }
+```
+
+```{r}
+set.seed(2)
+rnorm(1)
+R.version
 ```
 

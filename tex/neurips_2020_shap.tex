@@ -356,7 +356,7 @@ Any expectation by intervention needed to compute the causal Shapley values can 
 \begin{theorem}
 For causal chain graphs, we have the interventional formula 
 \begin{eqnarray}
-P(\vX_{\bar{S}}|\lvdo{S}) \isequal \prod_{\tau \in \chaincomponents_{\textrm{\upshape \scriptsize confounding}}} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{\spa(\tau) \cap S}) \times \\ \nonumber
+P(\vX_{\bar{S}}|\lvdo{S}) \isequal \prod_{\tau \in \chaincomponents_{\textrm{\upshape \scriptsize confounding}}} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau)  \cap \bar{S}},\vx_{\spa(\tau) \cap S}) \times \nonumber \\
 && \prod_{\tau \in \chaincomponents_{\overline{\textrm{\upshape \scriptsize confounding}}}} P(\vX_{\tau \cap \bar{S}}|\vX_{\spa(\tau) \cap \bar{S}},\vx_{\spa(\tau) \cap S},\vx_{\tau \cap S}) \: .
 \label{eq:chaininterventional}
 \end{eqnarray}
