@@ -15,15 +15,15 @@ Patrick Forr{\'e} and Joris~M Mooij.
 
 \bibitem{frye2019asymmetric}
 Christopher Frye, Ilya Feige, and Colin Rowat.
-\newblock Asymmetric {S}hapley values: incorporating causal knowledge into
+\newblock Asymmetric {S}hapley values: {I}ncorporating causal knowledge into
   model-agnostic explainability.
 \newblock {\em arXiv preprint arXiv:1910.06358}, 2019.
 
 \bibitem{janzing2019feature}
 Dominik Janzing, Lenon Minorics, and Patrick Bl{\"o}baum.
-\newblock Feature relevance quantification in explainable {AI}: {A} causality
-  problem.
-\newblock {\em arXiv preprint arXiv:1910.13413}, 2019.
+\newblock Feature relevance quantification in explainable ai: A causal problem.
+\newblock In {\em International Conference on Artificial Intelligence and
+  Statistics}, pages 2907--2916. PMLR, 2020.
 
 \bibitem{pearl2012calculus}
 Judea Pearl.

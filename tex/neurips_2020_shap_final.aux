@@ -46,9 +46,8 @@
 \newlabel{eq:contperm}{{2}{2}{A causal interpretation of Shapley values}{equation.2.2}{}}
 \citation{pearl1995causal}
 \citation{shapley1953value}
-\citation{frye2019asymmetric}
 \citation{janzing2019feature}
-\citation{sundararajan2019many}
+\citation{frye2019asymmetric}
 \citation{aas2019explaining}
 \citation{lundberg2018consistent}
 \citation{datta2016algorithmic}
@@ -68,21 +67,21 @@
 \citation{ong2013reciprocal}
 \citation{kahneman1986norm}
 \citation{merrick2019explanation}
-\citation{datta2016algorithmic}
-\citation{janzing2019feature}
-\citation{lundberg2020local}
-\citation{aas2019explaining}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Decomposing Shapley values into direct and indirect effects}{4}{section.3}}
 \newlabel{eq:decomposition}{{5}{4}{Decomposing Shapley values into direct and indirect effects}{equation.3.5}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Shapley values for different causal structures}{4}{section.4}}
 \newlabel{sec:toymodels}{{4}{4}{Shapley values for different causal structures}{section.4}{}}
+\citation{datta2016algorithmic}
+\citation{janzing2019feature}
+\citation{lundberg2020local}
+\citation{aas2019explaining}
 \citation{frye2019asymmetric}
 \citation{frye2019asymmetric}
 \citation{spellman1997crediting}
 \citation{lewis1974causation}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Direct and indirect Shapley values for four causal models with the same observational distribution over features (such that $\mathbb  {E}[X_1] = \mathbb  {E}[X_2] = 0$ and $\mathbb  {E}[X_2|x_1] = \alpha x_1$), yet a different causal structure. We assume a linear model that happens to ignore the first feature: $f(x_1,x_2) = \beta x_2$. The bottom table gives for each of the four causal models on the left the marginal, conditional, and causal Shapley values, where the latter two are further split up in symmetric and asymmetric. Each letter in the bottom table corresponds to one of the patterns of direct and indirect effects detailed in the top table: `direct' ({\em  D}, only direct effects), `evenly split' ({\em  E}, credit for an indirect effect split evenly between the features), and `root cause' ({\em  R}, all credit for the indirect effect goes to the root cause). \added [id=1]{Shapley values that, from the perspective of providing a proper causal explanation, make no sense are underlined and indicated in red.}\relax }}{5}{figure.caption.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Direct and indirect Shapley values for four causal models with the same observational distribution over features (such that $\mathbb  {E}[X_1] = \mathbb  {E}[X_2] = 0$ and $\mathbb  {E}[X_2|x_1] = \alpha x_1$), yet a different causal structure. We assume a linear model that happens to ignore the first feature: $f(x_1,x_2) = \beta x_2$. The bottom table gives for each of the four causal models on the left the marginal, conditional, and causal Shapley values, where the latter two are further split up in symmetric and asymmetric. Each letter in the bottom table corresponds to one of the patterns of direct and indirect effects detailed in the top table: `direct' ({\em  D}, only direct effects), `evenly split' ({\em  E}, credit for an indirect effect split evenly between the features), and `root cause' ({\em  R}, all credit for the indirect effect goes to the root cause). \added [id=1]{Shapley values that, we argue, do not provide a proper causal explanation, are underlined and indicated in red.}\relax }}{5}{figure.caption.2}}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:fourmodels}{{1}{5}{Direct and indirect Shapley values for four causal models with the same observational distribution over features (such that $\expectation [X_1] = \expectation [X_2] = 0$ and $\expectation [X_2|x_1] = \alpha x_1$), yet a different causal structure. We assume a linear model that happens to ignore the first feature: $f(x_1,x_2) = \beta x_2$. The bottom table gives for each of the four causal models on the left the marginal, conditional, and causal Shapley values, where the latter two are further split up in symmetric and asymmetric. Each letter in the bottom table corresponds to one of the patterns of direct and indirect effects detailed in the top table: `direct' (\patd , only direct effects), `evenly split' (\pats , credit for an indirect effect split evenly between the features), and `root cause' (\pata , all credit for the indirect effect goes to the root cause). \added [id=1]{Shapley values that, from the perspective of providing a proper causal explanation, make no sense are underlined and indicated in red.}\relax }{figure.caption.2}{}}
+\newlabel{fig:fourmodels}{{1}{5}{Direct and indirect Shapley values for four causal models with the same observational distribution over features (such that $\expectation [X_1] = \expectation [X_2] = 0$ and $\expectation [X_2|x_1] = \alpha x_1$), yet a different causal structure. We assume a linear model that happens to ignore the first feature: $f(x_1,x_2) = \beta x_2$. The bottom table gives for each of the four causal models on the left the marginal, conditional, and causal Shapley values, where the latter two are further split up in symmetric and asymmetric. Each letter in the bottom table corresponds to one of the patterns of direct and indirect effects detailed in the top table: `direct' (\patd , only direct effects), `evenly split' (\pats , credit for an indirect effect split evenly between the features), and `root cause' (\pata , all credit for the indirect effect goes to the root cause). \added [id=1]{Shapley values that, we argue, do not provide a proper causal explanation, are underlined and indicated in red.}\relax }{figure.caption.2}{}}
 \citation{pearl2012calculus}
 \citation{frye2019asymmetric}
 \citation{lauritzen2002chain}
@@ -96,10 +95,10 @@
 \citation{aas2019explaining}
 \citation{aas2019explaining}
 \citation{frye2019asymmetric}
-\citation{fanaee2013bikerental}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces From partial ordering to causal chain graph. Features on an equal footing are combined into a fully connected chain component. How to handle interventions within each component depends on the generative process that best explains the (surplus) dependencies. In this example, the dependencies in chain components $\tau _1$ and $\tau _3$ are assumed to be the result of a common confounder, and those in $\tau _2$ of mutual interactions.\relax }}{7}{figure.caption.3}}
 \newlabel{fig:chaingraph}{{2}{7}{From partial ordering to causal chain graph. Features on an equal footing are combined into a fully connected chain component. How to handle interventions within each component depends on the generative process that best explains the (surplus) dependencies. In this example, the dependencies in chain components $\tau _1$ and $\tau _3$ are assumed to be the result of a common confounder, and those in $\tau _2$ of mutual interactions.\relax }{figure.caption.3}{}}
 \newlabel{eq:chaininterventional}{{7}{7}{}{equation.5.7}{}}
+\citation{fanaee2013bikerental}
 \citation{aas2019explaining}
 \citation{frye2019asymmetric}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Bike shares in Washington, D.C.\ in 2011-2012 (top left; colorbar with temperature in degrees Celsius). Sina plot of causal Shapley values for a trained XGBoost model, where the top three date-related variables are considered to be a potential cause of the four weather-related variables (right). Scatter plots of marginal (MSV) versus causal Shapley values (CSV) for temperature ({\em  temp}) and one of the seasonal variables ({\em  cosyear}) show that MSVs almost purely explain the predictions based on temperature, whereas CSVs also give credit to season (bottom left).\relax }}{8}{figure.caption.4}}
@@ -131,32 +130,30 @@
 \bibcite{fanaee2013bikerental}{5}
 \bibcite{frye2019asymmetric}{6}
 \bibcite{gerstenberg2012noisy}{7}
-\bibcite{icard2017normality}{8}
-\bibcite{janzing2019feature}{9}
-\bibcite{kahneman1986norm}{10}
-\bibcite{kaur2020interpreting}{11}
-\bibcite{kumar2020problems}{12}
-\bibcite{kusner2017counterfactual}{13}
-\bibcite{lauritzen2002chain}{14}
-\bibcite{lewis1974causation}{15}
-\bibcite{lipovetsky2001analysis}{16}
-\bibcite{lombrozo2017causal}{17}
-\bibcite{lundberg2020local}{18}
-\bibcite{lundberg2018consistent}{19}
-\bibcite{lundberg2017unified}{20}
-\bibcite{merrick2019explanation}{21}
-\bibcite{mittelstadt2019explaining}{22}
-\bibcite{ong2013reciprocal}{23}
-\bibcite{pearl1995causal}{24}
-\bibcite{pearl2012calculus}{25}
-\bibcite{rehder2003causal}{26}
-\bibcite{ribeiro2016should}{27}
-\bibcite{shapley1953value}{28}
-\bibcite{sloman2005causal}{29}
-\bibcite{sober1988apportioning}{30}
-\bibcite{spellman1997crediting}{31}
-\bibcite{vstrumbelj2014explaining}{32}
-\bibcite{sundararajan2019many}{33}
-\bibcite{gdpr2017}{34}
-\bibcite{wachter2017counterfactual}{35}
+\bibcite{janzing2019feature}{8}
+\bibcite{kahneman1986norm}{9}
+\bibcite{kaur2020interpreting}{10}
+\bibcite{kumar2020problems}{11}
+\bibcite{kusner2017counterfactual}{12}
+\bibcite{lauritzen2002chain}{13}
+\bibcite{lewis1974causation}{14}
+\bibcite{lipovetsky2001analysis}{15}
+\bibcite{lombrozo2017causal}{16}
+\bibcite{lundberg2020local}{17}
+\bibcite{lundberg2018consistent}{18}
+\bibcite{lundberg2017unified}{19}
+\bibcite{merrick2019explanation}{20}
+\bibcite{mittelstadt2019explaining}{21}
+\bibcite{ong2013reciprocal}{22}
+\bibcite{pearl1995causal}{23}
+\bibcite{pearl2012calculus}{24}
+\bibcite{rehder2003causal}{25}
+\bibcite{ribeiro2016should}{26}
+\bibcite{shapley1953value}{27}
+\bibcite{sloman2005causal}{28}
+\bibcite{sober1988apportioning}{29}
+\bibcite{spellman1997crediting}{30}
+\bibcite{vstrumbelj2014explaining}{31}
+\bibcite{gdpr2017}{32}
+\bibcite{wachter2017counterfactual}{33}
 \bibstyle{plain}

@@ -33,7 +33,7 @@ Hadi Fanaee-T and Joao Gama.
 
 \bibitem{frye2019asymmetric}
 Christopher Frye, Ilya Feige, and Colin Rowat.
-\newblock Asymmetric {S}hapley values: incorporating causal knowledge into
+\newblock Asymmetric {S}hapley values: {I}ncorporating causal knowledge into
   model-agnostic explainability.
 \newblock {\em arXiv preprint arXiv:1910.06358}, 2019.
 
@@ -43,11 +43,6 @@ Tobias Gerstenberg, Noah Goodman, David Lagnado, and Joshua Tenenbaum.
   attribution.
 \newblock In {\em Proceedings of the Annual Meeting of the Cognitive Science
   Society}, volume~34, 2012.
-
-\bibitem{icard2017normality}
-Thomas~F Icard, Jonathan~F Kominsky, and Joshua Knobe.
-\newblock Normality and actual causal strength.
-\newblock {\em Cognition}, 161:80--93, 2017.
 
 \bibitem{janzing2019feature}
 Dominik Janzing, Lenon Minorics, and Patrick Bl{\"o}baum.
@@ -190,11 +185,6 @@ Erik {\v{S}}trumbelj and Igor Kononenko.
 \newblock Explaining prediction models and individual predictions with feature
   contributions.
 \newblock {\em Knowledge and Information Systems}, 41(3):647--665, 2014.
-
-\bibitem{sundararajan2019many}
-Mukund Sundararajan and Amir Najmi.
-\newblock The many {S}hapley values for model explanation.
-\newblock {\em arXiv preprint arXiv:1908.08474}, 2019.
 
 \bibitem{gdpr2017}
 European Union.

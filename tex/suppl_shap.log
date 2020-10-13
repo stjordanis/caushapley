@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.28)  10 JUN 2020 12:39
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.28)  12 OCT 2020 09:38
 entering extended mode
 **./suppl_shap.tex
 (suppl_shap.tex
@@ -980,6 +980,9 @@ File: pgflibraryarrows.meta.code.tex 2015/05/13 v3.0.1a (rcs-revision 1.13)
 
 LaTeX Warning: Label `eq:asymmetric' multiply defined.
 
+
+LaTeX Warning: Label `eq:marginal' multiply defined.
+
 )
 \openout1 = `suppl_shap.aux'.
 
@@ -1224,39 +1227,45 @@ Package amsmath Warning: Foreign command \over;
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
 put line 337.
  [4]
-<figures/sina_plot_asymmetric.pdf, id=99, 469.755pt x 469.755pt>
+<figures/sina_plot_asymmetric.pdf, id=103, 469.755pt x 469.755pt>
 File: figures/sina_plot_asymmetric.pdf Graphic file (type pdf)
 <use figures/sina_plot_asymmetric.pdf>
 Package pdftex.def Info: figures/sina_plot_asymmetric.pdf  used on input line 3
 92.
 (pdftex.def)             Requested size: 194.76982pt x 194.76549pt.
-<figures/sina_plot_marginal.pdf, id=100, 469.755pt x 469.755pt>
+<figures/sina_plot_marginal.pdf, id=104, 469.755pt x 469.755pt>
 File: figures/sina_plot_marginal.pdf Graphic file (type pdf)
 <use figures/sina_plot_marginal.pdf>
 Package pdftex.def Info: figures/sina_plot_marginal.pdf  used on input line 395
 .
 (pdftex.def)             Requested size: 194.76982pt x 194.76549pt.
- (suppl_shap.bbl) [5]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 405.
- [6 <./figures/sina_plot_asymmetric.pdf> <./figures/sina_plot_marginal.pdf>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 405.
+ [5] [6 <./figures/sina_plot_asymmetric.pdf> <./figures/sina_plot_marginal.pdf>
+] (suppl_shap.bbl) [7pdfTeX warning (ext4): destination with the same identifie
+r (name{equation.5.11}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.469 \end{document}
+                    ]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 469.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 469.
  (suppl_shap.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 405.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 405.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 469.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 469.
 Package rerunfilecheck Info: File `suppl_shap.out' has not changed.
-(rerunfilecheck)             Checksum: 11EFBE8EFE53326F80906A34D1C2D616;298.
+(rerunfilecheck)             Checksum: EAD72FE0EFFCAFED77CA010820C2F2C9;402.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 405.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 469.
  ) 
 Here is how much of TeX's memory you used:
- 24827 strings out of 492970
- 480902 string characters out of 3135855
- 609857 words of memory out of 3000000
- 27941 multiletter control sequences out of 15000+200000
- 75864 words of font info for 245 fonts, out of 3000000 for 9000
+ 24853 strings out of 492970
+ 481136 string characters out of 3135855
+ 610141 words of memory out of 3000000
+ 27945 multiletter control sequences out of 15000+200000
+ 76554 words of font info for 257 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  55i,12n,78p,819b,919s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/Mi
@@ -1274,9 +1283,9 @@ TeX 2.9/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/
 type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/u
 tmbi8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Pr
 ogram Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on suppl_shap.pdf (6 pages, 272934 bytes).
+Output written on suppl_shap.pdf (7 pages, 284340 bytes).
 PDF statistics:
- 188 PDF objects out of 1000 (max. 8388607)
- 36 named destinations out of 1000 (max. 500000)
- 39991 words of extra memory for PDF output out of 42996 (max. 10000000)
+ 207 PDF objects out of 1000 (max. 8388607)
+ 42 named destinations out of 1000 (max. 500000)
+ 39999 words of extra memory for PDF output out of 42996 (max. 10000000)
 
