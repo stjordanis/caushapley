@@ -44,6 +44,11 @@ Tobias Gerstenberg, Noah Goodman, David Lagnado, and Joshua Tenenbaum.
 \newblock In {\em Proceedings of the Annual Meeting of the Cognitive Science
   Society}, volume~34, 2012.
 
+\bibitem{icard2017normality}
+Thomas~F Icard, Jonathan~F Kominsky, and Joshua Knobe.
+\newblock Normality and actual causal strength.
+\newblock {\em Cognition}, 161:80--93, 2017.
+
 \bibitem{janzing2019feature}
 Dominik Janzing, Lenon Minorics, and Patrick Bl{\"o}baum.
 \newblock Feature relevance quantification in explainable ai: A causal problem.

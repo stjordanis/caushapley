@@ -9,6 +9,7 @@
 \usepackage{amsfonts}       % blackboard math symbols
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
+%\usepackage{authblk}
 
 \usepackage{amsfonts}
 \usepackage{bm}
@@ -83,9 +84,18 @@
 \title{Causal Shapley Values: Exploiting Causal Knowledge to Explain Individual Predictions of Complex Models} 
 
 
+
+%\author[1,2]{Tom Heskes\\
+%	\texttt{tom.heskes@ru.nl}}
+%\author[2]{Evi Sijben}
+%\author[1]{Gabriel Bucur}
+%\author[1]{Tom Claassen}
+%\affil[1]{Radboud University}
+%\affil[2]{Machine2Learn}
+
 \author{%
   Tom Heskes\\
-  Radboud University \\
+  Radboud University\\
 %  Institute for Computing and Information Sciences\\
 %  Nijmegen, The Netherlands \\
   \texttt{tom.heskes@ru.nl}
@@ -93,8 +103,8 @@
   Evi Sijben\\
   Machine2Learn\\
 %  Amsterdam, The Netherlands\\
-  \texttt{evisijben@gmail.com} \\
-  \And
+  \texttt{evisijben@gmail.com}
+  \AND
   Ioan Gabriel Bucur \\
   Radboud University \\
 %  Institute for Computing and Information Sciences\\
@@ -107,6 +117,7 @@
 %  Nijmegen, The Netherlands \\
   \texttt{t.claassen@science.ru.nl}
 }
+\date{October 3, 2020}
 
 \begin{document}
 
@@ -180,7 +191,8 @@ Replacing conditioning by intervention with conventional conditioning by observa
 
 \replaced[id=1]{Up until here, our active interventional interpretation of Shapley values coincides}{From the outset, our active, interventional interpretation of Shapley values appears to coincide} with that in~\cite{datta2016algorithmic,janzing2019feature,lundberg2020local}. \replaced[id=1]{However, from here on Janzing et al.~\cite{janzing2019feature} choose to ignore}{However, the construction in Janzing et al.~\cite{janzing2019feature} ignores} any dependencies between the features in the real world, by formally distinguishing between true features (corresponding to one of the data points) and the features plugged as input into the model. This leads to the conclusion that, in our notation, $P(\vX_{\bar{S}}|\lvdo{S}) = P(\vX_{\bar{S}})$ for any subset $S$. As a result, any expectation under conditioning by intervention collapses to a marginal expectation and, in the interpretation of~\cite{datta2016algorithmic,janzing2019feature,lundberg2020local}, interventional Shapley values \deleted[id=1]{conveniently} simplify to marginal Shapley values. As we will see below, marginal Shapley values can only represent direct effects, which makes that `root causes' with strong indirect effects (e.g.\ genetic markers) are ignored in the attribution, which is quite different from how humans tend to attribute causes~\cite{sober1988apportioning}. \added[id=1]{In this paper, we choose not to make this distinction between the features in the real world and the inputs of the prediction model, but to explicitly take into account the causal relationships between the data in the real world to enhance the explanations. Since the term `interventional' Shapley values has been coined for causal explanations of the prediction algorithm, for which causal relationships between the features in the real world are ignored, we will use the term `causal' Shapley values for those that do attempt to incorporate these relationships using Pearl's {\em do}-calculus.}
 
-\replaced[id=1]{The asymmetric Shapley values introduced in~\cite{frye2019asymmetric} (see also these proceedings) have the same objective: enhancing the explanation of the Shapley values by incorporating causal knowledge about the features in the real world. In ~\cite{frye2019asymmetric}, this knowledge is incorporated by choosing}{When applied to incorporate causal knowledge, the asymmetric Shapley values introduced in~\cite{frye2019asymmetric} choose} $w(\perm) \neq 0$ in~(\ref{eq:shapperm}) only for those permutations $\perm$ that are consistent with the causal structure between the features, i.e., are such that a known causal ancestor always precedes its descendants. \added[id=1]{On top of this, Frey et al.~\cite{frye2019asymmetric} apply standard conditioning by observation.} \deleted[id=1]{In a strong causal chain now only the root cause gets all the credit, which is erring on the opposite side of the explanation spectrum compared to completely ignoring it.} \added[id=1]{In this paper we show that there is no need to resort to asymmetric Shapley values to incorporate causal knowledge: applying conditioning by intervention instead of conditioning by observation is sufficient.} \replaced[id=1]{Choosing asymmetric Shapley values instead of symmetric ones can be considered orthogonal to choosing conditioning by observation versus conditioning by intervention.}{This asymmetric idea can be considered orthogonal to the replacement of conditioning by observation with conditioning by intervention.} We will therefore refer to the approach of~\cite{frye2019asymmetric} as {\em asymmetric conditional} Shapley values, to contrast them with {\em asymmetric causal} Shapley values that implement both ideas. \comment[id=1]{As we will illustrate in Section~\ref{sec:toymodels}, depending on the causal structure between the features, asymmetric conditional and asymmetric causal Shapley values may or may not be equivalent. In cases where they are not, asymmetric causal Shapley values are clearly to be preferred over asymmetric conditional Shapley values. We will also show that asymmetric Shapley values in causal chains assign most of the credit to the root cause, where symmetric causal Shapley values more fairly divide credit over the root cause and the mediator.}
+\replaced[id=1]{The asymmetric Shapley values introduced in~\cite{frye2019asymmetric} (see also these proceedings) have the same objective: enhancing the explanation of the Shapley values by incorporating causal knowledge about the features in the real world. In ~\cite{frye2019asymmetric}, this knowledge is incorporated by choosing}{When applied to incorporate causal knowledge, the asymmetric Shapley values introduced in~\cite{frye2019asymmetric} choose} $w(\perm) \neq 0$ in~(\ref{eq:shapperm}) only for those permutations $\perm$ that are consistent with the causal structure between the features, i.e., are such that a known causal ancestor always precedes its descendants. \added[id=1]{On top of this, Frey et al.~\cite{frye2019asymmetric} apply standard conditioning by observation.} \deleted[id=1]{In a strong causal chain now only the root cause gets all the credit, which is erring on the opposite side of the explanation spectrum compared to completely ignoring it.} \added[id=1]{In this paper we show that there is no need to resort to asymmetric Shapley values to incorporate causal knowledge: applying conditioning by intervention instead of conditioning by observation is sufficient.} \replaced[id=1]{Choosing asymmetric Shapley values instead of symmetric ones can be considered orthogonal to choosing conditioning by observation versus conditioning by intervention.}{This asymmetric idea can be considered orthogonal to the replacement of conditioning by observation with conditioning by intervention.} We will therefore refer to the approach of~\cite{frye2019asymmetric} as {\em asymmetric conditional} Shapley values, to contrast them with {\em asymmetric causal} Shapley values that implement both ideas.
+%\comment[id=1]{As we will illustrate in Section~\ref{sec:toymodels}, depending on the causal structure between the features, asymmetric conditional and asymmetric causal Shapley values may or may not be equivalent. In cases where they are not, asymmetric causal Shapley values are clearly to be preferred over asymmetric conditional Shapley values. We will also show that asymmetric Shapley values in causal chains assign most of the credit to the root cause, where symmetric causal Shapley values more fairly divide credit over the root cause and the mediator.}
 
 \section{Decomposing Shapley values into direct and indirect effects}
 
