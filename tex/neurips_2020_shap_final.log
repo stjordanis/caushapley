@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.28)  10 OCT 2020 16:49
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.28)  14 OCT 2020 12:43
 entering extended mode
 **./neurips_2020_shap_final.tex
 (neurips_2020_shap_final.tex
@@ -1161,11 +1161,12 @@ LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
  [1
 
 
-{C:/Users/tomhe/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [2] [3] [4]
+{C:/Users/tomhe/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
 
-Underfull \vbox (badness 4181) has occurred while \output is active []
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\replaced' on input line 137.
 
- [5]
+[2] [3] [4] [5]
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
@@ -1180,66 +1181,65 @@ Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
-
-[6]
-<figures/trend_plot.pdf, id=206, 325.215pt x 144.54pt>
+ [6] [7]
+<figures/trend_plot.pdf, id=216, 325.215pt x 144.54pt>
 File: figures/trend_plot.pdf Graphic file (type pdf)
 <use figures/trend_plot.pdf>
-Package pdftex.def Info: figures/trend_plot.pdf  used on input line 390.
+Package pdftex.def Info: figures/trend_plot.pdf  used on input line 398.
 (pdftex.def)             Requested size: 194.76982pt x 86.56586pt.
-<figures/corr_plots_top.pdf, id=207, 361.35pt x 72.27pt>
+<figures/corr_plots_top.pdf, id=217, 361.35pt x 72.27pt>
 File: figures/corr_plots_top.pdf Graphic file (type pdf)
 <use figures/corr_plots_top.pdf>
-Package pdftex.def Info: figures/corr_plots_top.pdf  used on input line 391.
+Package pdftex.def Info: figures/corr_plots_top.pdf  used on input line 399.
 (pdftex.def)             Requested size: 194.76982pt x 38.95352pt.
-<figures/corr_plots_bottom.pdf, id=208, 361.35pt x 144.54pt>
+<figures/corr_plots_bottom.pdf, id=218, 361.35pt x 144.54pt>
 File: figures/corr_plots_bottom.pdf Graphic file (type pdf)
 <use figures/corr_plots_bottom.pdf>
-Package pdftex.def Info: figures/corr_plots_bottom.pdf  used on input line 392.
+Package pdftex.def Info: figures/corr_plots_bottom.pdf  used on input line 400.
 
 (pdftex.def)             Requested size: 194.76982pt x 77.90706pt.
-<figures/sina_plot.pdf, id=209, 469.755pt x 469.755pt>
+<figures/sina_plot.pdf, id=219, 469.755pt x 469.755pt>
 File: figures/sina_plot.pdf Graphic file (type pdf)
 <use figures/sina_plot.pdf>
-Package pdftex.def Info: figures/sina_plot.pdf  used on input line 396.
+Package pdftex.def Info: figures/sina_plot.pdf  used on input line 404.
 (pdftex.def)             Requested size: 198.7425pt x 198.74367pt.
- [7]
-<figures/final_bar_plots.pdf, id=225, 433.62pt x 216.81pt>
+ [8 <./figures/trend_plot.pdf> <./figures/corr_plots_top.pdf> <./figures/corr_p
+lots_bottom.pdf> <./figures/sina_plot.pdf>]
+<figures/final_bar_plots.pdf, id=257, 433.62pt x 216.81pt>
 File: figures/final_bar_plots.pdf Graphic file (type pdf)
 <use figures/final_bar_plots.pdf>
-Package pdftex.def Info: figures/final_bar_plots.pdf  used on input line 408.
+Package pdftex.def Info: figures/final_bar_plots.pdf  used on input line 416.
 (pdftex.def)             Requested size: 190.79109pt x 95.39668pt.
 
-Underfull \hbox (badness 1292) in paragraph at lines 413--414
+Underfull \hbox (badness 1292) in paragraph at lines 421--422
 \T1/ptm/m/n/10 (+20) tional, from [[]]), (sym-met-ric) causal, and
  []
 
-[8 <./figures/trend_plot.pdf> <./figures/corr_plots_top.pdf> <./figures/corr_pl
-ots_bottom.pdf> <./figures/sina_plot.pdf> <./figures/final_bar_plots.pdf>]
-[9] (neurips_2020_shap_final.bbl [10])
+[9 <./figures/final_bar_plots.pdf>] (neurips_2020_shap_final.bbl [10] [11])
 \Changes@OutFile=\write5
 \openout5 = `neurips_2020_shap_final.soc'.
 
 \tf@loc=\write6
 \openout6 = `neurips_2020_shap_final.loc'.
 
- [11]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 444.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 444.
+
+[12]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 452.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 452.
  (neurips_2020_shap_final.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 444.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 444.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 452.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 452.
 Package rerunfilecheck Info: File `neurips_2020_shap_final.out' has not changed
 .
-(rerunfilecheck)             Checksum: 2BD71E327C1011F9D88E9CA316CB5261;502.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 444.
+(rerunfilecheck)             Checksum: CB853E8546F70B3E6E952E3B69DF6E8C;529.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 452.
  ) 
 Here is how much of TeX's memory you used:
- 25502 strings out of 492970
- 501506 string characters out of 3135855
- 662837 words of memory out of 3000000
- 28592 multiletter control sequences out of 15000+200000
- 64384 words of font info for 228 fonts, out of 3000000 for 9000
+ 25510 strings out of 492970
+ 501582 string characters out of 3135855
+ 662122 words of memory out of 3000000
+ 28593 multiletter control sequences out of 15000+200000
+ 64834 words of font info for 232 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  55i,13n,82p,2353b,854s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc} <C:\Users\tomhe\App
@@ -1258,9 +1258,9 @@ fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
 pe1/public/amsfonts/symbols/msbm10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
 /urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a
 .pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on neurips_2020_shap_final.pdf (11 pages, 444125 bytes).
+Output written on neurips_2020_shap_final.pdf (12 pages, 445902 bytes).
 PDF statistics:
- 395 PDF objects out of 1000 (max. 8388607)
- 68 named destinations out of 1000 (max. 500000)
+ 399 PDF objects out of 1000 (max. 8388607)
+ 69 named destinations out of 1000 (max. 500000)
  31934 words of extra memory for PDF output out of 35830 (max. 10000000)
 

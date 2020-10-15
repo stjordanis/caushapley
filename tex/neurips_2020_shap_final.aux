@@ -40,10 +40,10 @@
 \citation{aas2019explaining}
 \citation{lauritzen2002chain}
 \citation{shapley1953value}
-\@writefile{toc}{\contentsline {section}{\numberline {2}A causal interpretation of Shapley values}{2}{section.2}}
-\newlabel{sec:interpretation}{{2}{2}{A causal interpretation of Shapley values}{section.2}{}}
-\newlabel{eq:efficiency}{{1}{2}{A causal interpretation of Shapley values}{equation.2.1}{}}
-\newlabel{eq:contperm}{{2}{2}{A causal interpretation of Shapley values}{equation.2.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}\replaced [id=1]{Causal Shapley values}{A causal interpretation of Shapley values}}{2}{section.2}}
+\newlabel{sec:interpretation}{{2}{2}{\replaced [id=1]{Causal Shapley values}{A causal interpretation of Shapley values}}{section.2}{}}
+\newlabel{eq:efficiency}{{1}{2}{\replaced [id=1]{Causal Shapley values}{A causal interpretation of Shapley values}}{equation.2.1}{}}
+\newlabel{eq:contperm}{{2}{2}{\replaced [id=1]{Causal Shapley values}{A causal interpretation of Shapley values}}{equation.2.2}{}}
 \citation{pearl1995causal}
 \citation{shapley1953value}
 \citation{janzing2019feature}
@@ -62,23 +62,22 @@
 \citation{frye2019asymmetric}
 \citation{frye2019asymmetric}
 \citation{frye2019asymmetric}
-\newlabel{eq:valuedef}{{3}{3}{A causal interpretation of Shapley values}{equation.2.3}{}}
-\newlabel{eq:shapperm}{{4}{3}{A causal interpretation of Shapley values}{equation.2.4}{}}
+\newlabel{eq:valuedef}{{3}{3}{\replaced [id=1]{Causal Shapley values}{A causal interpretation of Shapley values}}{equation.2.3}{}}
+\newlabel{eq:shapperm}{{4}{3}{\replaced [id=1]{Causal Shapley values}{A causal interpretation of Shapley values}}{equation.2.4}{}}
 \citation{ong2013reciprocal}
-\citation{kahneman1986norm}
-\citation{merrick2019explanation}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Decomposing Shapley values into direct and indirect effects}{4}{section.3}}
 \newlabel{eq:decomposition}{{5}{4}{Decomposing Shapley values into direct and indirect effects}{equation.3.5}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Shapley values for different causal structures}{4}{section.4}}
 \newlabel{sec:toymodels}{{4}{4}{Shapley values for different causal structures}{section.4}{}}
+\citation{kahneman1986norm}
+\citation{merrick2019explanation}
 \citation{datta2016algorithmic}
 \citation{janzing2019feature}
 \citation{lundberg2020local}
 \citation{aas2019explaining}
 \citation{frye2019asymmetric}
-\citation{frye2019asymmetric}
-\citation{spellman1997crediting}
 \citation{lewis1974causation}
+\citation{spellman1997crediting}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Direct and indirect Shapley values for four causal models with the same observational distribution over features (such that $\mathbb  {E}[X_1] = \mathbb  {E}[X_2] = 0$ and $\mathbb  {E}[X_2|x_1] = \alpha x_1$), yet a different causal structure. We assume a linear model that happens to ignore the first feature: $f(x_1,x_2) = \beta x_2$. The bottom table gives for each of the four causal models on the left the marginal, conditional, and causal Shapley values, where the latter two are further split up in symmetric and asymmetric. Each letter in the bottom table corresponds to one of the patterns of direct and indirect effects detailed in the top table: `direct' ({\em  D}, only direct effects), `evenly split' ({\em  E}, credit for an indirect effect split evenly between the features), and `root cause' ({\em  R}, all credit for the indirect effect goes to the root cause). \added [id=1]{Shapley values that, we argue, do not provide a proper causal explanation, are underlined and indicated in red.}\relax }}{5}{figure.caption.2}}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{fig:fourmodels}{{1}{5}{Direct and indirect Shapley values for four causal models with the same observational distribution over features (such that $\expectation [X_1] = \expectation [X_2] = 0$ and $\expectation [X_2|x_1] = \alpha x_1$), yet a different causal structure. We assume a linear model that happens to ignore the first feature: $f(x_1,x_2) = \beta x_2$. The bottom table gives for each of the four causal models on the left the marginal, conditional, and causal Shapley values, where the latter two are further split up in symmetric and asymmetric. Each letter in the bottom table corresponds to one of the patterns of direct and indirect effects detailed in the top table: `direct' (\patd , only direct effects), `evenly split' (\pats , credit for an indirect effect split evenly between the features), and `root cause' (\pata , all credit for the indirect effect goes to the root cause). \added [id=1]{Shapley values that, we argue, do not provide a proper causal explanation, are underlined and indicated in red.}\relax }{figure.caption.2}{}}
@@ -86,26 +85,24 @@
 \citation{frye2019asymmetric}
 \citation{lauritzen2002chain}
 \citation{lauritzen2002chain}
-\citation{lauritzen2002chain}
 \@writefile{toc}{\contentsline {section}{\numberline {5}A practical implementation with causal chain graphs}{6}{section.5}}
 \newlabel{eq:interventional}{{6}{6}{A practical implementation with causal chain graphs}{equation.5.6}{}}
+\citation{lauritzen2002chain}
 \citation{pearl2012calculus}
-\citation{aas2019explaining}
-\citation{frye2019asymmetric}
-\citation{aas2019explaining}
-\citation{aas2019explaining}
-\citation{frye2019asymmetric}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces From partial ordering to causal chain graph. Features on an equal footing are combined into a fully connected chain component. How to handle interventions within each component depends on the generative process that best explains the (surplus) dependencies. In this example, the dependencies in chain components $\tau _1$ and $\tau _3$ are assumed to be the result of a common confounder, and those in $\tau _2$ of mutual interactions.\relax }}{7}{figure.caption.3}}
 \newlabel{fig:chaingraph}{{2}{7}{From partial ordering to causal chain graph. Features on an equal footing are combined into a fully connected chain component. How to handle interventions within each component depends on the generative process that best explains the (surplus) dependencies. In this example, the dependencies in chain components $\tau _1$ and $\tau _3$ are assumed to be the result of a common confounder, and those in $\tau _2$ of mutual interactions.\relax }{figure.caption.3}{}}
 \newlabel{eq:chaininterventional}{{7}{7}{}{equation.5.7}{}}
-\citation{fanaee2013bikerental}
 \citation{aas2019explaining}
 \citation{frye2019asymmetric}
+\citation{aas2019explaining}
+\citation{aas2019explaining}
+\citation{frye2019asymmetric}
+\citation{fanaee2013bikerental}
+\citation{aas2019explaining}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Bike shares in Washington, D.C.\ in 2011-2012 (top left; colorbar with temperature in degrees Celsius). Sina plot of causal Shapley values for a trained XGBoost model, where the top three date-related variables are considered to be a potential cause of the four weather-related variables (right). Scatter plots of marginal (MSV) versus causal Shapley values (CSV) for temperature ({\em  temp}) and one of the seasonal variables ({\em  cosyear}) show that MSVs almost purely explain the predictions based on temperature, whereas CSVs also give credit to season (bottom left).\relax }}{8}{figure.caption.4}}
 \newlabel{fig:trendplot}{{3}{8}{Bike shares in Washington, D.C.\ in 2011-2012 (top left; colorbar with temperature in degrees Celsius). Sina plot of causal Shapley values for a trained XGBoost model, where the top three date-related variables are considered to be a potential cause of the four weather-related variables (right). Scatter plots of marginal (MSV) versus causal Shapley values (CSV) for temperature ({\em temp}) and one of the seasonal variables ({\em cosyear}) show that MSVs almost purely explain the predictions based on temperature, whereas CSVs also give credit to season (bottom left).\relax }{figure.caption.4}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {6}Illustration on real-world data}{8}{section.6}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Asymmetric (conditional), (symmetric) causal and marginal Shapley values for two different days, one in October (brown) and one in December (gray) with more or less the same temperature of 13 degrees Celsius. Asymmetric Shapley values focus on the root cause, marginal Shapley values on the more direct effect, and symmetric causal Shapley consider both for the more natural explanation.\relax }}{8}{figure.caption.5}}
-\newlabel{fig:barplots}{{4}{8}{Asymmetric (conditional), (symmetric) causal and marginal Shapley values for two different days, one in October (brown) and one in December (gray) with more or less the same temperature of 13 degrees Celsius. Asymmetric Shapley values focus on the root cause, marginal Shapley values on the more direct effect, and symmetric causal Shapley consider both for the more natural explanation.\relax }{figure.caption.5}{}}
+\citation{frye2019asymmetric}
 \citation{lundberg2017unified}
 \citation{lundberg2020local}
 \citation{wachter2017counterfactual}
@@ -113,11 +110,13 @@
 \citation{kusner2017counterfactual}
 \citation{bhatt2020explainable}
 \citation{gdpr2017}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Asymmetric (conditional), (symmetric) causal and marginal Shapley values for two different days, one in October (brown) and one in December (gray) with more or less the same temperature of 13 degrees Celsius. Asymmetric Shapley values focus on the root cause, marginal Shapley values on the more direct effect, and symmetric causal Shapley consider both for the more natural explanation.\relax }}{9}{figure.caption.5}}
+\newlabel{fig:barplots}{{4}{9}{Asymmetric (conditional), (symmetric) causal and marginal Shapley values for two different days, one in October (brown) and one in December (gray) with more or less the same temperature of 13 degrees Celsius. Asymmetric Shapley values focus on the root cause, marginal Shapley values on the more direct effect, and symmetric causal Shapley consider both for the more natural explanation.\relax }{figure.caption.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Discussion}{9}{section.7}}
 \citation{kumar2020problems}
 \citation{kaur2020interpreting}
 \citation{edwards2017slave}
 \citation{bhatt2020explainable}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Discussion}{9}{section.7}}
 \citation{sloman2005causal}
 \citation{lombrozo2017causal}
 \citation{rehder2003causal}
