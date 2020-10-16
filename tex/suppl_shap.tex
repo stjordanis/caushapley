@@ -208,7 +208,7 @@ Through consecutive application of these rules, we can try to turn any intervent
 	\label{fig:threemodels}
 \end{figure}
 
-We will make use of the {\em do}-calculus rules above to derive the causal Shapley values for the four different models in Figure~1 in the main text. To this end, we consider the three models in Figure~\ref{fig:threemodels} that predict $f(x_1,x_2) = \beta_1 x_1 + \beta_2 x_2$ for general values of $\beta_1$ and $\beta_2$. All three models have the same observational probability distribution, with $\expectation[X_i] = \bx_i$ and $\expectation[X_{3-i}] = \alpha_i x_i$, for $i = 1,2$, yet different causal structures. We will arrive at the main text's results for the `chain', `confounder', and `cycle' by setting $\beta_1 = 0$, whereas for the `fork' we set $\beta_2 = 0$ and swap the two indices. We then further need to take $\bx_1 = \bx_2 = 0$, and $\alpha = \alpha_2$.
+We will make use of the {\em do}-calculus rules above to derive the causal Shapley values for the four different models in Figure~1 in the main text. To this end, we consider the three models in Figure~\ref{fig:threemodels} that predict $f(x_1,x_2) = \beta_1 x_1 + \beta_2 x_2$ for general values of $\beta_1$ and $\beta_2$. All three models have the same observational probability distribution, with $\expectation[X_i] = \bx_i$ and $\expectation[X_{3-i}|X_i=x_i] = \alpha_i x_i$, for $i = 1,2$, yet different causal structures. We will arrive at the main text's results for the `chain', `confounder', and `cycle' by setting $\beta_1 = 0$, whereas for the `fork' we set $\beta_2 = 0$ and swap the two indices. We then further need to take $\bx_1 = \bx_2 = 0$, and $\alpha = \alpha_2$.
 
 Following the definitions in the main text, the contribution of feature $i$ given permutation $\perm$ is the difference in value function before and after setting the feature to its value:
 \begin{equation}
@@ -279,9 +279,9 @@ Consequently, for the confounder the {\em symmetric} and {\em asymmetric causal 
 \begin{eqnarray}
 \phi_1(1,2) \isequal \beta_1 (x_1 - \bx_1) + {1 \over 2} \beta_2 \alpha_1 (x_1 - \bx_1) \nonumber \\
 \phi_2(1,2) \isequal \beta_2 (x_2 -\bx_2) - {1 \over 2} \beta_2 \alpha_1 (x_1 - \bx_1) \: ,
-\label{eq:asymmetric}
+\label{eq:asymmetric2}
 \end{eqnarray}
-where the asymmetric causal Shapley values coincides with the asymmetric conditional Shapley values from~(\ref{eq:asymmetric}).
+where the asymmetric causal Shapley values coincides with the asymmetric conditional Shapley values from~(\ref{eq:asymmetric2}).
 
 Collecting all results and setting $\bx_1 = \bx_2 = \beta_1 = 0$, $\beta_2 = \beta$, and $\alpha_1 = \alpha$ (after swapping the indices for the `fork'), we arrive at the Shapley values reported in Figure~1 in the main text. Note that for most Shapley values, the indirect effect for the second feature vanishes because we chose to set $\beta_1 = 0$. The exceptions, apart from the marginal Shapley values, are the causal Shapley values for the chain and the confounder, as well as the asymmetric conditional Shapley values for the chain: these show no indirect effect for the second feature even for nonzero $\beta_1$.
 
@@ -416,7 +416,6 @@ We will now compute the various Shapley values for the data point $(X_1,X_2) = (
 \begin{eqnarray*}
 \nu(\{\}) & = & \expectation\left[f(\vX)\right] = \sum_{i,j} \hat{p}_{ij} \hat{f}(i,j) \approx \frac{1}{2} (1 - \epsilon) \\
 \nu(\{1,2\}) & = & \hat{f}(0,0) \approx 0 \: ,
-\label{eq:marginal}
 \end{eqnarray*}
 where we use the convention that the Shapley values computed from the fitted probabilities and learned neural network appear before the $\approx$-sign, and those that we obtain when the fitted probabilities equal the probabilities used to generate the data and when the learned neural network equals the XOR function after the $\approx$-sign.
 
