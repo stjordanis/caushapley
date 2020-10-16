@@ -440,6 +440,16 @@ The value functions for the causal Shapley values depend on the presumed causal 
 \end{eqnarray}
 and the same with indices 1 and 2 interchanged for the causal chain $X_2 \rightarrow X_1$.
 
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\textwidth]{figures/XOR_plot.pdf}
+	\caption{The conditional symmetric, causal symmetric and causal asymmetric Shapley values of data point $(X_1,X_2) = (0,0)$ under assumption of causal chain $X_1 \rightarrow X_2$ for different $\epsilon$. The bars indicate the mean Shapley value and standard deviation of 100 runs with a neural network trained on 100 data points generated according to $\epsilon$. The red line indicates the theoretical Shapley values as denoted by identical, symmetric causal and asymmetric.
+	}
+	\label{fig:xor_plot}
+\end{figure}
+
+
 Given these value functions, we can now compute the various Shapley values. For marginal and symmetric Shapley values we have
 \begin{eqnarray}
 \phi_1 & = & \frac{1}{2}[\nu(\{1\}) - \nu(\{\})] + \frac{1}{2}[\nu(\{1,2\}) - \nu(\{2\})] \nonumber \\
