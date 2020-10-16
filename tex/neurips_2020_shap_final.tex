@@ -1,6 +1,8 @@
 \documentclass{article}
 
 \usepackage[final,nonatbib]{neurips_2020}
+\usepackage[xcolor,final]{changes}
+
 \usepackage[utf8]{inputenc} % allow utf-8 input
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
 \usepackage{hyperref}       % hyperlinks
@@ -28,7 +30,7 @@
 \usepackage{mathtools}
 \usepackage{wrapfig}
 \usetikzlibrary{arrows.meta}
-\usepackage[xcolor,final]{changes}
+
 
 \newcommand{\een}{\mathbb{1}}
 \newcommand{\vX}{\mathbf{X}}
@@ -82,16 +84,6 @@
 \newtheorem{corollary}[theorem]{Corollary}
 
 \title{Causal Shapley Values: Exploiting Causal Knowledge to Explain Individual Predictions of Complex Models} 
-
-
-
-%\author[1,2]{Tom Heskes\\
-%	\texttt{tom.heskes@ru.nl}}
-%\author[2]{Evi Sijben}
-%\author[1]{Gabriel Bucur}
-%\author[1]{Tom Claassen}
-%\affil[1]{Radboud University}
-%\affil[2]{Machine2Learn}
 
 \author{%
   Tom Heskes\\
@@ -185,7 +177,7 @@ Besides efficiency, the Shapley values uniquely satisfy three other desirable pr
 	\item[Null player (dummy):] if $\val(S \cup i) = \val(S)$ for all $S \subseteq \allfeatures \setminus i$, then $\contribution_i = 0$. A feature that never contributes to the prediction (directly nor indirectly, see below) receives zero Shapley value.
 	\item[Symmetry:] if $\val(S \cup i) = \val(S \cup j)$ for all  $S \subseteq \allfeatures \setminus \{i,j\}$, then $\contribution_i = \contribution_j$. Symmetry in this sense holds for marginal, conditional, and causal Shapley values\added[id=1]{ alike}.
 \end{description}
-\added[id=1]{Note that symmetry here is defined w.r.t.\ to the contributions $\contribution_i$, not the function values $f(\vx)$. As discussed in~\cite{janzing2019feature} (Section 3), conditioning by observation or intervention then does not break the symmetry property.} \replaced{For a non-uniform distribution of permutations as in~\cite{frye2019asymmetric}, symmetry is lost, but efficiency, linearity, and null player still apply.}{Efficiency, linearity, and null player still hold for a non-uniform distribution of permutations as in~\cite{frye2019asymmetric}, but symmetry is then typically lost.}
+\added[id=1]{Note that symmetry here is defined w.r.t.\ to the contributions $\contribution_i$, not the function values $f(\vx)$. As discussed in~\cite{janzing2019feature} (Section 3), conditioning by observation or intervention then does not break the symmetry property.} \replaced[id=1]{For a non-uniform distribution of permutations as in~\cite{frye2019asymmetric}, symmetry is lost, but efficiency, linearity, and null player still apply.}{Efficiency, linearity, and null player still hold for a non-uniform distribution of permutations as in~\cite{frye2019asymmetric}, but symmetry is then typically lost.}
 
 Replacing conditioning by intervention with conventional conditioning by observation, i.e., averaging over $P(\vX_{\bar{S}}|\vx_{S})$ instead of $P(\vX_{\bar{S}}|\lvdo{S})$ in~(\ref{eq:valuedef}), we arrive at the conditional Shapley values of~\cite{aas2019explaining,lundberg2018consistent}. A third option is to ignore the feature values $\vx_S$ and take the unconditional, marginal distribution $P(\vX_{\bar{S}})$, which leads to the marginal Shapley values.
 
@@ -300,8 +292,6 @@ When computing the contribution of, for example, $X_2$, symmetric causal Shapley
 \added[id=1]{By dropping the symmetry property, asymmetric Shapley values do pay a price: they are sensitive to the insertion of causal links with zero strength. As an example, consider a neural network trained to perfectly predict the XOR function on two binary variables $X_1$ and $X_2$. With a uniform distribution over all features and no further assumption w.r.t.\ the causal ordering of $X_1$ and $X_2$, the Shapley values are $\phi_1 = \phi_2 = 1/4$ when the prediction $f$ equals $1$, and $\phi_1 = \phi_2 = -1/4$ for $f=0$: completely symmetric. If we now assume that $X_1$ preceeds $X_2$ (and a causal strength of 0 to maintain the uniform distribution over features), all Shapley values stay the same, except for the asymmetric ones: these suddenly jump to $\phi_1 = 0$ and $\phi_2 = 1/2$ for $f=1$, and $\phi_1 = 0$ and $\phi_2 = -1/2$ for $f=0$. More details on this instability of asymmetric Shapley values can be found in the supplement, where we compare Shapley values of trained neural networks for varying causal strengths.}
 
 \replaced[id=1]{To summarize, unlike marginal and (both symmetric and asymmetric) conditional Shapley values, causal Shapley values provide sensible explanations that incorporate causal relationships in the real world. Asymmetric causal Shapley values may be preferable over symmetric ones when causality derives from a clear temporal order, whereas symmetric Shapley values have the advantage of being much less sensitive to model misspecifications.}{With the possible exception of asymmetric causal Shapley values for temporal causal structures, the symmetric causal Shapley value are the only ones that give intuitive causal explanations for the total effect of the input features in all four models.}
-
-
 
 \section{A practical implementation with causal chain graphs}
 
