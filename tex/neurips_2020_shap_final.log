@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.28)  10 OCT 2020 16:49
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.28)  15 OCT 2020 20:00
 entering extended mode
 **./neurips_2020_shap_final.tex
 (neurips_2020_shap_final.tex
@@ -973,21 +973,21 @@ Package: truncate 2001/08/20  ver 3.6
 (neurips_2020_shap_final.aux)
 \openout1 = `neurips_2020_shap_final.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 111.
-LaTeX Font Info:    ... okay on input line 111.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 111.
-LaTeX Font Info:    ... okay on input line 111.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 111.
-LaTeX Font Info:    ... okay on input line 111.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 111.
-LaTeX Font Info:    ... okay on input line 111.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 111.
-LaTeX Font Info:    ... okay on input line 111.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 111.
-LaTeX Font Info:    ... okay on input line 111.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 111.
-LaTeX Font Info:    ... okay on input line 111.
-LaTeX Font Info:    Try loading font information for T1+ptm on input line 111.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 122.
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 122.
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 122.
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 122.
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 122.
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 122.
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 122.
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Try loading font information for T1+ptm on input line 122.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\t1ptm.fd"
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
@@ -1059,7 +1059,7 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 \AtBeginShipoutBox=\box68
-Package hyperref Info: Link coloring OFF on input line 111.
+Package hyperref Info: Link coloring OFF on input line 122.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\hyperref\nameref.sty"
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 
@@ -1068,15 +1068,15 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count191
 )
-LaTeX Info: Redefining \ref on input line 111.
-LaTeX Info: Redefining \pageref on input line 111.
-LaTeX Info: Redefining \nameref on input line 111.
+LaTeX Info: Redefining \ref on input line 122.
+LaTeX Info: Redefining \pageref on input line 122.
+LaTeX Info: Redefining \nameref on input line 122.
 
 (neurips_2020_shap_final.out) (neurips_2020_shap_final.out)
 \@outlinefile=\write4
 \openout4 = `neurips_2020_shap_final.out'.
 
-LaTeX Info: Redefining \microtypecontext on input line 111.
+LaTeX Info: Redefining \microtypecontext on input line 122.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -1122,13 +1122,13 @@ Package caption Info: float package is loaded.
 Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <17.28> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 114.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 125.
 
 (C:\Users\tomhe\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\mt-cmr.cfg
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
 (RS)
 )
-LaTeX Font Info:    Try loading font information for U+msa on input line 114.
+LaTeX Font Info:    Try loading font information for U+msa on input line 125.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
@@ -1136,7 +1136,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (C:\Users\tomhe\AppData\Roaming\MiKTeX\2.9\tex\latex\microtype\mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 114.
+LaTeX Font Info:    Try loading font information for U+msb on input line 125.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -1145,8 +1145,8 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 114.
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 114.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 125.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 125.
 
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\base\t1cmtt.fd"
@@ -1157,15 +1157,16 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 115.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 126.
  [1
 
 
-{C:/Users/tomhe/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [2] [3] [4]
+{C:/Users/tomhe/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
 
-Underfull \vbox (badness 4181) has occurred while \output is active []
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\replaced' on input line 148.
 
- [5]
+[2] [3] [4] [5]
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
@@ -1180,68 +1181,67 @@ Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
-
-[6]
-<figures/trend_plot.pdf, id=206, 325.215pt x 144.54pt>
+ [6] [7]
+<figures/trend_plot.pdf, id=216, 325.215pt x 144.54pt>
 File: figures/trend_plot.pdf Graphic file (type pdf)
 <use figures/trend_plot.pdf>
-Package pdftex.def Info: figures/trend_plot.pdf  used on input line 390.
+Package pdftex.def Info: figures/trend_plot.pdf  used on input line 410.
 (pdftex.def)             Requested size: 194.76982pt x 86.56586pt.
-<figures/corr_plots_top.pdf, id=207, 361.35pt x 72.27pt>
+<figures/corr_plots_top.pdf, id=217, 361.35pt x 72.27pt>
 File: figures/corr_plots_top.pdf Graphic file (type pdf)
 <use figures/corr_plots_top.pdf>
-Package pdftex.def Info: figures/corr_plots_top.pdf  used on input line 391.
+Package pdftex.def Info: figures/corr_plots_top.pdf  used on input line 411.
 (pdftex.def)             Requested size: 194.76982pt x 38.95352pt.
-<figures/corr_plots_bottom.pdf, id=208, 361.35pt x 144.54pt>
+<figures/corr_plots_bottom.pdf, id=218, 361.35pt x 144.54pt>
 File: figures/corr_plots_bottom.pdf Graphic file (type pdf)
 <use figures/corr_plots_bottom.pdf>
-Package pdftex.def Info: figures/corr_plots_bottom.pdf  used on input line 392.
+Package pdftex.def Info: figures/corr_plots_bottom.pdf  used on input line 412.
 
 (pdftex.def)             Requested size: 194.76982pt x 77.90706pt.
-<figures/sina_plot.pdf, id=209, 469.755pt x 469.755pt>
+<figures/sina_plot.pdf, id=219, 469.755pt x 469.755pt>
 File: figures/sina_plot.pdf Graphic file (type pdf)
 <use figures/sina_plot.pdf>
-Package pdftex.def Info: figures/sina_plot.pdf  used on input line 396.
+Package pdftex.def Info: figures/sina_plot.pdf  used on input line 416.
 (pdftex.def)             Requested size: 198.7425pt x 198.74367pt.
- [7]
-<figures/final_bar_plots.pdf, id=225, 433.62pt x 216.81pt>
+ [8 <./figures/trend_plot.pdf> <./figures/corr_plots_top.pdf> <./figures/corr_p
+lots_bottom.pdf> <./figures/sina_plot.pdf>]
+<figures/final_bar_plots.pdf, id=257, 433.62pt x 216.81pt>
 File: figures/final_bar_plots.pdf Graphic file (type pdf)
 <use figures/final_bar_plots.pdf>
-Package pdftex.def Info: figures/final_bar_plots.pdf  used on input line 408.
+Package pdftex.def Info: figures/final_bar_plots.pdf  used on input line 428.
 (pdftex.def)             Requested size: 190.79109pt x 95.39668pt.
 
-Underfull \hbox (badness 1292) in paragraph at lines 413--414
+Underfull \hbox (badness 1292) in paragraph at lines 433--434
 \T1/ptm/m/n/10 (+20) tional, from [[]]), (sym-met-ric) causal, and
  []
 
-[8 <./figures/trend_plot.pdf> <./figures/corr_plots_top.pdf> <./figures/corr_pl
-ots_bottom.pdf> <./figures/sina_plot.pdf> <./figures/final_bar_plots.pdf>]
-[9] (neurips_2020_shap_final.bbl [10])
+[9 <./figures/final_bar_plots.pdf>] (neurips_2020_shap_final.bbl [10] [11])
 \Changes@OutFile=\write5
 \openout5 = `neurips_2020_shap_final.soc'.
 
 \tf@loc=\write6
 \openout6 = `neurips_2020_shap_final.loc'.
 
- [11]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 444.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 444.
+
+[12]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 464.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 464.
  (neurips_2020_shap_final.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 444.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 444.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 464.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 464.
 Package rerunfilecheck Info: File `neurips_2020_shap_final.out' has not changed
 .
-(rerunfilecheck)             Checksum: 2BD71E327C1011F9D88E9CA316CB5261;502.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 444.
+(rerunfilecheck)             Checksum: CB853E8546F70B3E6E952E3B69DF6E8C;529.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 464.
  ) 
 Here is how much of TeX's memory you used:
- 25502 strings out of 492970
- 501506 string characters out of 3135855
- 662837 words of memory out of 3000000
- 28592 multiletter control sequences out of 15000+200000
- 64384 words of font info for 228 fonts, out of 3000000 for 9000
+ 25515 strings out of 492970
+ 501652 string characters out of 3135855
+ 662245 words of memory out of 3000000
+ 28594 multiletter control sequences out of 15000+200000
+ 64964 words of font info for 234 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 55i,13n,82p,2353b,854s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 55i,13n,82p,2029b,854s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc} <C:\Users\tomhe\App
 Data\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ectt1000.pk><C:/Progra
 m Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Files/
@@ -1258,9 +1258,9 @@ fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
 pe1/public/amsfonts/symbols/msbm10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
 /urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a
 .pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on neurips_2020_shap_final.pdf (11 pages, 444125 bytes).
+Output written on neurips_2020_shap_final.pdf (12 pages, 446145 bytes).
 PDF statistics:
- 395 PDF objects out of 1000 (max. 8388607)
- 68 named destinations out of 1000 (max. 500000)
+ 400 PDF objects out of 1000 (max. 8388607)
+ 70 named destinations out of 1000 (max. 500000)
  31934 words of extra memory for PDF output out of 35830 (max. 10000000)
 
