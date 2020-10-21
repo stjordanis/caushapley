@@ -16,7 +16,7 @@
 
 % to avoid loading the natbib package, add option nonatbib:
 
-\usepackage[nonatbib]{neurips_2020}
+\usepackage[nonatbib,final]{neurips_2020}
 
 \usepackage[utf8]{inputenc} % allow utf-8 input
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
@@ -133,7 +133,30 @@
   % \texttt{email} \\
 %}
 
-
+\author{%
+	Tom Heskes\\
+	Radboud University\\
+	%  Institute for Computing and Information Sciences\\
+	%  Nijmegen, The Netherlands \\
+	\texttt{tom.heskes@ru.nl}
+	\And
+	Evi Sijben\\
+	Machine2Learn\\
+	%  Amsterdam, The Netherlands\\
+	\texttt{evisijben@gmail.com}
+	\AND
+	Ioan Gabriel Bucur \\
+	Radboud University \\
+	%  Institute for Computing and Information Sciences\\
+	%  Nijmegen, The Netherlands \\
+	\texttt{g.bucur@cs.ru.nl}
+	\And
+	Tom Claassen\\
+	Radboud University \\
+	%  Institute for Computing and Information Sciences\\
+	%  Nijmegen, The Netherlands \\
+	\texttt{t.claassen@science.ru.nl}
+}
 
 \begin{document}
 
@@ -410,7 +433,7 @@ We consider the standard XOR problem with binary features $X_1$ and $X_2$ and bi
 	1     & 1     & 0
 \end{tabular}
 \end{center}
-We generate a dataset of $n$ samples by drawing features and corresponding outputs with probabilities $p_{ij} = P(X_1=i,X_2=j)$. We will choose $p_{00} = p_{11} = \frac{1}{4} (1 + \epsilon)$ and $p_{01} = p_{10} = \frac{1}{4} (1 - \epsilon)$. With $\epsilon > 0$, the probability of the two features having the same values is larger than the probability of them having different values. $\hat{p}_{ij}$ is the same probability estimated from the data, e.g., by computing the frequencies of the four input combinations. We train a neural network on the generated data, which yields a function $\hat{f}(X_1,X_2)$ hopefully closely approximating the correct XOR function.
+We generate a dataset of $n$ samples by drawing features and corresponding outputs with probabilities $p_{ij} = P(X_1=i,X_2=j)$. We will choose $p_{00} = p_{11} = \frac{1}{4} (1 + \epsilon)$ and $p_{01} = p_{10} = \frac{1}{4} (1 - \epsilon)$. With $\epsilon > 0$, the probability of the two features having the same values is larger than the probability of them having different values. $\hat{p}_{ij}$ is the same probability estimated from the data, e.g., by computing the frequencies of the four input combinations. We train a neural network on the generated data, which yields a function $\hat{f}(X_1,X_2)$ hopefully closely approximating the correct XOR function. The parameter $\epsilon$ captures the dependency between the two features and can be interpreted as a measure of the causal strength when the two features are causally related.
 
 We will now compute the various Shapley values for the data point $(X_1,X_2) = (0,0)$. The value functions with all features either `out-of-coalition' or `in-coalition' are the same for all Shapley values:
 \begin{eqnarray*}
@@ -443,7 +466,7 @@ and the same with indices 1 and 2 interchanged for the causal chain $X_2 \righta
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=\textwidth]{figures/XOR_plot.pdf}
-	\caption{The conditional symmetric, causal symmetric and causal asymmetric Shapley values of data point $(X_1,X_2) = (0,0)$ under assumption of causal chain $X_1 \rightarrow X_2$ for different $\epsilon$. The bars indicate the mean Shapley value and standard deviation of 100 runs with a neural network trained on 100 data points generated according to $\epsilon$ with as label the outcome of the XOR-function. The red line indicates the theoretical Shapley values as denoted by identical, symmetric causal and asymmetric.
+	\caption{The conditional symmetric, causal symmetric and (causal/conditional) asymmetric Shapley values of data point $(X_1,X_2) = (0,0)$ under the assumption of a causal chain $X_1 \rightarrow X_2$ for different causal strengths $\epsilon$. The bars indicate the mean Shapley value and standard deviation of 100 runs with a neural network trained on 100 data points generated according to a particular causal strength $\epsilon$. Red lines give the theoretical Shapley values, to be expected for an infinite amount of samples and when the neural networks would have perfectly learned to represent the XOR function. The third row gives the difference between the Shapley values for $X_1$ and $X_2$ and clearly shows the discontinuity of asymmetric Shapley values for $\epsilon = 0$.
 	}
 	\label{fig:xor_plot}
 \end{figure}
@@ -468,7 +491,9 @@ With the expressions above, we can compute the various Shapley values based on a
 	\item[asymmetric:] $\phi_1 \approx 0$ and $\phi_2 \approx \frac{1}{2}\epsilon - \frac{1}{2}$ assuming the causal chain $X_1 \rightarrow X_2$ and vice versa for $X_1 \rightarrow X_2$. These apply both to asymmetric conditional and asymmetric causal.
 \end{description}
 
-In this example, symmetric causal Shapley values are clearly to be preferred over asymmetric causal Shapley values. Inserting a causal link with zero strength ($\epsilon=0$), asymmetric Shapley values jump from the symmetric $\phi_1 = \phi_2 \approx -\frac{1}{4}$ to the completely asymmetric $\phi_1 \approx 0$ and $\phi_2 \approx - \frac{1}{2}$, assigning all credit to the second variable, even though the first feature in reality does not affect the second feature at all. Symmetric Shapley values, on the other hand, are insensitive to the insertion of a causal link with zero strength: in the limit $\epsilon \rightarrow 0$ symmetric causal Shapley values correctly converge to marginal Shapley values as also follows from the experimental results in figure~\ref{fig:xor_plot}.
+In this example, symmetric causal Shapley values are clearly to be preferred over asymmetric causal Shapley values for small causal strengths. Inserting a causal link with zero strength ($\epsilon = 0$), asymmetric Shapley values jump from the symmetric $\phi_1 = \phi_2 \approx -\frac{1}{4}$ to the completely asymmetric $\phi_1 \approx 0$ and $\phi_2 \approx - \frac{1}{2}$, assigning all credit to the second feature, even though the first feature in reality does not affect the second feature at all. Symmetric Shapley values, on the other hand, are insensitive to the insertion of a causal link with zero strength: in the limit $\epsilon \rightarrow 0$ symmetric causal Shapley values correctly converge to marginal Shapley values.
+
+Figure~\ref{fig:xor_plot} shows the results of a series of simulations, computing different Shapley values for trained neural networks and comparing these to the theoretical values. The discontinuity of asymmetric Shapley values (conditional and causal asymmetric Shapley values are identical in this example) is most clearly seen in the third row, showing the difference between the Shapley values for $X_1$ and $X_2$. Symmetric conditional Shapley values do not distinguish between the Shapley values for $X_1$ and $X_2$ for any causal strength $\epsilon$, whereas the symmetric causal Shapley values are identical for $\epsilon = 0$ and then slowly start to deviate for larger values of $\epsilon$.
 
 
 \bibliography{shapleyrefs}

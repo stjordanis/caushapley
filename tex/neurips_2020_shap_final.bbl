@@ -24,12 +24,12 @@ Anupam Datta, Shayak Sen, and Yair Zick.
 Lilian Edwards and Michael Veale.
 \newblock Slave to the algorithm: {W}hy a right to an explanation is probably
   not the remedy you are looking for.
-\newblock {\em Duke L. \& Tech. Rev.}, 16:18, 2017.
+\newblock {\em Duke Law \& Technology Review}, 16:18, 2017.
 
 \bibitem{fanaee2013bikerental}
 Hadi Fanaee-T and Joao Gama.
 \newblock Event labeling combining ensemble detectors and background knowledge.
-\newblock {\em Progress in Artificial Intelligence}, pages 1--15, 2013.
+\newblock {\em Progress in Artificial Intelligence}, 2:113--127, 2014.
 
 \bibitem{frye2019asymmetric}
 Christopher Frye, Ilya Feige, and Colin Rowat.
@@ -42,16 +42,12 @@ Tobias Gerstenberg, Noah Goodman, David Lagnado, and Joshua Tenenbaum.
 \newblock Noisy {N}ewtons: Unifying process and dependency accounts of causal
   attribution.
 \newblock In {\em Proceedings of the Annual Meeting of the Cognitive Science
-  Society}, volume~34, 2012.
-
-\bibitem{icard2017normality}
-Thomas~F Icard, Jonathan~F Kominsky, and Joshua Knobe.
-\newblock Normality and actual causal strength.
-\newblock {\em Cognition}, 161:80--93, 2017.
+  Society}, volume~34, pages 378--383, 2012.
 
 \bibitem{janzing2019feature}
 Dominik Janzing, Lenon Minorics, and Patrick Bl{\"o}baum.
-\newblock Feature relevance quantification in explainable ai: A causal problem.
+\newblock Feature relevance quantification in explainable {AI}: A causal
+  problem.
 \newblock In {\em International Conference on Artificial Intelligence and
   Statistics}, pages 2907--2916. PMLR, 2020.
 
