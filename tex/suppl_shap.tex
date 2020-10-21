@@ -443,7 +443,7 @@ and the same with indices 1 and 2 interchanged for the causal chain $X_2 \righta
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=\textwidth]{figures/XOR_plot.pdf}
-	\caption{The conditional symmetric, causal symmetric and causal asymmetric Shapley values of data point $(X_1,X_2) = (0,0)$ under assumption of causal chain $X_1 \rightarrow X_2$ for different $\epsilon$. The bars indicate the mean Shapley value and standard deviation of 100 runs with a neural network trained on 100 data points generated according to $\epsilon$. The red line indicates the theoretical Shapley values as denoted by identical, symmetric causal and asymmetric.
+	\caption{The conditional symmetric, causal symmetric and causal asymmetric Shapley values of data point $(X_1,X_2) = (0,0)$ under assumption of causal chain $X_1 \rightarrow X_2$ for different $\epsilon$. The bars indicate the mean Shapley value and standard deviation of 100 runs with a neural network trained on 100 data points generated according to $\epsilon$ with as label the outcome of the XOR-function. The red line indicates the theoretical Shapley values as denoted by identical, symmetric causal and asymmetric.
 	}
 	\label{fig:xor_plot}
 \end{figure}
@@ -468,7 +468,7 @@ With the expressions above, we can compute the various Shapley values based on a
 	\item[asymmetric:] $\phi_1 \approx 0$ and $\phi_2 \approx \frac{1}{2}\epsilon - \frac{1}{2}$ assuming the causal chain $X_1 \rightarrow X_2$ and vice versa for $X_1 \rightarrow X_2$. These apply both to asymmetric conditional and asymmetric causal.
 \end{description}
 
-In this example, symmetric causal Shapley values are clearly to be preferred over asymmetric causal Shapley values. Inserting a causal link with zero strength ($\epsilon=0$), asymmetric Shapley values jump from the symmetric $\phi_1 = \phi_2 \approx -\frac{1}{4}$ to the completely asymmetric $\phi_1 \approx 0$ and $\phi_2 \approx - \frac{1}{2}$, assigning all credit to the second variable, even though the first feature in reality does not affect the second feature at all. Symmetric Shapley values, on the other hand, are insensitive to the insertion of a causal link with zero strength: in the limit $\epsilon \rightarrow 0$ symmetric causal Shapley values correctly converge to marginal Shapley values.
+In this example, symmetric causal Shapley values are clearly to be preferred over asymmetric causal Shapley values. Inserting a causal link with zero strength ($\epsilon=0$), asymmetric Shapley values jump from the symmetric $\phi_1 = \phi_2 \approx -\frac{1}{4}$ to the completely asymmetric $\phi_1 \approx 0$ and $\phi_2 \approx - \frac{1}{2}$, assigning all credit to the second variable, even though the first feature in reality does not affect the second feature at all. Symmetric Shapley values, on the other hand, are insensitive to the insertion of a causal link with zero strength: in the limit $\epsilon \rightarrow 0$ symmetric causal Shapley values correctly converge to marginal Shapley values as also follows from the experimental results in figure~\ref{fig:xor_plot}.
 
 
 \bibliography{shapleyrefs}
