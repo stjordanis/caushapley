@@ -2,8 +2,6 @@
 #'
 #' @param explanation shapr list containing an explanation produced by shapr::explain.
 #'
-#' @author Ioan Gabriel Bucur
-#'
 #' @return ggplot2 object containing the sina plot.
 #' @export
 #'
@@ -15,7 +13,7 @@
 #' sds <- runif(4, 0.5, 1.5)
 #' pars <- runif(7, -1, 1)
 #' 
-#' # running SEM
+#' # Create data from a structural equation model
 #' X_1 <- rnorm(N, sd = sds[1])
 #' Z <- rnorm(N, 1)
 #' X_2 <- X_1 * pars[1] + Z * pars[2] + rnorm(N, sd = sds[2])
@@ -29,15 +27,18 @@
 #' cov_A <- cov(dat_A)
 #' 
 #' model <- lm(Y ~ . + 0 , data = as.data.frame(dat_A))
-#' explainer <- shapr(X_A, model)
+#' explainer <- shapr::shapr(X_A, model)
 #' y_mean <- mean(Y)
 #' 
-#' explanation_classic <- shapr::explain(dat_A, approach = "empirical", explainer = explainer, prediction_zero = y_mean)
-#' sina_plot(explanation)
+#' explanation_classic <- shapr::explain(dat_A, approach = "gaussian", explainer = explainer, prediction_zero = y_mean)
+#' sina_plot(explanation_classic)
+#' 
+#' explanation_causal <- shapr::explain(dat_A, approach = "causal", explainer = explainer, prediction_zero = y_mean, ordering = list(1, c(2, 3)))
+#' sina_plot(explanation_causal)
 #' 
 #' @seealso \link[SHAPforxgboost]{shap.plot.summary}
 #' 
-#' @details Function inspired by \link[SHAPforxgboost]{shap.plot.summary}. 
+#' @details Function adapted from \link[SHAPforxgboost]{shap.plot.summary}. 
 #' Copyright © 2020 - Yang Liu & Allan Just
 #' 
 sina_plot <- function(explanation) {
@@ -57,8 +58,8 @@ sina_plot <- function(explanation) {
                 pivot_longer(everything()) %>%
                 select(-name) %>%
                 rename(shap = value)) %>%
-    group_by(name) %>%
     mutate(name = factor(name, levels = rev(names(explanation$dt)))) %>%
+    group_by(name) %>%
     arrange(name) %>%
     mutate(mean_value = mean(value)) %>%
     mutate(std_value = (value - min(value)) / (max(value) - min(value)))
@@ -84,9 +85,6 @@ sina_plot <- function(explanation) {
       breaks = c(0, 1), labels = c(" Low", "High "), 
       guide = guide_colorbar(barwidth = 12, barheight = 0.3)
     ) +
-    # scale_x_discrete(
-    #   limits = rev(levels(data_long$variable)), 
-    #   labels = label.feature(rev(levels(data_long$variable)))) + 
     labs(y = "Causal Shapley value (impact on model output)", 
          x = "", color = "Scaled feature value  ")
 }
