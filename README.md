@@ -51,9 +51,6 @@ Package Structure
 The code is structured on the skeleton of an [R package](https://r-pkgs.org/index.html) 
 package as follows:
 
-- The folder `data` contains data for the bike sharing example (`day.csv`) as
-well as a list of training data indices (`train_index.rds`) which are used in the `scripts/bike_rental_illustration.R` for reproducibility purposes.
-
 - The folder `R` contains R files for producing sina plots (`sina_plot.R`).
 
 - The folder `man` contains the documentation for the implemented functions.
@@ -64,6 +61,12 @@ which is a fork of the original [shapr](https://github.com/NorskRegnesentral/sha
 - The folder `scripts` contains the script `bike_rental_illustration.R`, which 
 can be run from R to reproduce the results from the paper on the bike sharing
 example (Section 6).
+
+- The subfolder `inst/extdata` contains data for the bike sharing example (`day.csv`) as
+well as a list of training data indices (`train_index.rds`) which are used in the `scripts/bike_rental_illustration.R` for reproducibility purposes.
+
+- The subfolder `inst/rmd` contains an R notebook showcasing an example of 
+computing the Causal shapley values.
 
 - The top folder also contains the following files:
   - `DESCRIPTION` is the file describing the R package
