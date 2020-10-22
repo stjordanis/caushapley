@@ -26,15 +26,21 @@ authored by Tom Heskes, Evi Sijben, Ioan Gabriel Bucur and Tom Claassen,
 which has been published in the proceedings of NeurIPS 2020 (ID 10778).
 
 
+Prerequisites
+--------------
+This code requires an [R](https://cran.r-project.org/) to be installed. On 
+Windows, [Rtools](https://cran.r-project.org/bin/windows/Rtools/) is also required. 
+After installing R (and Rtools), run the script *scripts/install.R* in the root directory 
+to install the required R packages. These can also be found in the DESCRIPTION file.
+
+
 Installation Instructions
 --------------
 
-This code requires an [R](https://cran.r-project.org/) to be installed. On 
-Windows, [Rtools](https://cran.r-project.org/bin/windows/Rtools/) is also required. 
-After installing R (and Rtools), run the script *install.R* in the root directory 
-to install the required packages:
+1. Download the software from GitHub with the following command:
+`git clone --recurse-submodules https://github.com/igbucur/BayesMR.git`.
 
-`Rscript scripts/install.R` from the command line or `source("scripts/install.R")` 
+2. Run `Rscript scripts/install.R` from the command line or `source("scripts/install.R")` 
 if running R in the root directory.
 
 WARNING: Running the script above will replace your current *shapr* installation, if there is one.
