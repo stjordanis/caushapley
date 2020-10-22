@@ -4,6 +4,13 @@
 #'
 #' @return ggplot2 object containing the sina plot.
 #' @export
+#' 
+#' @import tidyr
+#' @import shapr
+#' @import ggplot2
+#' @import ggforce
+#' 
+#' @importFrom dplyr `%>%`
 #'
 #' @examples
 #' # set parameters and random seed
@@ -30,10 +37,21 @@
 #' explainer <- shapr::shapr(X_A, model)
 #' y_mean <- mean(Y)
 #' 
-#' explanation_classic <- shapr::explain(dat_A, approach = "gaussian", explainer = explainer, prediction_zero = y_mean)
+#' explanation_classic <- shapr::explain(
+#'   dat_A, 
+#'   approach = "gaussian", 
+#'   explainer = explainer, 
+#'   prediction_zero = y_mean
+#' )
 #' sina_plot(explanation_classic)
 #' 
-#' explanation_causal <- shapr::explain(dat_A, approach = "causal", explainer = explainer, prediction_zero = y_mean, ordering = list(1, c(2, 3)))
+#' explanation_causal <- shapr::explain(
+#'   dat_A, 
+#'   approach = "causal", 
+#'   explainer = explainer, 
+#'   prediction_zero = y_mean, 
+#'   ordering = list(1, c(2, 3))
+#' )
 #' sina_plot(explanation_causal)
 #' 
 #' @seealso \link[SHAPforxgboost]{shap.plot.summary}
@@ -43,26 +61,23 @@
 #' 
 sina_plot <- function(explanation) {
   
-  library(tidyverse)
-  library(ggplot2)
-  library(data.table)
-  
   shapley_values <- explanation$dt[, -1, drop = FALSE]
   X_values <- explanation$x_test
   
   data_long <- explanation$x_test %>%
-    as.data.table() %>%
-    pivot_longer(everything()) %>%
-    bind_cols(explanation$dt %>%
-                select(-none) %>%
-                pivot_longer(everything()) %>%
-                select(-name) %>%
-                rename(shap = value)) %>%
-    mutate(name = factor(name, levels = rev(names(explanation$dt)))) %>%
-    group_by(name) %>%
-    arrange(name) %>%
-    mutate(mean_value = mean(value)) %>%
-    mutate(std_value = (value - min(value)) / (max(value) - min(value)))
+    data.table::as.data.table() %>%
+    tidyr::pivot_longer(everything()) %>%
+    dplyr::bind_cols(
+      explanation$dt %>%
+        dplyr::select(-none) %>%
+        tidyr::pivot_longer(everything()) %>%
+        dplyr::select(-name) %>%
+        dplyr::rename(shap = value)) %>%
+    dplyr::mutate(name = factor(name, levels = rev(names(explanation$dt)))) %>%
+    dplyr::group_by(name) %>%
+    dplyr::arrange(name) %>%
+    dplyr::mutate(mean_value = mean(value)) %>%
+    dplyr::mutate(std_value = (value - min(value)) / (max(value) - min(value)))
   
   x_bound <- max(abs(max(data_long$shap)), abs(min(data_long$shap)))
   
