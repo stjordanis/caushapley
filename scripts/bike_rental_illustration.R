@@ -12,7 +12,7 @@ library(shapr) # NOTE: must be installed by running build.R in the root director
 # For sina plotting capabilities
 source("R/sina_plot.R")
 
-if (save_plots) {
+if (save_plots && !dir.exists("figures")) {
   dir.create("figures")
 }
 
@@ -20,7 +20,7 @@ if (save_plots) {
 
 # Data source: https://archive.ics.uci.edu/ml/datasets/bike+sharing+dataset
  
-bike <- read.csv("data/day.csv")
+bike <- read.csv("inst/extdata/day.csv")
 # Difference in days, which takes DST into account
 bike$trend <- as.numeric(difftime(bike$dteday, bike$dteday[1], units = "days"))
 # bike$trend <- as.integer(difftime(bike$dteday, min(as.Date(bike$dteday)))+1)/24
@@ -52,7 +52,7 @@ y_var <- "cnt"
 # so we saved the training-test split.
 # set.seed(2013)
 # train_index <- caret::createDataPartition(bike$cnt, p = .8, list = FALSE, times = 1)
-train_index <- readRDS("data/train_index.rds")
+train_index <- readRDS("inst/extdata/train_index.rds")
 
 # Training data
 x_train <- as.matrix(bike[train_index, x_var])
