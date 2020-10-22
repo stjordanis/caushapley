@@ -136,7 +136,7 @@ The main contributions of our paper are as follows.
 (1)~We derive {\em causal} Shapley values that explain the total effect of features on the prediction, taking into account their causal relationships. This makes them principally different from marginal and conditional Shapley values. \replaced[id=1]{At the same time, c}{C}ompared to asymmetric Shapley values, causal Shapley values provide a more direct \added[id=1]{and robust} way to incorporate causal knowledge. (2)~Our method allows for further insights into feature relevance by separating out the total causal effect into a direct and indirect contribution. 
 (3)~Making use of causal chain graphs~\cite{lauritzen2002chain}, we propose a practical approach for computing causal Shapley values and illustrate this on a real-world example.
 
-\section{\replaced[id=1]{Causal Shapley values}{A causal interpretation of Shapley values}}
+\section{Causal Shapley values}
 \label{sec:interpretation}
 
 In this section, we will introduce \replaced[id=1]{causal}{our causal, interventional interpretation of} Shapley values and contrast \replaced[id=1]{them}{this} to other approaches. We assume that we are given a machine learning model $f(\cdot)$ that can generate predictions for any feature vector $\vx$. Our goal is to provide an explanation for an individual prediction $f(\vx)$, that takes into account the causal relationships between the features\added[id=1]{ in the real world}.
