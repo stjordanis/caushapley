@@ -2,3 +2,15 @@
 .Rhistory
 .RData
 .Ruserdata
+
+# LaTeX temporary files
+*.aux
+*.log
+*.toc
+
+# SyncTeX
+*.synctex.gz
+
+# BibTeX
+*.bbl
+*.blg
