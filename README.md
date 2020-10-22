@@ -37,8 +37,8 @@ to install the required R packages. These can also be found in the DESCRIPTION f
 Installation Instructions
 --------------
 
-1. Download the software from GitHub with the following command:
-`git clone --recurse-submodules https://github.com/igbucur/BayesMR.git`.
+1. Download the software from the RU GitLab with the following command:
+`git clone --recurse-submodules https://gitlab.science.ru.nl/gbucur/CauSHAPley.git`.
 
 2. Run `Rscript scripts/install.R` from the command line or `source("scripts/install.R")` 
 if running R in the root directory.
