@@ -1,0 +1,33 @@
+Package: CauSHAPley
+Title: Code for computing Causal Shapley Values based on the shapr package
+Version: 1.0.0
+Authors@R: c(
+    person(given = "Tom", family = "Heskes", role = c("aut", "cre"), email = "t.heskes@science.ru.nl", comment = c(ORCID = "0000-0002-3398-5235")),
+    person(given = "Evi", family = "Sijben", role = "aut", email = "evisijben@gmail.com"),
+    person(given = "Ioan Gabriel", family = "Bucur", role = "aut", email = "g.bucur@cs.ru.nl", comment = c(ORCID = "0000-0002-7852-052X")),
+    person(given = "Tom", family = "Claassen", role = "aut", email = "t.claassen@science.ru.nl"))
+Description: This package contains the code supplement for 'Causal Shapley Values: 
+  Exploiting Causal Knowledge to Explain Individual Predictions of Complex Models' 
+  (NeurIPS 2020 - ID 10778). It contains an implementation of Causal Shapley
+  values based on the shapr package developed by NorskRegnesentral.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Remotes:
+  git::https://gitlab.science.ru.nl/gbucur/shapr
+Imports:
+  dplyr,
+  tidyr,
+  ggplot2,
+  ggforce,
+  data.table,
+  shapr
+Suggests:
+  tidyverse,
+  ggpubr,
+  xgboost
+Depends: R (>= 3.5.0)
+
+
