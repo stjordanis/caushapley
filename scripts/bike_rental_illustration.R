@@ -7,7 +7,7 @@ library(tidyverse)
 library(data.table)
 library(xgboost)
 library(ggpubr)
-library(shapr) # NOTE: must be installed by running build.R in the root directory
+library(shapr)
 
 # For sina plotting capabilities
 source("R/sina_plot.R")
