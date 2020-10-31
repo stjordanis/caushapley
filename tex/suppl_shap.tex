@@ -417,7 +417,7 @@ It can be seen that the marginal Shapley values strongly focus on temperature, l
 	\begin{minipage}{.49\linewidth}
 	\includegraphics[width=\textwidth]{figures/sina_plot_marginal.pdf}
 	\end{minipage}
-	\caption{Sina plots of asymmetric (conditional) Shapley values (left) and marginal Shapley values (right). See Figure~3 in the main text for further details.}
+	\caption{Sina plots of asymmetric (conditional) Shapley values (left) and marginal Shapley values (right) on the bike rental data. See Figure~3 in the main text for further details.}
 	\label{fig:sinaplots}
 \end{figure}
 
@@ -495,6 +495,25 @@ In this example, symmetric causal Shapley values are clearly to be preferred ove
 
 Figure~\ref{fig:xor_plot} shows the results of a series of simulations, computing different Shapley values for trained neural networks and comparing these to the theoretical values. The discontinuity of asymmetric Shapley values (conditional and causal asymmetric Shapley values are identical in this example) is most clearly seen in the third row, showing the difference between the Shapley values for $X_1$ and $X_2$. Symmetric conditional Shapley values do not distinguish between the Shapley values for $X_1$ and $X_2$ for any causal strength $\epsilon$, whereas the symmetric causal Shapley values are identical for $\epsilon = 0$ and then slowly start to deviate for larger values of $\epsilon$.
 
+\section{Shapley values for predicting dementia}
+
+We consider the Alzheimer's disease data set obtained from the Alzheimer's Disease Neuroimaging Initiative (ADNI) database (\url{http://adni.loni.usc.edu}). The primary goal of ADNI has been to test whether serial magnetic resonance imaging (MRI), positron emission tomography (PET), other biological markers, and clinical and neuropsychological assessment can be combined to measure the progression of mild cognitive impairment and early Alzheimer's disease. As features we consider age ({\em age}), gender ({\em gender}), education level ({\em pteducat}), fudeoxyglucose ({\em FDG}), amyloid beta ({\em ABETA}), phosphorylated
+tau ({\em PTAU}), and the number of apolipoprotein alleles ({\em APOE4}). Data was normalised and randomly split in 80\% training and 20\% test set. We consider a binary classification problem, where we grouped together patients with mild cognitive impairment and early Alzheimer's disease, to distinguish these from the healthy ``cognitive normal'' subjects. We trained a multi-layered perceptron with five hidden units.
+
+To compute the causal Shapley values, we chose the partial order (\{{\em gender}, {\em APOE4}, {\em age}, {\em pteducat}\}, \{{\em ABETA}\}, \{{\em FDG}, {\em PTAU}\}), in line with the ``gold standard'' causal graph from~\cite{shen2020challenges}. We assume confounding in the first and third component. Since interventional expectations over variables in the first component simplify to marginal expectations, we can sample the discrete variables {\em gender} and {\em APOE4} from their empirical distributions. All other variables are sampled from conditional Gaussian distributions.
+
+\begin{figure}[t]
+	\includegraphics[width=\textwidth]{figures/sina_plot_adni.pdf}
+	\caption{Sina plots of marginal (left), symmetric causal (middle), and asymmetric causal Shapley values (right) for a multi-layered perceptron trained on the ADNI dataset. See the text for further explanations.}
+	\label{fig:sina_adni}
+\end{figure}
+
+The sina plots in Figure~\ref{fig:sina_adni} show the marginal, symmetric causal, and asymmetric causal Shapley values, respectively, for the predicted probability of having dementia or mild cognitive impairment. As the dependencies among the features are relatively weak, the marginal and symmetric causal Shapley values are quite similar. The asymmetric causal Shapley values for different values of {\em APOE4}, a known risk factor of {\em ABETA}, are more clearly separated than those for the marginal and symmetric causal Shapley values. The asymmetric Shapley values provide an explanation with a relatively strong focus on the root cause {\em APOE4}, which first gets all the credit for the indirect effect through {\em ABETA}.
+
+\begin{ack}
+ADNI data collection and sharing was funded by the Alzheimer's Disease
+Neuroimaging Initiative (ADNI) (National Institutes of Health Grant U01 AG024904) and DOD ADNI (Department of Defense award number W81XWH-12-2-0012). See \url{http://adni.loni.usc.edu/wp-content/themes/freshnews-dev-v2/documents/policy/ADNI_Data_Use_Agreement.pdf}, section 12, for further contributions and \url{http://adni.loni.usc.edu/wp-content/uploads/how_to_apply/ADNI_Acknowledgement_List.pdf} for a complete listing of ADNI investigators.
+\end{ack}
 
 \bibliography{shapleyrefs}
 \bibliographystyle{plain}
